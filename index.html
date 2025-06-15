@@ -60,54 +60,60 @@
         .profile h1, .profile p { position: relative; display: inline-block; }
 
         .links ul { list-style-type: none; display: flex; flex-direction: column; gap: 16px; margin-top: 24px; }
-        
-        /* ★ NOVO/ATUALIZADO: Efeito de borda animada nos links ★ */
         .links a { 
-            position: relative; /* Necessário para posicionar a borda animada */
-            z-index: 1; /* Garante que o conteúdo do link fique sobre a borda */
             display: flex; align-items: center; background-color: rgba(255, 255, 255, 0.05); 
             color: var(--primary-text-color); padding: 16px 20px; border-radius: var(--border-radius); 
             text-decoration: none; font-weight: 600; 
             transition: all 0.2s cubic-bezier(0.215, 0.610, 0.355, 1);
-            overflow: hidden; /* Esconde a borda que está fora dos limites */
         }
-        .links a::before {
-            content: '';
-            position: absolute;
-            z-index: -1;
-            inset: -2px; /* Controla a espessura da borda */
-            border-radius: inherit;
-            background: linear-gradient(90deg, var(--accent-color), var(--accent-color-hover), var(--accent-color));
-            background-size: 200%;
-            opacity: 0; /* Começa invisível nos temas claro/escuro */
-            transition: opacity 0.4s ease;
-        }
-        /* Efeito para temas claro/escuro: aparece no hover */
-        body:not([data-theme="neon"]) .links a:hover::before {
-            opacity: 1;
-            animation: animated-border 3s linear infinite;
-        }
-        /* Efeito para tema neon: sempre visível e animado */
-        body[data-theme="neon"] .links a::before {
-            opacity: 1;
-            animation: animated-border 3s linear infinite;
-        }
-
-        .links a:hover { transform: translateY(-5px) scale(1.03); background-color: var(--accent-color); color: #ffffff; box-shadow: 0 8px 20px var(--accent-shadow-color); }
-        body[data-theme="neon"] .links a:hover { background-color: rgba(255,255,255,0.15); } /* Hover sutil no tema Neon */
-
+        .links a:hover { transform: translateY(-5px) scale(1.03); box-shadow: 0 8px 20px var(--accent-shadow-color); }
         .links a:hover .icon { color: #ffffff; transform: scale(1.2) rotate(-8deg); }
+        
         .icon { font-size: 1.3em; margin-right: 15px; width: 24px; text-align: center; transition: all 0.3s cubic-bezier(0.215, 0.610, 0.355, 1); }
         .link-text { flex-grow: 1; text-align: center; position: relative;}
         .link-text-complex { flex-grow: 1; text-align: center; display: flex; flex-direction: column; justify-content: center; line-height: 1.2; position: relative;}
         .link-text-complex small { font-size: 0.8em; font-weight: 300; opacity: 0.7; margin-top: 2px; }
         .links li { opacity: 0; animation: entrance-pop-in 0.7s cubic-bezier(0.215, 0.610, 0.355, 1) forwards; animation-delay: calc(var(--delay-order) * 100ms + 0.4s); }
         
-        #ifood-link { background: linear-gradient(175deg, #fa1d2d, #d01825); color: #ffffff; font-weight: 700; border: none; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15); animation: pulse-glow 2.5s infinite; }
-        #ifood-link:hover { background: linear-gradient(175deg, #ff3c4a, #e0202f); animation: none; box-shadow: 0 10px 25px rgba(234, 29, 44, 0.5); transform: translateY(-5px) scale(1.03); }
-        #ifood-link:hover .icon { transform: scale(1.2) rotate(-8deg); }
-        #ifood-link::before { display: none; } /* Remove o efeito de borda do botão iFood */
+        /* ★ NOVO: Cores de Marca para os Links ★ */
+        body:not([data-theme="neon"]) .links a {
+            color: #ffffff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.15);
+        }
+        body:not([data-theme="neon"]) #link-1 { background-color: #1877F2; } /* Facebook */
+        body:not([data-theme="neon"]) #link-2 { background-color: #2ecc71; } /* Portfólio (Verde Genérico) */
+        body:not([data-theme="neon"]) #link-3 { background-color: #7f8c8d; } /* Email (Cinza) */
+        body:not([data-theme="neon"]) #link-4 { background-color: #bf1313; } /* IGN (Vermelho) */
+        body:not([data-theme="neon"]) #link-5 { background-color: #25D366; } /* WhatsApp */
+        body:not([data-theme="neon"]) #link-6 { background-color: #1b2838; } /* Steam */
+        body:not([data-theme="neon"]) #link-7 { background-color: #2e51a2; } /* MyAnimeList */
+        body:not([data-theme="neon"]) #link-8 { background-color: #5865F2; } /* Discord */
 
+        body:not([data-theme="neon"]) .links a:hover {
+            filter: brightness(90%);
+        }
+
+        /* Cores de Ícones para o Tema Neon */
+        body[data-theme="neon"] #link-1 .icon { color: #1877F2; }
+        body[data-theme="neon"] #link-2 .icon { color: #2ecc71; }
+        body[data-theme="neon"] #link-3 .icon { color: #bdc3c7; }
+        body[data-theme="neon"] #link-4 .icon { color: #e74c3c; }
+        body[data-theme="neon"] #link-5 .icon { color: #25D366; }
+        body[data-theme="neon"] #link-6 .icon { color: #66c0f4; }
+        body[data-theme="neon"] #link-7 .icon { color: #2e51a2; }
+        body[data-theme="neon"] #link-8 .icon { color: #5865F2; }
+        
+        /* Comportamento de hover para o tema Neon */
+        body[data-theme="neon"] .links a:hover {
+            background-color: var(--accent-color);
+            color: #ffffff;
+        }
+
+        /* Botão Especial do iFood */
+        #ifood-link { background: linear-gradient(175deg, #fa1d2d, #d01825); color: #ffffff; font-weight: 700; border: none; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15); animation: pulse-glow 2.5s infinite; }
+        #ifood-link:hover { background: linear-gradient(175deg, #ff3c4a, #e0202f); animation: none; box-shadow: 0 10px 25px rgba(234, 29, 44, 0.5); transform: translateY(-5px) scale(1.03); filter: brightness(100%); }
+        #ifood-link:hover .icon { transform: scale(1.2) rotate(-8deg); }
+        
         #boombox-section {
             margin-top: 25px; padding: 20px; border-top: 1px solid var(--border-color);
             background-color: rgba(0,0,0,0.1); border-radius: var(--border-radius);
@@ -194,13 +200,6 @@
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
         @keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); } 20%, 40%, 60%, 80% { transform: translateX(10px); } }
         @keyframes pulse-glow { 0% { box-shadow: 0 0 5px rgba(234, 29, 44, 0.5), inset 0 0 2px rgba(255,255,255,0.1); } 50% { box-shadow: 0 0 12px rgba(255, 45, 60, 0.8), inset 0 0 2px rgba(255,255,255,0.1); } 100% { box-shadow: 0 0 5px rgba(234, 29, 44, 0.5), inset 0 0 2px rgba(255,255,255,0.1); } }
-        
-        /* ★ NOVO: Animação para a borda do link ★ */
-        @keyframes animated-border {
-            to {
-                background-position: -200% center;
-            }
-        }
     </style>
 </head>
 
