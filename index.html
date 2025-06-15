@@ -145,10 +145,15 @@
             <p><span id="profile-tagline"></span><span class="edit-icon" data-edit="profile-tagline" title="Editar Tagline"><i class="fa-solid fa-pencil"></i></span></p>
         </header>
         <section class="links">
+            <!-- ★ ATUALIZADO: Lista de links agora com 7 itens -->
             <ul>
                 <li style="--delay-order: 1;"><a id="link-1" href="" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook icon"></i><span id="link-text-1" class="link-text"></span><span class="edit-icon" data-edit-link="1" title="Editar Link"><i class="fa-solid fa-pencil"></i></span></a></li>
                 <li style="--delay-order: 2;"><a id="link-2" href="" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-globe icon"></i><span id="link-text-2" class="link-text"></span><span class="edit-icon" data-edit-link="2" title="Editar Link"><i class="fa-solid fa-pencil"></i></span></a></li>
                 <li style="--delay-order: 3;"><a id="link-3" href=""><i class="fa-solid fa-envelope icon"></i><div class="link-text-complex"><span id="link-text-3.1"></span><small id="link-text-3.2"></small></div><span class="edit-icon" data-edit-link="3" title="Editar Link"><i class="fa-solid fa-pencil"></i></span></a></li>
+                <li style="--delay-order: 4;"><a id="link-4" href="" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-gamepad icon"></i><span id="link-text-4" class="link-text"></span><span class="edit-icon" data-edit-link="4" title="Editar Link"><i class="fa-solid fa-pencil"></i></span></a></li>
+                <li style="--delay-order: 5;"><a id="link-5" href="" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp icon"></i><span id="link-text-5" class="link-text"></span><span class="edit-icon" data-edit-link="5" title="Editar Link"><i class="fa-solid fa-pencil"></i></span></a></li>
+                <li style="--delay-order: 6;"><a id="link-6" href="" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-steam icon"></i><span id="link-text-6" class="link-text"></span><span class="edit-icon" data-edit-link="6" title="Editar Link"><i class="fa-solid fa-pencil"></i></span></a></li>
+                <li style="--delay-order: 7;"><a id="link-7" href="" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-tv icon"></i><span id="link-text-7" class="link-text"></span><span class="edit-icon" data-edit-link="7" title="Editar Link"><i class="fa-solid fa-pencil"></i></span></a></li>
             </ul>
         </section>
         <footer id="page-footer" class="footer">
@@ -171,10 +176,9 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // ★★★ ATUALIZADO: Insira suas novas chaves aqui ★★★
-            const JSONBIN_ID = '684f2cda8a456b7966aeb5d3'; // Este está correto.
-            const JSONBIN_API_KEY = '$2a$10$NICad74I0SXWBZMw15PCleRSa5t8pTeErKGD9xAocMj3fZoWp0TVq'; // <<< APAGUE ISTO E COLE SUA NOVA CHAVE MESTRA!
-            // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+            // ★ ATUALIZADO: Chaves corretas inseridas
+            const JSONBIN_ID = '684f2cda8a456b7966aeb5d3';
+            const JSONBIN_API_KEY = '$2a$10$NICad74I0SXWBZMw15PCleRSa5t8pTeErKGD9xAocMj3fZoWp0TVq';
             
             const AUTHOR_PIN = '5381';
             const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
@@ -197,24 +201,44 @@
                 setTimeout(() => saveStatus.classList.remove('show'), duration);
             };
 
+            // ★ ATUALIZADO: Função agora preenche todos os 7 links
             const updateDOM = (data) => {
+                // Perfil
                 document.getElementById('profile-name').textContent = data['profile-name'];
                 document.getElementById('profile-tagline').textContent = data['profile-tagline'];
                 document.getElementById('profile-picture-img').src = data['profile-picture'];
                 
+                // Link 1: Facebook
                 document.getElementById('link-text-1').textContent = data['link1-text'];
                 document.getElementById('link-1').href = data['link1-href'];
                 
+                // Link 2: Portfólio
                 document.getElementById('link-text-2').textContent = data['link2-text'];
                 document.getElementById('link-2').href = data['link2-href'];
 
+                // Link 3: E-mail (Complexo)
                 document.getElementById('link-text-3.1').textContent = data['link3-text1'];
                 document.getElementById('link-text-3.2').textContent = data['link3-text2'];
                 document.getElementById('link-3').href = data['link3-href'];
+
+                // Link 4: IGN
+                document.getElementById('link-text-4').textContent = data['link4-text'];
+                document.getElementById('link-4').href = data['link4-href'];
+
+                // Link 5: WhatsApp
+                document.getElementById('link-text-5').textContent = data['link5-text'];
+                document.getElementById('link-5').href = data['link5-href'];
+
+                // Link 6: Steam
+                document.getElementById('link-text-6').textContent = data['link6-text'];
+                document.getElementById('link-6').href = data['link6-href'];
+
+                // Link 7: MyAnimeList
+                document.getElementById('link-text-7').textContent = data['link7-text'];
+                document.getElementById('link-7').href = data['link7-href'];
             };
             
             const loadData = async () => {
-                // A chave mestre também funciona para leitura.
                 const headers = { 'X-Master-Key': JSONBIN_API_KEY };
                 try {
                     const response = await fetch(`${JSONBIN_URL}/latest`, { headers });
@@ -224,7 +248,7 @@
                     updateDOM(currentData);
                 } catch (error) {
                     console.error('Falha ao carregar dados:', error);
-                    alert('Não foi possível carregar os dados do site. Verifique sua conexão e a configuração do JSONBin (ID e Chave Mestra).');
+                    alert('Não foi possível carregar os dados. Verifique se você atualizou o conteúdo do seu Bin no JSONBin.io (PASSO CRÍTICO da instrução anterior).');
                 }
             };
             
@@ -255,8 +279,7 @@
 
             const checkPin = () => {
                 if (pinInput.value === AUTHOR_PIN) {
-                    enterAdminMode();
-                    hidePinModal();
+                    enterAdminMode(); hidePinModal();
                 } else {
                     pinError.textContent = 'PIN Incorreto';
                     pinModalBox.classList.add('shake');
@@ -283,11 +306,11 @@
                     if (targetKey) {
                         editValue(targetKey, `Editar ${targetKey}:`);
                     } else if (linkId) {
-                        if (linkId === '3') {
+                        if (linkId === '3') { // Caso especial: E-mail
                             editValue(`link${linkId}-text1`, 'Editar Título do E-mail:');
                             editValue(`link${linkId}-text2`, 'Editar Endereço do E-mail:');
                             editValue(`link${linkId}-href`, 'Editar Link do E-mail (mailto:):');
-                        } else {
+                        } else { // Todos os outros links
                             editValue(`link${linkId}-text`, `Editar Texto do Link ${linkId}:`);
                             editValue(`link${linkId}-href`, `Editar URL do Link ${linkId}:`);
                         }
