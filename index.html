@@ -15,7 +15,7 @@
             --bg-color: #1a1a1d; --card-color: #242526; --primary-text-color: #f5f5f5;
             --secondary-text-color: #b0b3b8; --accent-color: #3498db; --accent-color-hover: #2980b9;
             --border-color: #3a3b3c; --shadow-color: rgba(0, 0, 0, 0.4); --accent-shadow-color: rgba(52, 152, 219, 0.3);
-            --header-text-shadow: none;
+            --header-text-shadow: none; --border-radius: 12px;
         }
         body[data-theme="light"] {
             --bg-color: #f0f2f5; --card-color: #ffffff; --primary-text-color: #1c1e21;
@@ -73,13 +73,49 @@
         #ifood-link:hover { background: linear-gradient(175deg, #ff3c4a, #e0202f); animation: none; box-shadow: 0 10px 25px rgba(234, 29, 44, 0.5); transform: translateY(-5px) scale(1.03); }
         #ifood-link:hover .icon { transform: scale(1.2) rotate(-8deg); }
 
-        #music-player-section { margin-top: 25px; padding-top: 25px; border-top: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; gap: 15px; }
-        #song-info { text-align: left; flex-grow: 1; min-width: 0; cursor: default; }
-        #song-title { font-weight: 600; font-size: 0.95em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        #song-info:hover #song-title { animation: marquee 8s linear infinite alternate; }
-        .player-controls button { background: none; border: none; color: var(--secondary-text-color); font-size: 1.4em; cursor: pointer; transition: all 0.2s ease; }
+        /* ★ NOVO: Estilos da Boombox */
+        #boombox-section {
+            margin-top: 25px; padding: 20px; border-top: 1px solid var(--border-color);
+            background-color: rgba(0,0,0,0.1); border-radius: var(--border-radius);
+            display: flex; align-items: center; gap: 15px; transition: all 0.3s ease;
+        }
+        .boombox-art {
+            flex-shrink: 0; width: 60px; height: 60px; background-color: var(--border-color);
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            font-size: 2em; color: var(--secondary-text-color); transition: all 0.3s ease;
+        }
+        .boombox-info-wrapper {
+            flex-grow: 1; display: flex; flex-direction: column; gap: 8px; min-width: 0;
+        }
+        #song-info { text-align: left; cursor: default; }
+        #song-title { font-weight: 600; font-size: 0.95em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--primary-text-color); }
+        #song-artist { font-weight: 400; font-size: 0.8em; color: var(--secondary-text-color); }
+        
+        .progress-container {
+            width: 100%; height: 5px; background-color: var(--border-color);
+            border-radius: 5px; cursor: pointer; overflow: hidden;
+        }
+        .progress-bar {
+            width: 0%; height: 100%; background-color: var(--accent-color);
+            border-radius: 5px; transition: width 0.1s linear;
+        }
+        .player-controls-wrapper {
+             display: flex; align-items: center; gap: 15px; justify-content: space-between;
+        }
+        .player-controls button {
+            background: none; border: none; color: var(--secondary-text-color);
+            font-size: 1.6em; cursor: pointer; transition: all 0.2s ease; padding: 0;
+        }
         .player-controls button:hover { color: var(--accent-color); transform: scale(1.15); }
 
+        .audio-visualizer {
+            display: flex; align-items: flex-end; gap: 3px; height: 30px;
+        }
+        .visualizer-bar {
+            width: 4px; background-color: var(--accent-color); border-radius: 2px;
+            height: 5%; transition: height 0.2s ease-out;
+        }
+        
         .footer { margin-top: 20px; font-size: 0.9em; color: var(--secondary-text-color); width: 100%; transition: color 0.3s ease; cursor: pointer; }
         .footer .fa-heart { color: var(--accent-color); animation: pulse 1.5s infinite; }
         
@@ -90,7 +126,6 @@
         #like-button .fa-thumbs-up { margin-right: 8px; }
 
         .edit-icon { display: none; margin-left: 10px; color: var(--secondary-text-color); cursor: pointer; font-size: 0.7em; transition: all 0.2s ease; vertical-align: middle; }
-        
         .profile-picture-container .edit-icon { position: absolute; bottom: 5px; right: 5px; background-color: var(--card-color); border: 2px solid var(--accent-color); border-radius: 50%; width: 35px; height: 35px; display: none; align-items: center; justify-content: center; font-size: 1em; margin-left: 0; }
         .profile-picture-container .edit-icon i { margin: 0; }
         body.admin-mode .profile-picture-container .edit-icon { display: flex; }
@@ -121,7 +156,6 @@
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
         @keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); } 20%, 40%, 60%, 80% { transform: translateX(10px); } }
         @keyframes pulse-glow { 0% { box-shadow: 0 0 5px rgba(234, 29, 44, 0.5), inset 0 0 2px rgba(255,255,255,0.1); } 50% { box-shadow: 0 0 12px rgba(255, 45, 60, 0.8), inset 0 0 2px rgba(255,255,255,0.1); } 100% { box-shadow: 0 0 5px rgba(234, 29, 44, 0.5), inset 0 0 2px rgba(255,255,255,0.1); } }
-        @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-25%); } }
     </style>
 </head>
 
@@ -160,13 +194,28 @@
         </section>
         
         <footer id="main-footer" class="footer">
-            <section id="music-player-section">
-                <div id="song-info"> <div id="song-title">Lofi Boombox</div> </div>
-                <div class="player-controls">
-                    <!-- ★ CORRIGIDO: Player simplificado para uma música -->
-                    <button id="play-pause-btn" title="Play/Pause"><i class="fa-solid fa-play"></i></button>
+            <!-- ★ ATUALIZADO: Estrutura da Boombox -->
+            <section id="boombox-section">
+                <div class="boombox-art"><i class="fa-solid fa-music"></i></div>
+                <div class="boombox-info-wrapper">
+                    <div id="song-info">
+                        <div id="song-title">Lofi Study</div>
+                        <div id="song-artist">FASSounds</div>
+                    </div>
+                    <div class="progress-container" id="progress-container">
+                        <div class="progress-bar" id="progress-bar"></div>
+                    </div>
+                    <div class="player-controls-wrapper">
+                         <div class="player-controls">
+                            <button id="play-pause-btn" title="Play/Pause"><i class="fa-solid fa-play"></i></button>
+                        </div>
+                        <div class="audio-visualizer" id="audio-visualizer">
+                            <!-- Barras do visualizador serão geradas por JS -->
+                        </div>
+                    </div>
                 </div>
             </section>
+            
             <div id="like-section"> <button id="like-button" title="Curta este perfil!"> <i class="fa-solid fa-thumbs-up"></i><span id="like-count">0</span> </button> </div>
             <div class="footer-content"> <p>Feito com <i class="fa-solid fa-code"></i> e <i class="fa-solid fa-heart"></i></p> </div>
             <div id="admin-controls"><button id="exit-admin-button"><i class="fa-solid fa-lock"></i> Trancar Site</button></div>
@@ -187,52 +236,117 @@
             const JSONBIN_API_KEY = '$2a$10$NICad74I0SXWBZMw15PCleRSa5t8pTeErKGD9xAocMj3fZoWp0TVq';
             const AUTHOR_PIN = '5381';
             
-            // ★ CORRIGIDO: Lógica do Player de Música refeita e simplificada
+            // ★ ATUALIZADO: Lógica completa da Boombox
             const audioPlayer = document.getElementById('audio-player');
             const playPauseBtn = document.getElementById('play-pause-btn');
             const songTitleEl = document.getElementById('song-title');
+            const songArtistEl = document.getElementById('song-artist');
+            const progressContainer = document.getElementById('progress-container');
+            const progressBar = document.getElementById('progress-bar');
+            const visualizerContainer = document.getElementById('audio-visualizer');
 
             const lofiTrack = {
-                title: "Lofi Study - by FASSounds",
+                title: "Lofi Study",
+                artist: "FASSounds",
                 src: "https://cdn.pixabay.com/audio/2022/05/27/audio_180846996a.mp3"
             };
             
-            let audioContextUnlocked = false;
+            let audioContext, analyser, source, dataArray;
+            let visualizerInitialized = false;
+            const NUM_VISUALIZER_BARS = 12;
 
-            function initAudio() {
-                if (audioContextUnlocked) return;
-                audioContextUnlocked = true;
-                // O primeiro play deve ser dentro de um evento de clique
-                audioPlayer.play().then(() => {
-                    playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-                }).catch(error => {
-                    console.error("Audio play failed on init:", error);
-                    // Se falhar, redefinimos para que o próximo clique tente novamente
-                    audioContextUnlocked = false; 
-                });
+            // Gera as barras do visualizador dinamicamente
+            for (let i = 0; i < NUM_VISUALIZER_BARS; i++) {
+                const bar = document.createElement('div');
+                bar.classList.add('visualizer-bar');
+                visualizerContainer.appendChild(bar);
+            }
+            const visualizerBars = document.querySelectorAll('.visualizer-bar');
+
+            function initAudioAndVisualizer() {
+                if (visualizerInitialized) return;
+                
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                source = audioContext.createMediaElementSource(audioPlayer);
+                analyser = audioContext.createAnalyser();
+                
+                source.connect(analyser);
+                analyser.connect(audioContext.destination);
+                
+                analyser.fftSize = 64; // Menor valor para barras mais reativas
+                const bufferLength = analyser.frequencyBinCount;
+                dataArray = new Uint8Array(bufferLength);
+                
+                visualizerInitialized = true;
+                drawVisualizer(); // Inicia o loop de animação
+            }
+
+            function drawVisualizer() {
+                if (!visualizerInitialized || audioPlayer.paused) {
+                    // Pausa a animação se a música estiver pausada
+                    visualizerBars.forEach(bar => bar.style.height = '5%');
+                    requestAnimationFrame(drawVisualizer);
+                    return;
+                }
+                
+                requestAnimationFrame(drawVisualizer);
+                analyser.getByteFrequencyData(dataArray);
+
+                const barStep = Math.floor(dataArray.length / NUM_VISUALIZER_BARS);
+                for(let i = 0; i < NUM_VISUALIZER_BARS; i++) {
+                    const bar = visualizerBars[i];
+                    if (bar) {
+                        // Mapeia o valor de frequência para uma altura entre 5% e 100%
+                        const height = Math.max(5, (dataArray[i * barStep] / 255) * 100);
+                        bar.style.height = `${height}%`;
+                    }
+                }
             }
 
             function togglePlayPause() {
-                if (!audioContextUnlocked) {
-                    initAudio();
-                    return;
+                if (!visualizerInitialized) {
+                    // Na primeira vez que o usuário clica, inicializamos o AudioContext.
+                    // Isso é necessário devido às políticas de autoplay dos navegadores.
+                    initAudioAndVisualizer();
+                }
+
+                if (audioContext.state === 'suspended') {
+                    audioContext.resume();
                 }
 
                 if (audioPlayer.paused) {
-                    audioPlayer.play();
+                    audioPlayer.play().catch(e => console.error("Erro ao tocar áudio:", e));
                 } else {
                     audioPlayer.pause();
                 }
             }
             
-            // Atualiza o ícone com base nos eventos reais do player
             audioPlayer.addEventListener('play', () => {
                 playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+                if(visualizerInitialized) drawVisualizer(); // Garante que o visualizador reinicie
             });
             audioPlayer.addEventListener('pause', () => {
                 playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
             });
+            
+            // Atualiza a barra de progresso
+            audioPlayer.addEventListener('timeupdate', () => {
+                if (audioPlayer.duration) {
+                    const progressPercent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+                    progressBar.style.width = `${progressPercent}%`;
+                }
+            });
 
+            // Permite clicar na barra de progresso para avançar/retroceder
+            progressContainer.addEventListener('click', (e) => {
+                if (!audioPlayer.duration) return;
+                const rect = progressContainer.getBoundingClientRect();
+                const clickX = e.clientX - rect.left;
+                const width = rect.width;
+                const newTime = (clickX / width) * audioPlayer.duration;
+                audioPlayer.currentTime = newTime;
+            });
+            
             playPauseBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 togglePlayPause();
@@ -240,9 +354,10 @@
             
             // Carrega a música no início
             songTitleEl.textContent = lofiTrack.title;
+            songArtistEl.textContent = lofiTrack.artist;
             audioPlayer.src = lofiTrack.src;
             
-            // ... (O resto do código JS permanece o mesmo)
+            // ... (O resto do código JS permanece o mesmo, sem alterações)
             const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
             const LIKE_STORAGE_KEY = 'userHasLikedProfile_v2'; 
             const THEME_STORAGE_KEY = 'selectedTheme_v1';
@@ -296,7 +411,7 @@
             const showPinModal = () => { pinModalOverlay.style.display = 'flex'; setTimeout(() => { pinModalOverlay.style.opacity = 1; }, 10); pinInput.focus(); };
             const hidePinModal = () => { pinModalOverlay.style.opacity = 0; setTimeout(() => { pinModalOverlay.style.display = 'none'; }, 300); };
             let clickCount = 0; let clickTimer = null;
-            mainFooter.addEventListener('click', (e) => { if (e.target.closest('button')) return; if (document.body.classList.contains('admin-mode')) return; clickCount++; if (clickTimer) clearTimeout(clickTimer); clickTimer = setTimeout(() => { clickCount = 0; }, 2000); if (clickCount === 5) { clickCount = 0; clearTimeout(clickTimer); showPinModal(); } });
+            mainFooter.addEventListener('click', (e) => { if (e.target.closest('button') || e.target.closest('#boombox-section')) return; if (document.body.classList.contains('admin-mode')) return; clickCount++; if (clickTimer) clearTimeout(clickTimer); clickTimer = setTimeout(() => { clickCount = 0; }, 2000); if (clickCount === 5) { clickCount = 0; clearTimeout(clickTimer); showPinModal(); } });
             document.querySelectorAll('.edit-icon').forEach(icon => { icon.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); const linkId = icon.dataset.editLink; const specialKey = icon.dataset.editSpecial; const textKey = icon.dataset.edit; const editValue = (key, promptMessage) => { const currentValue = currentData[key]; const newValue = prompt(promptMessage, currentValue); if (newValue !== null && newValue !== currentValue) { currentData[key] = newValue; updateDOM(currentData); saveData(); } }; if (textKey) { editValue(textKey, `Editar ${textKey}:`); } else if (specialKey === 'ifood') { editValue('ifood-text', 'Editar Texto do Botão iFood:'); editValue('ifood-href', 'Editar URL do iFood:'); } else if (linkId) { if (linkId === '3' || linkId === '8') { editValue(`link${linkId}-text1`, `Editar Título:`); editValue(`link${linkId}-text2`, `Editar Subtexto:`); if (linkId === '3') editValue('link3-href', 'Editar Link (mailto:):'); } else { editValue(`link${linkId}-text`, `Editar Texto:`); editValue(`link${linkId}-href`, `Editar URL:`); } } }); });
             const enterAdminMode = () => { document.body.classList.add('admin-mode'); localStorage.setItem('isAdmin', 'true'); };
             const exitAdminMode = () => { document.body.classList.remove('admin-mode'); localStorage.removeItem('isAdmin'); };
