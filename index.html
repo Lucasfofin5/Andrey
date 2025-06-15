@@ -44,9 +44,7 @@
         }
         .profile { margin-bottom: 30px; position: relative; }
         
-        .profile-picture-container {
-            position: relative; display: inline-block; margin-bottom: 20px;
-        }
+        .profile-picture-container { position: relative; display: inline-block; margin-bottom: 20px; }
         .profile-picture {
             width: 140px; height: 140px; object-fit: cover; border-radius: 50%;
             border: 4px solid var(--accent-color); margin: 0 auto;
@@ -69,9 +67,22 @@
 
         .links li { opacity: 0; animation: entrance-pop-in 0.7s var(--ease-out-cubic) forwards; animation-delay: calc(var(--delay-order) * 100ms + 0.4s); }
         
-        .footer { margin-top: 40px; font-size: 0.9em; color: var(--secondary-text-color); cursor: pointer; }
+        .footer { margin-top: 40px; font-size: 0.9em; color: var(--secondary-text-color); width: 100%; }
+        .footer-content { cursor: pointer; }
         .footer .fa-heart { color: var(--accent-color); animation: pulse 1.5s infinite; }
         
+        /* ★ NOVO: Estilos para o botão de Curtida */
+        #like-section { margin-top: 25px; padding-top: 25px; border-top: 1px solid var(--border-color); }
+        #like-button {
+            background-color: rgba(255, 255, 255, 0.05); color: var(--primary-text-color);
+            border: 1px solid var(--border-color); padding: 10px 20px; border-radius: 50px;
+            cursor: pointer; font-family: var(--font-family); font-weight: 600;
+            font-size: 1em; transition: all 0.2s ease;
+        }
+        #like-button:hover:not(:disabled) { background-color: var(--border-color); transform: translateY(-2px); }
+        #like-button.liked, #like-button:disabled { background-color: var(--accent-color); border-color: var(--accent-color); color: white; cursor: not-allowed; }
+        #like-button .fa-thumbs-up { margin-right: 8px; }
+
         .edit-icon { display: none; margin-left: 10px; color: var(--secondary-text-color); cursor: pointer; font-size: 0.7em; transition: all 0.2s ease; vertical-align: middle; }
         .edit-icon:hover { color: var(--accent-color); transform: scale(1.2); }
         
@@ -103,11 +114,9 @@
         }
         .pin-modal-overlay:not(.hidden) .pin-modal { transform: scale(1); }
         .pin-modal.shake { animation: shake 0.5s; }
-        .pin-modal h3 { margin-bottom: 20px; font-size: 1.5em; }
         #pin-input { width: 100%; padding: 15px; border-radius: var(--border-radius); border: 2px solid var(--border-color); background: var(--bg-color); color: var(--primary-text-color); text-align: center; font-size: 2em; letter-spacing: 15px; margin-bottom: 10px; font-family: 'Poppins', sans-serif; }
         #pin-input:focus { border-color: var(--accent-color); outline: none; }
         #pin-error { color: #e74c3c; min-height: 20px; font-weight: 600; }
-        .pin-modal-actions { display: flex; gap: 10px; margin-top: 20px; }
         .pin-modal-actions button { flex-grow: 1; padding: 12px; border: none; border-radius: var(--border-radius); font-weight: 600; cursor: pointer; transition: all 0.2s ease; font-family: var(--font-family); }
         #pin-submit { background-color: var(--accent-color); color: white; }
         #pin-submit:hover { background-color: var(--accent-color-hover); }
@@ -145,7 +154,6 @@
             <p><span id="profile-tagline"></span><span class="edit-icon" data-edit="profile-tagline" title="Editar Tagline"><i class="fa-solid fa-pencil"></i></span></p>
         </header>
         <section class="links">
-            <!-- ★ ATUALIZADO: Lista de links agora com 7 itens -->
             <ul>
                 <li style="--delay-order: 1;"><a id="link-1" href="" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook icon"></i><span id="link-text-1" class="link-text"></span><span class="edit-icon" data-edit-link="1" title="Editar Link"><i class="fa-solid fa-pencil"></i></span></a></li>
                 <li style="--delay-order: 2;"><a id="link-2" href="" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-globe icon"></i><span id="link-text-2" class="link-text"></span><span class="edit-icon" data-edit-link="2" title="Editar Link"><i class="fa-solid fa-pencil"></i></span></a></li>
@@ -154,10 +162,21 @@
                 <li style="--delay-order: 5;"><a id="link-5" href="" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp icon"></i><span id="link-text-5" class="link-text"></span><span class="edit-icon" data-edit-link="5" title="Editar Link"><i class="fa-solid fa-pencil"></i></span></a></li>
                 <li style="--delay-order: 6;"><a id="link-6" href="" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-steam icon"></i><span id="link-text-6" class="link-text"></span><span class="edit-icon" data-edit-link="6" title="Editar Link"><i class="fa-solid fa-pencil"></i></span></a></li>
                 <li style="--delay-order: 7;"><a id="link-7" href="" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-tv icon"></i><span id="link-text-7" class="link-text"></span><span class="edit-icon" data-edit-link="7" title="Editar Link"><i class="fa-solid fa-pencil"></i></span></a></li>
+                <!-- ★ NOVO: Botão Discord (Link 8) -->
+                <li style="--delay-order: 8;"><a id="link-8" href="#" rel="noopener noreferrer"><i class="fa-brands fa-discord icon"></i><span id="link-text-8" class="link-text"></span><span class="edit-icon" data-edit-link="8" title="Editar Link"><i class="fa-solid fa-pencil"></i></span></a></li>
             </ul>
         </section>
-        <footer id="page-footer" class="footer">
-            <p>Feito com <i class="fa-solid fa-code"></i> e <i class="fa-solid fa-heart"></i></p>
+        <footer class="footer">
+            <!-- ★ NOVO: Seção de Curtida -->
+            <div id="like-section">
+                <button id="like-button" title="Curta este perfil!">
+                    <i class="fa-solid fa-thumbs-up"></i>
+                    <span id="like-count">0</span>
+                </button>
+            </div>
+            <div id="page-footer" class="footer-content">
+                <p>Feito com <i class="fa-solid fa-code"></i> e <i class="fa-solid fa-heart"></i></p>
+            </div>
             <div id="admin-controls"><button id="exit-admin-button"><i class="fa-solid fa-lock"></i> Trancar Site</button></div>
         </footer>
     </main>
@@ -176,23 +195,27 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // ★ ATUALIZADO: Chaves corretas inseridas
             const JSONBIN_ID = '684f2cda8a456b7966aeb5d3';
             const JSONBIN_API_KEY = '$2a$10$NICad74I0SXWBZMw15PCleRSa5t8pTeErKGD9xAocMj3fZoWp0TVq';
-            
             const AUTHOR_PIN = '5381';
             const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
+            const LIKE_STORAGE_KEY = 'userHasLikedProfile_v1'; // Chave para o localStorage
             
             const pageBody = document.querySelector('body');
             const saveStatus = document.getElementById('save-status');
+            const pageFooter = document.getElementById('page-footer');
+            
+            // ★ NOVO: Elementos da curtida
+            const likeButton = document.getElementById('like-button');
+            const likeCountSpan = document.getElementById('like-count');
+
             const pinModalOverlay = document.getElementById('pin-modal-overlay');
             const pinModalBox = document.getElementById('pin-modal-box');
             const pinInput = document.getElementById('pin-input');
             const pinError = document.getElementById('pin-error');
             const pinSubmit = document.getElementById('pin-submit');
             const pinCancel = document.getElementById('pin-cancel');
-            const pageFooter = document.getElementById('page-footer');
-
+            
             let currentData = {};
 
             const showStatus = (message, duration = 2000) => {
@@ -201,54 +224,48 @@
                 setTimeout(() => saveStatus.classList.remove('show'), duration);
             };
 
-            // ★ ATUALIZADO: Função agora preenche todos os 7 links
             const updateDOM = (data) => {
-                // Perfil
                 document.getElementById('profile-name').textContent = data['profile-name'];
                 document.getElementById('profile-tagline').textContent = data['profile-tagline'];
                 document.getElementById('profile-picture-img').src = data['profile-picture'];
                 
-                // Link 1: Facebook
-                document.getElementById('link-text-1').textContent = data['link1-text'];
-                document.getElementById('link-1').href = data['link1-href'];
-                
-                // Link 2: Portfólio
-                document.getElementById('link-text-2').textContent = data['link2-text'];
-                document.getElementById('link-2').href = data['link2-href'];
+                // ★ ATUALIZADO: Loop para preencher os links
+                for (let i = 1; i <= 8; i++) {
+                    const textEl = document.getElementById(`link-text-${i}`);
+                    const linkEl = document.getElementById(`link-${i}`);
+                    if(i === 3) { // E-mail
+                        document.getElementById('link-text-3.1').textContent = data['link3-text1'];
+                        document.getElementById('link-text-3.2').textContent = data['link3-text2'];
+                        linkEl.href = data['link3-href'];
+                    } else if (textEl && linkEl) {
+                        textEl.textContent = data[`link${i}-text`];
+                        // O link do Discord não tem um href real, é tratado no JS
+                        if(i !== 8) linkEl.href = data[`link${i}-href`];
+                    }
+                }
 
-                // Link 3: E-mail (Complexo)
-                document.getElementById('link-text-3.1').textContent = data['link3-text1'];
-                document.getElementById('link-text-3.2').textContent = data['link3-text2'];
-                document.getElementById('link-3').href = data['link3-href'];
+                // ★ NOVO: Atualiza o contador de curtidas
+                likeCountSpan.textContent = data['like-count'] || 0;
+            };
 
-                // Link 4: IGN
-                document.getElementById('link-text-4').textContent = data['link4-text'];
-                document.getElementById('link-4').href = data['link4-href'];
-
-                // Link 5: WhatsApp
-                document.getElementById('link-text-5').textContent = data['link5-text'];
-                document.getElementById('link-5').href = data['link5-href'];
-
-                // Link 6: Steam
-                document.getElementById('link-text-6').textContent = data['link6-text'];
-                document.getElementById('link-6').href = data['link6-href'];
-
-                // Link 7: MyAnimeList
-                document.getElementById('link-text-7').textContent = data['link7-text'];
-                document.getElementById('link-7').href = data['link7-href'];
+            const initializeLikeButton = () => {
+                if (localStorage.getItem(LIKE_STORAGE_KEY) === 'true') {
+                    likeButton.classList.add('liked');
+                    likeButton.disabled = true;
+                }
             };
             
             const loadData = async () => {
-                const headers = { 'X-Master-Key': JSONBIN_API_KEY };
                 try {
-                    const response = await fetch(`${JSONBIN_URL}/latest`, { headers });
+                    const response = await fetch(`${JSONBIN_URL}/latest`, { headers: { 'X-Master-Key': JSONBIN_API_KEY } });
                     if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
                     const result = await response.json();
                     currentData = result.record; 
                     updateDOM(currentData);
+                    initializeLikeButton();
                 } catch (error) {
                     console.error('Falha ao carregar dados:', error);
-                    alert('Não foi possível carregar os dados. Verifique se você atualizou o conteúdo do seu Bin no JSONBin.io (PASSO CRÍTICO da instrução anterior).');
+                    alert('Não foi possível carregar os dados. Verifique se você atualizou o conteúdo do seu Bin no JSONBin.io.');
                 }
             };
             
@@ -257,10 +274,7 @@
                 try {
                     const response = await fetch(JSONBIN_URL, {
                         method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-Master-Key': JSONBIN_API_KEY
-                        },
+                        headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_API_KEY },
                         body: JSON.stringify(currentData)
                     });
                     if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
@@ -268,7 +282,6 @@
                 } catch (error) {
                     console.error('Falha ao salvar dados:', error);
                     showStatus('Erro ao salvar!', 3000);
-                    alert('Não foi possível salvar as alterações. Verifique sua conexão e a configuração do JSONBin.');
                 }
             };
 
@@ -278,9 +291,8 @@
             const hidePinModal = () => pinModalOverlay.classList.add('hidden');
 
             const checkPin = () => {
-                if (pinInput.value === AUTHOR_PIN) {
-                    enterAdminMode(); hidePinModal();
-                } else {
+                if (pinInput.value === AUTHOR_PIN) { enterAdminMode(); hidePinModal(); }
+                else {
                     pinError.textContent = 'PIN Incorreto';
                     pinModalBox.classList.add('shake');
                     pinInput.value = '';
@@ -306,16 +318,43 @@
                     if (targetKey) {
                         editValue(targetKey, `Editar ${targetKey}:`);
                     } else if (linkId) {
-                        if (linkId === '3') { // Caso especial: E-mail
-                            editValue(`link${linkId}-text1`, 'Editar Título do E-mail:');
-                            editValue(`link${linkId}-text2`, 'Editar Endereço do E-mail:');
-                            editValue(`link${linkId}-href`, 'Editar Link do E-mail (mailto:):');
-                        } else { // Todos os outros links
+                        if (linkId === '3') { // E-mail
+                            editValue('link3-text1', 'Editar Título do E-mail:');
+                            editValue('link3-text2', 'Editar Endereço do E-mail:');
+                            editValue('link3-href', 'Editar Link do E-mail (mailto:):');
+                        } else if (linkId === '8') { // Discord
+                            editValue('link8-text', 'Editar Texto do Botão Discord:');
+                            editValue('link8-href', 'Editar Username para Copiar:');
+                        } else { // Links padrão
                             editValue(`link${linkId}-text`, `Editar Texto do Link ${linkId}:`);
                             editValue(`link${linkId}-href`, `Editar URL do Link ${linkId}:`);
                         }
                     }
                 });
+            });
+
+            // ★ NOVO: Listener para o botão Discord (Copiar ao clicar)
+            document.getElementById('link-8').addEventListener('click', (e) => {
+                e.preventDefault();
+                const discordUsername = currentData['link8-href'];
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(discordUsername).then(() => {
+                        showStatus('Username copiado!');
+                    }).catch(err => {
+                        console.error('Falha ao copiar:', err);
+                        showStatus('Erro ao copiar!', 3000);
+                    });
+                }
+            });
+
+            // ★ NOVO: Listener para o botão de Curtida
+            likeButton.addEventListener('click', () => {
+                if (likeButton.disabled) return;
+                currentData['like-count'] = (currentData['like-count'] || 0) + 1;
+                localStorage.setItem(LIKE_STORAGE_KEY, 'true');
+                updateDOM(currentData);
+                initializeLikeButton();
+                saveData();
             });
 
             document.getElementById('exit-admin-button').addEventListener('click', exitAdminMode);
