@@ -81,7 +81,7 @@
         .profile p { color: var(--secondary-text-color); font-size: 1.1em; font-weight: 300; transition: color 0.3s ease; }
         .profile h1, .profile p { position: relative; display: inline-block; }
 
-        .links ul { list-style-type: none; display: flex; flex-direction: column; gap: 16px; }
+        .links ul { list-style-type: none; display: flex; flex-direction: column; gap: 16px; margin-top: 24px; }
         .links a { display: flex; align-items: center; background-color: rgba(255, 255, 255, 0.05); color: var(--primary-text-color); padding: 16px 20px; border-radius: var(--border-radius); text-decoration: none; font-weight: 600; transition: all 0.2s cubic-bezier(0.215, 0.610, 0.355, 1); }
         .links a:hover { transform: translateY(-5px) scale(1.03); background-color: var(--accent-color); color: #ffffff; box-shadow: 0 8px 20px var(--accent-shadow-color); }
         .links a:hover .icon { color: #ffffff; transform: scale(1.2) rotate(-8deg); }
@@ -91,21 +91,23 @@
         .link-text-complex small { font-size: 0.8em; font-weight: 300; opacity: 0.7; margin-top: 2px; }
         .links li { opacity: 0; animation: entrance-pop-in 0.7s cubic-bezier(0.215, 0.610, 0.355, 1) forwards; animation-delay: calc(var(--delay-order) * 100ms + 0.4s); }
         
-        /* ★ ATUALIZADO: Estilos aprimorados para o botão iFood */
-        .special-link-section { margin-bottom: 24px; }
+        /* ★ ATUALIZADO: Estilos premium para o botão iFood, agora dentro da lista */
         #ifood-link {
-            background: linear-gradient(180deg, #FA1D2D, #C41321);
+            background: linear-gradient(175deg, #fa1d2d, #d01825);
             color: #ffffff;
             font-weight: 700;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-            border: 1px solid #A0101B;
-            animation: pulse-shadow 2.5s infinite;
+            border: none; /* A borda é substituída pelo brilho */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15);
+            animation: pulse-glow 2.5s infinite;
         }
         #ifood-link:hover {
-            transform: translateY(-5px) scale(1.03);
-            background: linear-gradient(170deg, #FF3C4A, #D81B28);
-            animation: none;
-            box-shadow: 0 10px 25px rgba(234, 29, 44, 0.5);
+            background: linear-gradient(175deg, #ff3c4a, #e0202f);
+            animation: none; /* Para a animação de brilho para dar prioridade à sombra do hover */
+            box-shadow: 0 10px 25px rgba(234, 29, 44, 0.5); /* Sombra mais forte no hover */
+            transform: translateY(-5px) scale(1.03); /* Mantém a interação de levantar */
+        }
+        #ifood-link:hover .icon {
+            transform: scale(1.2) rotate(-8deg);
         }
 
         .footer { margin-top: 40px; font-size: 0.9em; color: var(--secondary-text-color); width: 100%; transition: color 0.3s ease; cursor: pointer; }
@@ -125,26 +127,16 @@
         .edit-icon { display: none; margin-left: 10px; color: var(--secondary-text-color); cursor: pointer; font-size: 0.7em; transition: all 0.2s ease; vertical-align: middle; }
         .edit-icon:hover { color: var(--accent-color); transform: scale(1.2); }
         
-        .profile-picture-container .edit-icon {
-            position: absolute; bottom: 5px; right: 5px; background-color: var(--card-color);
-            border: 2px solid var(--accent-color); border-radius: 50%; width: 35px; height: 35px;
-            display: none; align-items: center; justify-content: center; font-size: 1em; margin-left: 0;
-        }
+        .profile-picture-container .edit-icon { position: absolute; bottom: 5px; right: 5px; background-color: var(--card-color); border: 2px solid var(--accent-color); border-radius: 50%; width: 35px; height: 35px; display: none; align-items: center; justify-content: center; font-size: 1em; margin-left: 0; }
         .profile-picture-container .edit-icon i { margin: 0; }
         body.admin-mode .profile-picture-container .edit-icon { display: flex; }
-
         #admin-controls { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border-color); transition: border-color 0.3s ease; }
         #exit-admin-button { background: none; border: 1px solid var(--accent-color-hover); color: var(--accent-color-hover); padding: 8px 15px; border-radius: var(--border-radius); cursor: pointer; font-weight: 600; transition: all 0.2s ease; }
         #exit-admin-button:hover { background: var(--accent-color-hover); color: var(--card-color); }
-
         body.admin-mode .edit-icon { display: inline-block; }
         body.admin-mode #admin-controls { display: block; }
         
-        .pin-modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7);
-            z-index: 1000; display: flex; align-items: center; justify-content: center;
-            opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
-        }
+        .pin-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
         .pin-modal-overlay:not(.hidden) { opacity: 1; pointer-events: auto; }
         .pin-modal { background: var(--card-color); padding: 30px; border-radius: var(--border-radius); width: 90%; max-width: 320px; text-align: center; border: 1px solid var(--border-color); transform: scale(0.9); transition: transform 0.3s ease; }
         .pin-modal-overlay:not(.hidden) .pin-modal { transform: scale(1); }
@@ -158,24 +150,17 @@
         #pin-submit:hover { background-color: var(--accent-color-hover); }
         #pin-cancel { background-color: var(--border-color); color: var(--secondary-text-color); }
         #pin-cancel:hover { background-color: #4a4b4d; }
-
-        #save-status {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            background-color: var(--accent-color); color: white; padding: 10px 20px;
-            border-radius: var(--border-radius); font-weight: 600;
-            box-shadow: 0 4px 15px var(--accent-shadow-color);
-            opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease;
-            z-index: 2000; pointer-events: none;
-        }
+        #save-status { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: var(--accent-color); color: white; padding: 10px 20px; border-radius: var(--border-radius); font-weight: 600; box-shadow: 0 4px 15px var(--accent-shadow-color); opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease; z-index: 2000; pointer-events: none; }
         #save-status.show { opacity: 1; transform: translateX(-50%) translateY(-10px); }
 
         @keyframes entrance-pop-in { from { opacity: 0; transform: translateY(20px) scale(0.95); filter: blur(3px); } to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } }
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
         @keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); } 20%, 40%, 60%, 80% { transform: translateX(10px); } }
-        @keyframes pulse-shadow {
-            0% { box-shadow: 0 0 0 0 rgba(234, 29, 44, 0.4); }
-            70% { box-shadow: 0 0 0 12px rgba(234, 29, 44, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(234, 29, 44, 0); }
+        /* ★ ATUALIZADO: Animação de brilho para o botão iFood */
+        @keyframes pulse-glow {
+            0%   { box-shadow: 0 0 5px rgba(234, 29, 44, 0.5), inset 0 0 2px rgba(255,255,255,0.1); }
+            50%  { box-shadow: 0 0 12px rgba(255, 45, 60, 0.8), inset 0 0 2px rgba(255,255,255,0.1); }
+            100% { box-shadow: 0 0 5px rgba(234, 29, 44, 0.5), inset 0 0 2px rgba(255,255,255,0.1); }
         }
     </style>
 </head>
@@ -198,18 +183,17 @@
             <h1><span id="profile-name">Carregando...</span><span class="edit-icon" data-edit="profile-name" title="Editar Nome"><i class="fa-solid fa-pencil"></i></span></h1>
             <p><span id="profile-tagline"></span><span class="edit-icon" data-edit="profile-tagline" title="Editar Tagline"><i class="fa-solid fa-pencil"></i></span></p>
         </header>
-
-        <section class="special-link-section">
-            <!-- ★ ATUALIZADO: HTML do botão iFood agora herda a classe '.links .a' para consistência -->
-            <a id="ifood-link" href="#" target="_blank" rel="noopener noreferrer" class="links a">
-                <i class="fa-solid fa-motorcycle icon"></i>
-                <span id="ifood-text" class="link-text"></span>
-                <span class="edit-icon" data-edit-special="ifood" title="Editar Link iFood"><i class="fa-solid fa-pencil"></i></span>
-            </a>
-        </section>
         
         <section class="links">
+            <!-- ★ ATUALIZADO: Botão iFood agora é o primeiro item da lista principal -->
             <ul>
+                <li style="--delay-order: 0;">
+                    <a id="ifood-link" href="#" target="_blank" rel="noopener noreferrer">
+                        <i class="fa-solid fa-motorcycle icon"></i>
+                        <span id="ifood-text" class="link-text"></span>
+                        <span class="edit-icon" data-edit-special="ifood" title="Editar Link iFood"><i class="fa-solid fa-pencil"></i></span>
+                    </a>
+                </li>
                 <li style="--delay-order: 1;"><a id="link-1" href="" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook icon"></i><span id="link-text-1" class="link-text"></span><span class="edit-icon" data-edit-link="1" title="Editar Link"><i class="fa-solid fa-pencil"></i></span></a></li>
                 <li style="--delay-order: 2;"><a id="link-2" href="" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-globe icon"></i><span id="link-text-2" class="link-text"></span><span class="edit-icon" data-edit-link="2" title="Editar Link"><i class="fa-solid fa-pencil"></i></span></a></li>
                 <li style="--delay-order: 3;"><a id="link-3" href=""><i class="fa-solid fa-envelope icon"></i><div class="link-text-complex"><span id="link-text-3.1"></span><small id="link-text-3.2"></small></div><span class="edit-icon" data-edit-link="3" title="Editar Link"><i class="fa-solid fa-pencil"></i></span></a></li>
@@ -247,7 +231,7 @@
     </div>
 
     <script>
-        // O código JavaScript permanece o mesmo da versão anterior, pois a mudança foi apenas visual (CSS).
+        // O código JavaScript permanece o mesmo da versão anterior, pois a mudança foi apenas visual (CSS e HTML).
         // Ele está completo abaixo para garantir a funcionalidade total.
         document.addEventListener('DOMContentLoaded', () => {
             const JSONBIN_ID = '684f2cda8a456b7966aeb5d3';
@@ -376,7 +360,6 @@
                 pinModalOverlay.style.display = 'flex';
                 setTimeout(() => {
                     pinModalOverlay.style.opacity = 1;
-                    pinModalOverlay.classList.remove('hidden'); // Fallback para a animação
                 }, 10);
                 pinInput.focus();
             };
@@ -384,7 +367,6 @@
                 pinModalOverlay.style.opacity = 0;
                 setTimeout(() => {
                     pinModalOverlay.style.display = 'none';
-                    pinModalOverlay.classList.add('hidden'); // Fallback
                 }, 300);
             };
 
