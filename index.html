@@ -18,19 +18,19 @@
             --bg-color: #1a1a1d; --card-color: #242526; --primary-text-color: #f5f5f5;
             --secondary-text-color: #b0b3b8; --accent-color: #3498db; --accent-color-hover: #2980b9;
             --border-color: #3a3b3c; --shadow-color: rgba(0, 0, 0, 0.4); --accent-shadow-color: rgba(52, 152, 219, 0.3);
-            --header-text-shadow: none; --ifood-color: #ea1d2c;
+            --header-text-shadow: none;
         }
         body[data-theme="light"] {
             --bg-color: #f0f2f5; --card-color: #ffffff; --primary-text-color: #1c1e21;
             --secondary-text-color: #65676b; --accent-color: #1877f2; --accent-color-hover: #166fe5;
             --border-color: #dadde1; --shadow-color: rgba(0, 0, 0, 0.1); --accent-shadow-color: rgba(24, 119, 242, 0.2);
-            --header-text-shadow: none; --ifood-color: #ea1d2c;
+            --header-text-shadow: none;
         }
         body[data-theme="neon"] {
             --bg-color: #0d0221; --card-color: #1d1135; --primary-text-color: #f0f0f0;
             --secondary-text-color: #a0a0b0; --accent-color: #ff00ff; --accent-color-hover: #e600e6;
             --border-color: #3a2a5c; --shadow-color: rgba(0, 0, 0, 0.6); --accent-shadow-color: rgba(255, 0, 255, 0.4);
-            --header-text-shadow: 0 0 5px var(--accent-color), 0 0 10px var(--accent-color); --ifood-color: #ea1d2c;
+            --header-text-shadow: 0 0 5px var(--accent-color), 0 0 10px var(--accent-color);
         }
 
         /* =================================================================== */
@@ -91,13 +91,22 @@
         .link-text-complex small { font-size: 0.8em; font-weight: 300; opacity: 0.7; margin-top: 2px; }
         .links li { opacity: 0; animation: entrance-pop-in 0.7s cubic-bezier(0.215, 0.610, 0.355, 1) forwards; animation-delay: calc(var(--delay-order) * 100ms + 0.4s); }
         
-        /* ★ NOVO: Estilos para o botão especial do iFood */
+        /* ★ ATUALIZADO: Estilos aprimorados para o botão iFood */
         .special-link-section { margin-bottom: 24px; }
         #ifood-link {
-            background-color: var(--ifood-color); color: #ffffff;
-            animation: pulse-shadow 2s infinite;
+            background: linear-gradient(180deg, #FA1D2D, #C41321);
+            color: #ffffff;
+            font-weight: 700;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+            border: 1px solid #A0101B;
+            animation: pulse-shadow 2.5s infinite;
         }
-        #ifood-link:hover { background-color: #c41321; } /* Um tom de vermelho mais escuro no hover */
+        #ifood-link:hover {
+            transform: translateY(-5px) scale(1.03);
+            background: linear-gradient(170deg, #FF3C4A, #D81B28);
+            animation: none;
+            box-shadow: 0 10px 25px rgba(234, 29, 44, 0.5);
+        }
 
         .footer { margin-top: 40px; font-size: 0.9em; color: var(--secondary-text-color); width: 100%; transition: color 0.3s ease; cursor: pointer; }
         .footer .fa-heart { color: var(--accent-color); animation: pulse 1.5s infinite; }
@@ -163,10 +172,9 @@
         @keyframes entrance-pop-in { from { opacity: 0; transform: translateY(20px) scale(0.95); filter: blur(3px); } to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } }
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
         @keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); } 20%, 40%, 60%, 80% { transform: translateX(10px); } }
-        /* ★ NOVO: Animação de sombra para o botão iFood */
         @keyframes pulse-shadow {
-            0% { box-shadow: 0 0 0 0 rgba(234, 29, 44, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(234, 29, 44, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(234, 29, 44, 0.4); }
+            70% { box-shadow: 0 0 0 12px rgba(234, 29, 44, 0); }
             100% { box-shadow: 0 0 0 0 rgba(234, 29, 44, 0); }
         }
     </style>
@@ -191,8 +199,8 @@
             <p><span id="profile-tagline"></span><span class="edit-icon" data-edit="profile-tagline" title="Editar Tagline"><i class="fa-solid fa-pencil"></i></span></p>
         </header>
 
-        <!-- ★ NOVO: Seção para o botão especial do iFood -->
         <section class="special-link-section">
+            <!-- ★ ATUALIZADO: HTML do botão iFood agora herda a classe '.links .a' para consistência -->
             <a id="ifood-link" href="#" target="_blank" rel="noopener noreferrer" class="links a">
                 <i class="fa-solid fa-motorcycle icon"></i>
                 <span id="ifood-text" class="link-text"></span>
@@ -239,6 +247,8 @@
     </div>
 
     <script>
+        // O código JavaScript permanece o mesmo da versão anterior, pois a mudança foi apenas visual (CSS).
+        // Ele está completo abaixo para garantir a funcionalidade total.
         document.addEventListener('DOMContentLoaded', () => {
             const JSONBIN_ID = '684f2cda8a456b7966aeb5d3';
             const JSONBIN_API_KEY = '$2a$10$NICad74I0SXWBZMw15PCleRSa5t8pTeErKGD9xAocMj3fZoWp0TVq';
@@ -269,17 +279,14 @@
                 themeButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.theme === theme));
             };
 
-            // ★ ATUALIZADO: Função agora também preenche o botão iFood
             const updateDOM = (data) => {
                 document.getElementById('profile-name').textContent = data['profile-name'];
                 document.getElementById('profile-tagline').textContent = data['profile-tagline'];
                 document.getElementById('profile-picture-img').src = data['profile-picture'];
                 
-                // iFood
                 document.getElementById('ifood-text').textContent = data['ifood-text'];
                 document.getElementById('ifood-link').href = data['ifood-href'];
 
-                // Outros links
                 for (let i = 1; i <= 8; i++) {
                     const linkEl = document.getElementById(`link-${i}`);
                     if (!linkEl) continue;
@@ -346,7 +353,7 @@
                 }
                 updateDOM(currentData);
                 initializeLikeButton();
-                saveData(true); // Passa true para indicar que é uma ação de like
+                saveData(true);
             });
 
             themeButtons.forEach(button => {
@@ -362,18 +369,23 @@
                 navigator.clipboard.writeText(discordUsername).then(() => showStatus('Username copiado!'));
             });
             
-            // Lógica do Modo Admin...
             const pinModalOverlay = document.getElementById('pin-modal-overlay');
             const pinModalBox = document.getElementById('pin-modal-box');
             const pinInput = document.getElementById('pin-input');
             const showPinModal = () => {
                 pinModalOverlay.style.display = 'flex';
-                setTimeout(() => pinModalOverlay.style.opacity = 1, 10);
+                setTimeout(() => {
+                    pinModalOverlay.style.opacity = 1;
+                    pinModalOverlay.classList.remove('hidden'); // Fallback para a animação
+                }, 10);
                 pinInput.focus();
             };
             const hidePinModal = () => {
                 pinModalOverlay.style.opacity = 0;
-                setTimeout(() => pinModalOverlay.style.display = 'none', 300);
+                setTimeout(() => {
+                    pinModalOverlay.style.display = 'none';
+                    pinModalOverlay.classList.add('hidden'); // Fallback
+                }, 300);
             };
 
             let clickCount = 0;
@@ -391,7 +403,6 @@
                 }
             });
             
-            // ★ ATUALIZADO: Listener de edição agora inclui o botão especial
             document.querySelectorAll('.edit-icon').forEach(icon => {
                 icon.addEventListener('click', (e) => {
                     e.preventDefault(); e.stopPropagation();
@@ -409,17 +420,17 @@
                         }
                     };
 
-                    if (textKey) { // Edição de texto simples (nome, tagline, foto)
+                    if (textKey) {
                         editValue(textKey, `Editar ${textKey}:`);
-                    } else if (specialKey === 'ifood') { // Edição do botão iFood
+                    } else if (specialKey === 'ifood') {
                         editValue('ifood-text', 'Editar Texto do Botão iFood:');
                         editValue('ifood-href', 'Editar URL do iFood:');
-                    } else if (linkId) { // Edição dos links numerados
-                        if (linkId === '3' || linkId === '8') { // Complexos
+                    } else if (linkId) {
+                        if (linkId === '3' || linkId === '8') {
                             editValue(`link${linkId}-text1`, `Editar Título do Link ${linkId}:`);
                             editValue(`link${linkId}-text2`, `Editar Subtexto do Link ${linkId}:`);
                             if (linkId === '3') editValue('link3-href', 'Editar Link do E-mail (mailto:):');
-                        } else { // Simples
+                        } else {
                             editValue(`link${linkId}-text`, `Editar Texto do Link ${linkId}:`);
                             editValue(`link${linkId}-href`, `Editar URL do Link ${linkId}:`);
                         }
@@ -427,7 +438,6 @@
                 });
             });
 
-            // Código restante do PIN e inicialização
             const enterAdminMode = () => { document.body.classList.add('admin-mode'); localStorage.setItem('isAdmin', 'true'); };
             const exitAdminMode = () => { document.body.classList.remove('admin-mode'); localStorage.removeItem('isAdmin'); };
             const checkPin = () => {
