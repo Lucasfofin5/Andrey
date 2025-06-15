@@ -160,7 +160,6 @@
 
 <body>
     <div id="save-status"></div>
-    <!-- ★ CORRIGIDO: Adicionado crossorigin="anonymous" para o visualizador de áudio funcionar corretamente -->
     <audio id="audio-player" loop style="display: none;" crossorigin="anonymous"></audio>
 
     <main class="card-container">
@@ -233,7 +232,6 @@
             const JSONBIN_API_KEY = '$2a$10$NICad74I0SXWBZMw15PCleRSa5t8pTeErKGD9xAocMj3fZoWp0TVq';
             const AUTHOR_PIN = '5381';
             
-            // ★ CORRIGIDO: Lógica da Boombox refeita para ser mais robusta
             const audioPlayer = document.getElementById('audio-player');
             const playPauseBtn = document.getElementById('play-pause-btn');
             const songTitleEl = document.getElementById('song-title');
@@ -245,7 +243,11 @@
             const lofiTrack = {
                 title: "Lofi Study",
                 artist: "FASSounds",
-                src: "https://cdn.pixabay.com/audio/2022/05/27/audio_180846996a.mp3"
+                // ★ CORRIGIDO: O link original não permite análise de áudio (CORS).
+                // Usamos um proxy para fazer o visualizer funcionar.
+                // A MELHOR OPÇÃO é você baixar o MP3, colocar na pasta do seu projeto 
+                // (ex: /audio/lofi.mp3) e mudar o src para: "audio/lofi.mp3"
+                src: "https://corsproxy.io/?https://cdn.pixabay.com/audio/2022/05/27/audio_180846996a.mp3"
             };
             
             let audioContext, analyser, source, dataArray;
@@ -266,7 +268,6 @@
                 const bufferLength = analyser.frequencyBinCount;
                 dataArray = new Uint8Array(bufferLength);
                 
-                // Gera as barras do visualizador uma única vez
                 for (let i = 0; i < NUM_VISUALIZER_BARS; i++) {
                     const bar = document.createElement('div');
                     bar.classList.add('visualizer-bar');
@@ -283,7 +284,6 @@
                 requestAnimationFrame(animateVisualizer);
                 
                 if (audioPlayer.paused) {
-                    // Reseta as barras para o estado inicial se a música estiver pausada
                     visualizerContainer.childNodes.forEach(bar => bar.style.height = '5%');
                     return;
                 }
@@ -303,44 +303,26 @@
             
             playPauseBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
+                if (!isAudioInitialized) initAudioSystem();
+                if (audioContext.state === 'suspended') audioContext.resume();
 
-                // Inicializa o sistema de áudio no primeiro clique do usuário
-                if (!isAudioInitialized) {
-                    initAudioSystem();
-                }
-
-                // Garante que o AudioContext seja retomado se estiver suspenso
-                if (audioContext.state === 'suspended') {
-                    audioContext.resume();
-                }
-
-                if (audioPlayer.paused) {
-                    audioPlayer.play().catch(err => console.error("Erro ao tocar áudio:", err));
-                } else {
-                    audioPlayer.pause();
-                }
+                if (audioPlayer.paused) audioPlayer.play().catch(err => console.error("Erro ao tocar áudio:", err));
+                else audioPlayer.pause();
             });
 
-            audioPlayer.addEventListener('play', () => {
-                playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-            });
-            audioPlayer.addEventListener('pause', () => {
-                playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
-            });
+            audioPlayer.addEventListener('play', () => playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>');
+            audioPlayer.addEventListener('pause', () => playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>');
             
             audioPlayer.addEventListener('timeupdate', () => {
                 if (audioPlayer.duration) {
-                    const progressPercent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-                    progressBar.style.width = `${progressPercent}%`;
+                    progressBar.style.width = `${(audioPlayer.currentTime / audioPlayer.duration) * 100}%`;
                 }
             });
 
             progressContainer.addEventListener('click', (e) => {
                 if (!isAudioInitialized || !audioPlayer.duration) return;
                 const rect = progressContainer.getBoundingClientRect();
-                const clickX = e.clientX - rect.left;
-                const newTime = (clickX / rect.width) * audioPlayer.duration;
-                audioPlayer.currentTime = newTime;
+                audioPlayer.currentTime = ((e.clientX - rect.left) / rect.width) * audioPlayer.duration;
             });
             
             songTitleEl.textContent = lofiTrack.title;
