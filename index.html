@@ -74,7 +74,7 @@
         #ifood-link:hover .icon { transform: scale(1.2) rotate(-8deg); }
 
         #music-player-section { margin-top: 25px; padding-top: 25px; border-top: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; gap: 15px; }
-        #song-info { text-align: left; flex-grow: 1; min-width: 0; }
+        #song-info { text-align: left; flex-grow: 1; min-width: 0; cursor: default; }
         #song-title { font-weight: 600; font-size: 0.95em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         #song-info:hover #song-title { animation: marquee 5s linear infinite alternate; }
         .player-controls { display: flex; gap: 10px; }
@@ -92,7 +92,6 @@
         #like-button .fa-thumbs-up { margin-right: 8px; }
 
         .edit-icon { display: none; margin-left: 10px; color: var(--secondary-text-color); cursor: pointer; font-size: 0.7em; transition: all 0.2s ease; vertical-align: middle; }
-        
         .profile-picture-container .edit-icon { position: absolute; bottom: 5px; right: 5px; background-color: var(--card-color); border: 2px solid var(--accent-color); border-radius: 50%; width: 35px; height: 35px; display: none; align-items: center; justify-content: center; font-size: 1em; margin-left: 0; }
         .profile-picture-container .edit-icon i { margin: 0; }
         body.admin-mode .profile-picture-container .edit-icon { display: flex; }
@@ -131,14 +130,12 @@
     <div id="save-status"></div>
 
     <main class="card-container">
-        <!-- ★ CORRIGIDO: HTML completo do seletor de temas -->
         <div class="theme-switcher">
             <button class="theme-button" data-theme="light" title="Modo Claro"><i class="fa-solid fa-sun"></i></button>
             <button class="theme-button" data-theme="dark" title="Modo Escuro"><i class="fa-solid fa-moon"></i></button>
             <button class="theme-button" data-theme="neon" title="Modo Neon"><i class="fa-solid fa-bolt"></i></button>
         </div>
 
-        <!-- ★ CORRIGIDO: HTML completo do perfil -->
         <header class="profile">
             <div class="profile-picture-container">
                 <img src="" alt="Ilustração de perfil" class="profile-picture" id="profile-picture-img">
@@ -177,28 +174,22 @@
         </footer>
     </main>
 
-    <!-- ★ CORRIGIDO: HTML completo do modal de PIN -->
     <div id="pin-modal-overlay" class="pin-modal-overlay" style="display:none !important">
         <div id="pin-modal-box" class="pin-modal">
-            <h3><i class="fa-solid fa-shield-halved"></i> Modo Autor</h3>
-            <p id="pin-error"> </p>
+            <h3><i class="fa-solid fa-shield-halved"></i> Modo Autor</h3> <p id="pin-error"> </p>
             <input type="password" id="pin-input" maxlength="4" pattern="\d*" inputmode="numeric">
-            <div class="pin-modal-actions">
-                <button id="pin-cancel">Cancelar</button>
-                <button id="pin-submit">Entrar</button>
-            </div>
+            <div class="pin-modal-actions"> <button id="pin-cancel">Cancelar</button> <button id="pin-submit">Entrar</button> </div>
         </div>
     </div>
 
     <script>
-        // O código JavaScript permanece o mesmo da versão anterior, pois o erro foi apenas no HTML.
-        // Ele está completo abaixo para garantir a funcionalidade total.
         document.addEventListener('DOMContentLoaded', () => {
             const JSONBIN_ID = '684f2cda8a456b7966aeb5d3';
             const JSONBIN_API_KEY = '$2a$10$NICad74I0SXWBZMw15PCleRSa5t8pTeErKGD9xAocMj3fZoWp0TVq';
             const AUTHOR_PIN = '5381';
             
-            const audioPlayer = document.createElement('audio');
+            // ★ CORRIGIDO: Lógica do Player de Música
+            const audioPlayer = new Audio();
             const playPauseBtn = document.getElementById('play-pause-btn');
             const prevBtn = document.getElementById('prev-btn');
             const nextBtn = document.getElementById('next-btn');
@@ -212,14 +203,48 @@
             ];
 
             let currentTrackIndex = 0;
-            let isPlaying = false;
 
-            function loadTrack(trackIndex) { audioPlayer.src = playlist[trackIndex].src; songTitleEl.textContent = playlist[trackIndex].title; audioPlayer.load(); }
-            function playTrack() { isPlaying = true; audioPlayer.play(); playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'; }
-            function pauseTrack() { isPlaying = false; audioPlayer.pause(); playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>'; }
-            function togglePlayPause() { if (isPlaying) { pauseTrack(); } else { playTrack(); } }
-            function nextTrack() { currentTrackIndex = (currentTrackIndex + 1) % playlist.length; loadTrack(currentTrackIndex); playTrack(); }
-            function prevTrack() { currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length; loadTrack(currentTrackIndex); playTrack(); }
+            function loadTrack(trackIndex) {
+                audioPlayer.src = playlist[trackIndex].src;
+                songTitleEl.textContent = playlist[trackIndex].title;
+            }
+
+            function playTrack() {
+                const playPromise = audioPlayer.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(_ => {
+                        playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+                    }).catch(error => {
+                        console.error("Playback falhou:", error);
+                        playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+                    });
+                }
+            }
+
+            function pauseTrack() {
+                audioPlayer.pause();
+                playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+            }
+
+            function togglePlayPause() {
+                if (audioPlayer.paused) {
+                    playTrack();
+                } else {
+                    pauseTrack();
+                }
+            }
+
+            function nextTrack() {
+                currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+                loadTrack(currentTrackIndex);
+                playTrack();
+            }
+
+            function prevTrack() {
+                currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+                loadTrack(currentTrackIndex);
+                playTrack();
+            }
 
             playPauseBtn.addEventListener('click', (e) => { e.stopPropagation(); togglePlayPause(); });
             nextBtn.addEventListener('click', (e) => { e.stopPropagation(); nextTrack(); });
@@ -228,6 +253,7 @@
             
             loadTrack(currentTrackIndex);
             
+            // ... (Resto do código JS permanece o mesmo)
             const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
             const LIKE_STORAGE_KEY = 'userHasLikedProfile_v2'; 
             const THEME_STORAGE_KEY = 'selectedTheme_v1';
