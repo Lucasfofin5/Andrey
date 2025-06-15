@@ -101,10 +101,15 @@
         .player-controls-wrapper {
              display: flex; align-items: center; gap: 15px; justify-content: space-between;
         }
+        /* ★ ATUALIZADO: Estilo para os controles da playlist */
+        .player-controls {
+            display: flex; align-items: center; gap: 18px;
+        }
         .player-controls button {
             background: none; border: none; color: var(--secondary-text-color);
-            font-size: 1.6em; cursor: pointer; transition: all 0.2s ease; padding: 0;
+            font-size: 1.4em; cursor: pointer; transition: all 0.2s ease; padding: 0;
         }
+        #play-pause-btn { font-size: 1.6em; /* Botão de play um pouco maior */ }
         .player-controls button:hover { color: var(--accent-color); transform: scale(1.15); }
 
         .audio-visualizer {
@@ -160,7 +165,7 @@
 
 <body>
     <div id="save-status"></div>
-    <audio id="audio-player" loop style="display: none;" crossorigin="anonymous"></audio>
+    <audio id="audio-player" style="display: none;" crossorigin="anonymous"></audio>
 
     <main class="card-container">
         <!-- O HTML do main continua o mesmo... -->
@@ -205,8 +210,11 @@
                         <div class="progress-bar" id="progress-bar"></div>
                     </div>
                     <div class="player-controls-wrapper">
+                         <!-- ★ ATUALIZADO: Adicionados botões de anterior e próximo -->
                          <div class="player-controls">
+                            <button id="prev-btn" title="Anterior"><i class="fa-solid fa-backward-step"></i></button>
                             <button id="play-pause-btn" title="Play/Pause"><i class="fa-solid fa-play"></i></button>
+                            <button id="next-btn" title="Próximo"><i class="fa-solid fa-forward-step"></i></button>
                         </div>
                         <div class="audio-visualizer" id="audio-visualizer"></div>
                     </div>
@@ -234,27 +242,84 @@
             const JSONBIN_API_KEY = '$2a$10$NICad74I0SXWBZMw15PCleRSa5t8pTeErKGD9xAocMj3fZoWp0TVq';
             const AUTHOR_PIN = '5381';
             
+            // ★★★ ATUALIZAÇÃO DA BOOMBOX ★★★
+
+            // Elementos do DOM
             const audioPlayer = document.getElementById('audio-player');
             const playPauseBtn = document.getElementById('play-pause-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const prevBtn = document.getElementById('prev-btn');
             const songTitleEl = document.getElementById('song-title');
             const songArtistEl = document.getElementById('song-artist');
             const progressContainer = document.getElementById('progress-container');
             const progressBar = document.getElementById('progress-bar');
             const visualizerContainer = document.getElementById('audio-visualizer');
 
-            const lofiTrack = {
-                title: "Lofi Study",
-                artist: "FASSounds",
-                // ★★★ SOLUÇÃO DEFINITIVA ★★★
-                // Esta é a forma correta. O arquivo de áudio deve estar na mesma
-                // pasta (ou subpasta) do seu projeto para evitar problemas de CORS.
-                src: "good-night-lofi-cozy-chill-music-160166.mp3" 
-            };
+            // Playlist de Músicas
+            const playlist = [
+                {
+                    title: "Good Night Lofi",
+                    artist: "Chill Beats",
+                    // IMPORTANTE: Coloque o caminho para o seu arquivo de áudio.
+                    // Se o arquivo estiver na mesma pasta que o HTML, use apenas o nome.
+                    // Se estiver numa pasta "audio", use "audio/nome_do_arquivo.mp3".
+                    src: "good-night-lofi-cozy-chill-music-160166.mp3" 
+                },
+                {
+                    title: "Ambient Lofi",
+                    artist: "Chill Beats",
+                    src: "ambient-lofi-lofi-music-344112.mp3"
+                },
+                {
+                    title: "Rainy Lofi City",
+                    artist: "Chill Beats",
+                    src: "rainy-lofi-city-lofi-music-332746.mp3"
+                }
+            ];
             
+            let currentTrackIndex = 0;
             let audioContext, analyser, source, dataArray;
             let isAudioInitialized = false;
             const NUM_VISUALIZER_BARS = 12;
+            
+            // Funções de controle do player
+            function loadTrack(trackIndex) {
+                const track = playlist[trackIndex];
+                songTitleEl.textContent = track.title;
+                songArtistEl.textContent = track.artist;
+                audioPlayer.src = track.src;
+                audioPlayer.load(); // Recarrega o áudio
+                // Reseta a barra de progresso ao carregar nova faixa
+                progressBar.style.width = '0%';
+            }
 
+            function playTrack() {
+                if (!isAudioInitialized) initAudioSystem();
+                if (audioContext && audioContext.state === 'suspended') audioContext.resume();
+                
+                audioPlayer.play().catch(err => {
+                    console.error("Erro ao tocar áudio:", err);
+                    alert("Não foi possível tocar o áudio. Verifique se os arquivos de música estão no caminho correto.");
+                });
+            }
+
+            function pauseTrack() {
+                audioPlayer.pause();
+            }
+
+            function playNextTrack() {
+                currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+                loadTrack(currentTrackIndex);
+                playTrack();
+            }
+            
+            function playPrevTrack() {
+                currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+                loadTrack(currentTrackIndex);
+                playTrack();
+            }
+
+            // Funções do visualizador
             function initAudioSystem() {
                 if (isAudioInitialized) return;
                 try {
@@ -275,7 +340,6 @@
                     animateVisualizer();
                 } catch (e) {
                     console.error("Erro ao inicializar o sistema de áudio. O visualizer pode não funcionar.", e);
-                    // Esconde o visualizer se houver um erro de CORS
                     visualizerContainer.style.display = 'none';
                 }
             }
@@ -298,18 +362,17 @@
                     }
                 }
             }
-            
+
+            // Event Listeners
             playPauseBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                if (!isAudioInitialized) initAudioSystem();
-                if (audioContext && audioContext.state === 'suspended') audioContext.resume();
-
-                if (audioPlayer.paused) audioPlayer.play().catch(err => {
-                    console.error("Erro ao tocar áudio:", err);
-                    alert("Não foi possível tocar o áudio. Verifique se o arquivo 'audio/lofi.mp3' existe no seu projeto.");
-                });
-                else audioPlayer.pause();
+                if (audioPlayer.paused) playTrack();
+                else pauseTrack();
             });
+
+            nextBtn.addEventListener('click', (e) => { e.stopPropagation(); playNextTrack(); });
+            prevBtn.addEventListener('click', (e) => { e.stopPropagation(); playPrevTrack(); });
+            audioPlayer.addEventListener('ended', playNextTrack); // Auto-play da próxima
 
             audioPlayer.addEventListener('play', () => playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>');
             audioPlayer.addEventListener('pause', () => playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>');
@@ -324,11 +387,10 @@
                 audioPlayer.currentTime = ((e.clientX - rect.left) / rect.width) * audioPlayer.duration;
             });
             
-            songTitleEl.textContent = lofiTrack.title;
-            songArtistEl.textContent = lofiTrack.artist;
-            audioPlayer.src = lofiTrack.src;
+            // Carrega a primeira música ao iniciar
+            loadTrack(currentTrackIndex);
             
-            // --- O RESTANTE DO CÓDIGO JS PERMANECE O MESMO ---
+            // --- O RESTANTE DO CÓDIGO JS (JSONBIN, ADMIN, ETC) PERMANECE O MESMO ---
             const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
             const LIKE_STORAGE_KEY = 'userHasLikedProfile_v2'; 
             const THEME_STORAGE_KEY = 'selectedTheme_v1';
