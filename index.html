@@ -64,11 +64,11 @@
             border: 1px solid var(--border-color);
             box-shadow: 0 10px 40px var(--shadow-color);
             text-align: center;
-            opacity: 0; /* Começa invisível para a animação */
+            opacity: 0;
             
             /* ★ ATUALIZADO: Usando a nova animação de entrada */
             animation: entrance-pop-in 0.8s var(--ease-out-cubic) 0.2s forwards;
-            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Para o JS */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .profile { margin-bottom: 30px; }
@@ -169,13 +169,12 @@
             transition: transform 0.2s var(--ease-out-cubic), background-color 0.3s var(--ease-out-cubic), box-shadow 0.3s var(--ease-out-cubic);
         }
         .links a:hover {
-            transform: translateY(-5px) scale(1.03); /* Efeito de hover um pouco mais pronunciado */
+            transform: translateY(-5px) scale(1.03);
             background-color: var(--accent-color);
             color: #ffffff;
             box-shadow: 0 8px 20px var(--accent-shadow-color);
         }
         
-        /* ★ ATUALIZADO: Hover do ícone agora tem uma leve rotação */
         .links a:hover .icon {
             color: #ffffff;
             transform: scale(1.2) rotate(-8deg);
@@ -186,11 +185,9 @@
         .link-text-complex { flex-grow: 1; text-align: center; display: flex; flex-direction: column; justify-content: center; line-height: 1.2; }
         .link-text-complex small { font-size: 0.8em; font-weight: 300; opacity: 0.7; margin-top: 2px; }
 
-        /* ★ ATUALIZADO: Animação de entrada e staggered delay inteligente */
         .links li {
             opacity: 0;
             animation: entrance-pop-in 0.7s var(--ease-out-cubic) forwards;
-            /* O atraso é calculado com base na variável CSS --delay-order definida no HTML */
             animation-delay: calc(var(--delay-order) * 100ms + 0.4s);
         }
         
@@ -200,7 +197,6 @@
         /* ------------------- */
         /* ANIMAÇÕES GLOBAIS   */
         /* ------------------- */
-        /* ★ NOVO: Animação de entrada mais sofisticada */
         @keyframes entrance-pop-in {
             from {
                 opacity: 0;
@@ -214,7 +210,6 @@
             }
         }
         
-        /* ★ NOVO: Animação para a foto de perfil aparecer */
         @keyframes photo-appear {
             from {
                 opacity: 0;
@@ -228,7 +223,7 @@
         
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.15); } /* Coração um pouco mais vivo */
+            50% { transform: scale(1.15); }
         }
     </style>
 </head>
@@ -323,10 +318,9 @@
                     localStorage.setItem('userProfileImage', imageDataUrl);
                     
                     // ★ ATUALIZADO: Lógica para acionar a nova animação da foto
-                    profileImage.src = imageDataUrl; // Define a imagem primeiro
+                    profileImage.src = imageDataUrl;
                     profileContainer.classList.add('has-photo');
-                    profileImage.classList.add('is-appearing'); // Adiciona a classe de animação
-                    // Remove a classe após a animação para que possa ser re-acionada
+                    profileImage.classList.add('is-appearing');
                     profileImage.addEventListener('animationend', () => {
                         profileImage.classList.remove('is-appearing');
                     }, { once: true });
