@@ -114,7 +114,6 @@
         #pin-cancel { background-color: var(--border-color); color: var(--secondary-text-color); }
         #pin-cancel:hover { background-color: #4a4b4d; }
 
-        /* ★ NOVO: Estilo para notificação de salvamento */
         #save-status {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
             background-color: var(--accent-color); color: white; padding: 10px 20px;
@@ -134,7 +133,6 @@
 </head>
 
 <body>
-    <!-- ★ NOVO: Elemento de notificação de salvamento -->
     <div id="save-status"></div>
 
     <main class="card-container">
@@ -143,7 +141,7 @@
                 <img src="" alt="Ilustração de perfil de Andrex" class="profile-picture" id="profile-picture-img">
                 <span class="edit-icon" data-edit="profile-picture" title="Editar Foto (URL)"><i class="fa-solid fa-camera"></i></span>
             </div>
-            <h1><span id="profile-name"></span><span class="edit-icon" data-edit="profile-name" title="Editar Nome"><i class="fa-solid fa-pencil"></i></span></h1>
+            <h1><span id="profile-name">Carregando...</span><span class="edit-icon" data-edit="profile-name" title="Editar Nome"><i class="fa-solid fa-pencil"></i></span></h1>
             <p><span id="profile-tagline"></span><span class="edit-icon" data-edit="profile-tagline" title="Editar Tagline"><i class="fa-solid fa-pencil"></i></span></p>
         </header>
         <section class="links">
@@ -171,24 +169,18 @@
         </div>
     </div>
 
-    <!-- =================================================================== -->
-    <!-- JAVASCRIPT (O CÉREBRO DO MODO AUTOR) -->
-    <!-- =================================================================== -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // ★★★ IMPORTANTE: PREENCHA COM SUAS CHAVES DO JSONBIN.IO ★★★
-            const JSONBIN_ID = '684f29738a456b7966aeb4de'; // Pegue na URL do seu bin (ex: 65a1b2c3d4e5f67890ab)
-            const JSONBIN_API_KEY = '$2a$10$NICad74I0SXWBZMw15PCleRSa5t8pTeErKGD9xAocMj3fZoWp0TVq'; // Pegue na seção "API Keys" do seu painel
-            // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+            // ★★★ ATUALIZADO: Insira suas novas chaves aqui ★★★
+            const JSONBIN_ID = '684f29738a456b7966aeb4de'; // Este está correto.
+            const JSONBIN_API_KEY = '$2a$10$NICad74I0SXWBZMw15PCleRSa5t8pTeErKGD9xAocMj3fZoWp0TVq'; // <<< APAGUE ISTO E COLE SUA NOVA CHAVE MESTRA!
+            // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
             
             const AUTHOR_PIN = '5381';
             const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
             
-            // Elementos da página
             const pageBody = document.querySelector('body');
             const saveStatus = document.getElementById('save-status');
-
-            // Elementos de edição
             const pinModalOverlay = document.getElementById('pin-modal-overlay');
             const pinModalBox = document.getElementById('pin-modal-box');
             const pinInput = document.getElementById('pin-input');
@@ -197,16 +189,14 @@
             const pinCancel = document.getElementById('pin-cancel');
             const pageFooter = document.getElementById('page-footer');
 
-            let currentData = {}; // Objeto para guardar os dados atuais do site
+            let currentData = {};
 
-            // Função para mostrar notificação de status
             const showStatus = (message, duration = 2000) => {
                 saveStatus.textContent = message;
                 saveStatus.classList.add('show');
                 setTimeout(() => saveStatus.classList.remove('show'), duration);
             };
 
-            // ★ ATUALIZADO: Função para aplicar os dados carregados na página
             const updateDOM = (data) => {
                 document.getElementById('profile-name').textContent = data['profile-name'];
                 document.getElementById('profile-tagline').textContent = data['profile-tagline'];
@@ -223,23 +213,23 @@
                 document.getElementById('link-3').href = data['link3-href'];
             };
             
-            // ★ NOVO: Função para carregar dados do JSONBin
             const loadData = async () => {
+                // A chave mestre também funciona para leitura.
+                const headers = { 'X-Master-Key': JSONBIN_API_KEY };
                 try {
-                    const response = await fetch(`${JSONBIN_URL}/latest`);
-                    if (!response.ok) throw new Error(`Erro ao carregar: ${response.statusText}`);
+                    const response = await fetch(`${JSONBIN_URL}/latest`, { headers });
+                    if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
                     const result = await response.json();
-                    currentData = result.record; // Armazena os dados carregados
+                    currentData = result.record; 
                     updateDOM(currentData);
                 } catch (error) {
                     console.error('Falha ao carregar dados:', error);
-                    alert('Não foi possível carregar os dados do site. Verifique sua conexão e a configuração do JSONBin.');
+                    alert('Não foi possível carregar os dados do site. Verifique sua conexão e a configuração do JSONBin (ID e Chave Mestra).');
                 }
             };
             
-            // ★ NOVO: Função para salvar dados no JSONBin
             const saveData = async () => {
-                showStatus('Salvando...', 60000); // Mostra "Salvando..." por até 1 minuto
+                showStatus('Salvando...', 60000);
                 try {
                     const response = await fetch(JSONBIN_URL, {
                         method: 'PUT',
@@ -249,7 +239,7 @@
                         },
                         body: JSON.stringify(currentData)
                     });
-                    if (!response.ok) throw new Error(`Erro ao salvar: ${response.statusText}`);
+                    if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
                     showStatus('Salvo com sucesso!');
                 } catch (error) {
                     console.error('Falha ao salvar dados:', error);
@@ -275,24 +265,21 @@
                 }
             };
 
-            // ★ ATUALIZADO: Funções de edição agora modificam `currentData` e chamam `saveData`
             const editValue = (key, promptMessage) => {
                 const currentValue = currentData[key];
                 const newValue = prompt(promptMessage, currentValue);
-                if (newValue !== null && newValue !== currentValue) {
+                if (newValue !== null && newValue.trim() !== '' && newValue !== currentValue) {
                     currentData[key] = newValue;
-                    updateDOM(currentData); // Atualiza a tela imediatamente
-                    saveData(); // Salva no banco de dados online
+                    updateDOM(currentData);
+                    saveData();
                 }
             };
 
             document.querySelectorAll('.edit-icon').forEach(icon => {
                 icon.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
+                    e.preventDefault(); e.stopPropagation();
                     const targetKey = icon.dataset.edit;
                     const linkId = icon.dataset.editLink;
-
                     if (targetKey) {
                         editValue(targetKey, `Editar ${targetKey}:`);
                     } else if (linkId) {
@@ -322,19 +309,13 @@
                 if (clickTimer) clearTimeout(clickTimer);
                 clickTimer = setTimeout(() => { clickCount = 0; }, 2000);
                 if (clickCount === 5) {
-                    clickCount = 0;
-                    clearTimeout(clickTimer);
-                    showPinModal();
+                    clickCount = 0; clearTimeout(clickTimer); showPinModal();
                 }
             });
 
-            // Inicialização da página
-            loadData(); // Carrega os dados do banco de dados online ao iniciar
-            if (localStorage.getItem('isAdmin') === 'true') {
-                enterAdminMode(); // Mantém o modo admin se já estava logado
-            }
+            loadData();
+            if (localStorage.getItem('isAdmin') === 'true') { enterAdminMode(); }
             
-            // Efeito 3D do Card (sem alterações)
             const card = document.querySelector('.card-container');
             if (window.matchMedia('(pointer: fine)').matches) { card.addEventListener('mousemove', (e) => { const rect = card.getBoundingClientRect(); const x = e.clientX - rect.left - rect.width / 2; const y = e.clientY - rect.top - rect.height / 2; const rotateX = (y / (rect.height / 2)) * -8; const rotateY = (x / (rect.width / 2)) * 8; card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`; card.style.boxShadow = `0 20px 50px ${getComputedStyle(card).getPropertyValue('--shadow-color')}`; }); card.addEventListener('mouseleave', () => { card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)'; card.style.boxShadow = `0 10px 40px ${getComputedStyle(card).getPropertyValue('--shadow-color')}`; }); }
         });
