@@ -92,6 +92,7 @@
         #like-button .fa-thumbs-up { margin-right: 8px; }
 
         .edit-icon { display: none; margin-left: 10px; color: var(--secondary-text-color); cursor: pointer; font-size: 0.7em; transition: all 0.2s ease; vertical-align: middle; }
+        
         .profile-picture-container .edit-icon { position: absolute; bottom: 5px; right: 5px; background-color: var(--card-color); border: 2px solid var(--accent-color); border-radius: 50%; width: 35px; height: 35px; display: none; align-items: center; justify-content: center; font-size: 1em; margin-left: 0; }
         .profile-picture-container .edit-icon i { margin: 0; }
         body.admin-mode .profile-picture-container .edit-icon { display: flex; }
@@ -128,6 +129,8 @@
 
 <body>
     <div id="save-status"></div>
+    <!-- ★ CORRIGIDO: Player de áudio agora está no HTML -->
+    <audio id="audio-player" preload="metadata" style="display: none;"></audio>
 
     <main class="card-container">
         <div class="theme-switcher">
@@ -189,7 +192,7 @@
             const AUTHOR_PIN = '5381';
             
             // ★ CORRIGIDO: Lógica do Player de Música
-            const audioPlayer = new Audio();
+            const audioPlayer = document.getElementById('audio-player');
             const playPauseBtn = document.getElementById('play-pause-btn');
             const prevBtn = document.getElementById('prev-btn');
             const nextBtn = document.getElementById('next-btn');
@@ -209,15 +212,13 @@
                 songTitleEl.textContent = playlist[trackIndex].title;
             }
 
-            function playTrack() {
-                const playPromise = audioPlayer.play();
-                if (playPromise !== undefined) {
-                    playPromise.then(_ => {
-                        playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-                    }).catch(error => {
-                        console.error("Playback falhou:", error);
-                        playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
-                    });
+            async function playTrack() {
+                try {
+                    await audioPlayer.play();
+                    playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+                } catch (error) {
+                    console.error("Erro ao tentar tocar a música:", error);
+                    playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
                 }
             }
 
@@ -250,10 +251,11 @@
             nextBtn.addEventListener('click', (e) => { e.stopPropagation(); nextTrack(); });
             prevBtn.addEventListener('click', (e) => { e.stopPropagation(); prevTrack(); });
             audioPlayer.addEventListener('ended', nextTrack);
+            audioPlayer.addEventListener('pause', () => { playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>'; });
+            audioPlayer.addEventListener('play', () => { playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'; });
             
             loadTrack(currentTrackIndex);
             
-            // ... (Resto do código JS permanece o mesmo)
             const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
             const LIKE_STORAGE_KEY = 'userHasLikedProfile_v2'; 
             const THEME_STORAGE_KEY = 'selectedTheme_v1';
