@@ -35,7 +35,6 @@
             --accent-shadow-color: rgba(52, 152, 219, 0.3);
             --font-family: 'Poppins', sans-serif;
             --border-radius: 12px;
-            /* Curva de aceleração mantida para consistência */
             --ease-out-cubic: cubic-bezier(0.215, 0.610, 0.355, 1);
         }
 
@@ -70,7 +69,6 @@
 
         .profile { margin-bottom: 30px; }
 
-        /* ★ REVERTIDO: Estilo simplificado para uma foto de perfil estática */
         .profile-picture {
             width: 140px;
             height: 140px;
@@ -153,8 +151,8 @@
     <main class="card-container">
         
         <header class="profile">
-            <!-- ★ REVERTIDO: A foto de perfil agora é uma imagem estática e simples. -->
-            <img src="https://drive.google.com/uc?export=view&id=1-RJVNodMqlHTCcrMxStTjnBFpix-hFYb" alt="Ilustração de perfil de Andrex" class="profile-picture">
+            <!-- ★ ATUALIZADO: Imagem de perfil com o link direto e funcional. -->
+            <img src="https://i.imgur.com/8BqYJ7k.jpeg" alt="Ilustração de perfil de Andrex" class="profile-picture">
             
             <h1>Andrex</h1>
             <p>Sua Tagline | Edite como preferir</p>
@@ -197,10 +195,6 @@
     <!-- =================================================================== -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-
-            // ★ REVERTIDO: Todo o JavaScript para upload de fotos foi removido.
-            // Apenas o efeito 3D do card, que é uma funcionalidade separada, foi mantido.
-
             const card = document.querySelector('.card-container');
             if (window.matchMedia('(pointer: fine)').matches) {
                 card.addEventListener('mousemove', (e) => {
