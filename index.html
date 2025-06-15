@@ -55,267 +55,170 @@
         .profile p { color: var(--secondary-text-color); font-size: 1.1em; font-weight: 300; }
         
         .links ul { list-style-type: none; display: flex; flex-direction: column; gap: 16px; }
-        .links a {
-            display: flex; align-items: center; background-color: rgba(255, 255, 255, 0.05); color: var(--primary-text-color);
-            padding: 16px 20px; border-radius: var(--border-radius); text-decoration: none; font-weight: 600;
-            transition: transform 0.2s var(--ease-out-cubic), background-color 0.3s var(--ease-out-cubic), box-shadow 0.3s var(--ease-out-cubic);
-        }
-        .links a:hover {
-            transform: translateY(-5px) scale(1.03); background-color: var(--accent-color); color: #ffffff;
-            box-shadow: 0 8px 20px var(--accent-shadow-color);
-        }
+        .links a { display: flex; align-items: center; background-color: rgba(255, 255, 255, 0.05); color: var(--primary-text-color); padding: 16px 20px; border-radius: var(--border-radius); text-decoration: none; font-weight: 600; transition: all 0.2s var(--ease-out-cubic); }
+        .links a:hover { transform: translateY(-5px) scale(1.03); background-color: var(--accent-color); color: #ffffff; box-shadow: 0 8px 20px var(--accent-shadow-color); }
         .links a:hover .icon { color: #ffffff; transform: scale(1.2) rotate(-8deg); }
-        .icon { font-size: 1.3em; margin-right: 15px; width: 24px; text-align: center; transition: color 0.3s var(--ease-out-cubic), transform 0.3s var(--ease-out-cubic); }
+        .icon { font-size: 1.3em; margin-right: 15px; width: 24px; text-align: center; transition: all 0.3s var(--ease-out-cubic); }
         .link-text { flex-grow: 1; text-align: center; position: relative;}
         .link-text-complex { flex-grow: 1; text-align: center; display: flex; flex-direction: column; justify-content: center; line-height: 1.2; position: relative;}
         .link-text-complex small { font-size: 0.8em; font-weight: 300; opacity: 0.7; margin-top: 2px; }
 
-        .links li {
-            opacity: 0; animation: entrance-pop-in 0.7s var(--ease-out-cubic) forwards;
-            animation-delay: calc(var(--delay-order) * 100ms + 0.4s);
-        }
+        .links li { opacity: 0; animation: entrance-pop-in 0.7s var(--ease-out-cubic) forwards; animation-delay: calc(var(--delay-order) * 100ms + 0.4s); }
         
-        .footer { margin-top: 40px; font-size: 0.9em; color: var(--secondary-text-color); }
+        .footer { margin-top: 40px; font-size: 0.9em; color: var(--secondary-text-color); cursor: pointer; }
         .footer .fa-heart { color: var(--accent-color); animation: pulse 1.5s infinite; }
         
-        @keyframes entrance-pop-in {
-            from { opacity: 0; transform: translateY(20px) scale(0.95); filter: blur(3px); }
-            to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
-        }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+        /* ★ ATUALIZADO: Estilos do Modo Autor e do Cofre de PIN */
+        .edit-icon { display: none; margin-left: 10px; color: var(--secondary-text-color); cursor: pointer; font-size: 0.7em; transition: all 0.2s ease; }
+        .edit-icon:hover { color: var(--accent-color); transform: scale(1.2); }
+        #admin-controls { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border-color); }
+        #exit-admin-button { background: none; border: 1px solid var(--accent-color-hover); color: var(--accent-color-hover); padding: 8px 15px; border-radius: var(--border-radius); cursor: pointer; font-weight: 600; font-family: var(--font-family); transition: all 0.2s ease; }
+        #exit-admin-button:hover { background: var(--accent-color-hover); color: var(--card-color); }
 
-        /* ★ NOVO: Estilos do Modo Autor */
-        .edit-icon {
-            display: none; /* Escondido por padrão */
-            margin-left: 10px;
-            color: var(--secondary-text-color);
-            cursor: pointer;
-            font-size: 0.7em;
-            transition: color 0.2s ease, transform 0.2s ease;
-        }
-        .edit-icon:hover {
-            color: var(--accent-color);
-            transform: scale(1.2);
-        }
-        #admin-controls {
-            display: none; /* Escondido por padrão */
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border-color);
-        }
-        #exit-admin-button {
-            background: none; border: 1px solid var(--accent-color-hover); color: var(--accent-color-hover);
-            padding: 8px 15px; border-radius: var(--border-radius); cursor: pointer;
-            font-weight: 600; font-family: var(--font-family); transition: all 0.2s ease;
-        }
-        #exit-admin-button:hover {
-            background: var(--accent-color-hover);
-            color: var(--card-color);
-        }
-
-        /* Lógica de visibilidade do Modo Autor */
-        body.admin-mode .edit-icon,
-        body.admin-mode #admin-controls {
-            display: inline-block; /* ou flex, etc. */
-        }
+        body.admin-mode .edit-icon, body.admin-mode #admin-controls { display: inline-block; }
         body.admin-mode #admin-controls { display: block; }
+
+        .pin-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7);
+            z-index: 1000; display: flex; align-items: center; justify-content: center;
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .pin-modal-overlay:not(.hidden) { opacity: 1; }
+        .pin-modal {
+            background: var(--card-color); padding: 30px; border-radius: var(--border-radius);
+            width: 90%; max-width: 320px; text-align: center; border: 1px solid var(--border-color);
+        }
+        .pin-modal.shake { animation: shake 0.5s; }
+        .pin-modal h3 { margin-bottom: 20px; font-size: 1.5em; }
+        #pin-input {
+            width: 100%; padding: 15px; border-radius: var(--border-radius); border: 2px solid var(--border-color);
+            background: var(--bg-color); color: var(--primary-text-color); text-align: center; font-size: 2em;
+            letter-spacing: 15px; margin-bottom: 10px; font-family: 'Poppins', sans-serif;
+        }
+        #pin-input:focus { border-color: var(--accent-color); outline: none; }
+        #pin-error { color: #e74c3c; min-height: 20px; font-weight: 600; }
+        .pin-modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+        .pin-modal-actions button {
+            flex-grow: 1; padding: 12px; border: none; border-radius: var(--border-radius); font-weight: 600;
+            cursor: pointer; transition: all 0.2s ease; font-family: var(--font-family);
+        }
+        #pin-submit { background-color: var(--accent-color); color: white; }
+        #pin-submit:hover { background-color: var(--accent-color-hover); }
+        #pin-cancel { background-color: var(--border-color); color: var(--secondary-text-color); }
+        #pin-cancel:hover { background-color: #4a4b4d; }
+
+        .hidden { display: none !important; }
+
+        @keyframes entrance-pop-in { from { opacity: 0; transform: translateY(20px) scale(0.95); filter: blur(3px); } to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); } 20%, 40%, 60%, 80% { transform: translateX(10px); } }
     </style>
 </head>
 
-<body id="page-body">
+<body>
 
     <main class="card-container">
-        
         <header class="profile">
             <img src="https://i.imgur.com/8BqYJ7k.jpeg" alt="Ilustração de perfil de Andrex" class="profile-picture">
-            
-            <h1>
-                <span id="profile-name">Andrex</span>
-                <span class="edit-icon" data-edit="profile-name" title="Editar Nome"><i class="fa-solid fa-pencil"></i></span>
-            </h1>
-            <p>
-                <span id="profile-tagline">Sua Tagline | Edite como preferir</span>
-                <span class="edit-icon" data-edit="profile-tagline" title="Editar Tagline"><i class="fa-solid fa-pencil"></i></span>
-            </p>
+            <h1><span id="profile-name">Andrex</span><span class="edit-icon" data-edit="profile-name" title="Editar Nome"><i class="fa-solid fa-pencil"></i></span></h1>
+            <p><span id="profile-tagline">Sua Tagline | Edite como preferir</span><span class="edit-icon" data-edit="profile-tagline" title="Editar Tagline"><i class="fa-solid fa-pencil"></i></span></p>
         </header>
-
         <section class="links">
             <ul>
-                <li style="--delay-order: 1;">
-                    <a id="link-1" href="https://www.facebook.com/Andr3xLuis" target="_blank" rel="noopener noreferrer">
-                        <i class="fa-brands fa-facebook icon"></i>
-                        <span id="link-text-1" class="link-text">Facebook</span>
-                        <span class="edit-icon" data-edit-link="1" title="Editar Link"><i class="fa-solid fa-pencil"></i></span>
-                    </a>
-                </li>
-                <li style="--delay-order: 2;">
-                    <a id="link-2" href="#" target="_blank" rel="noopener noreferrer">
-                        <i class="fa-solid fa-globe icon"></i>
-                        <span id="link-text-2" class="link-text">Portfólio</span>
-                        <span class="edit-icon" data-edit-link="2" title="Editar Link"><i class="fa-solid fa-pencil"></i></span>
-                    </a>
-                </li>
-                <li style="--delay-order: 3;">
-                    <a id="link-3" href="mailto:andrexorigin@gmail.com">
-                        <i class="fa-solid fa-envelope icon"></i>
-                        <div class="link-text-complex">
-                            <span id="link-text-3.1">E-mail</span>
-                            <small id="link-text-3.2">andrexorigin@gmail.com</small>
-                        </div>
-                        <span class="edit-icon" data-edit-link="3" title="Editar Link"><i class="fa-solid fa-pencil"></i></span>
-                    </a>
-                </li>
+                <li style="--delay-order: 1;"><a id="link-1" href="https://www.facebook.com/Andr3xLuis" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook icon"></i><span id="link-text-1" class="link-text">Facebook</span><span class="edit-icon" data-edit-link="1" title="Editar Link"><i class="fa-solid fa-pencil"></i></span></a></li>
+                <li style="--delay-order: 2;"><a id="link-2" href="#" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-globe icon"></i><span id="link-text-2" class="link-text">Portfólio</span><span class="edit-icon" data-edit-link="2" title="Editar Link"><i class="fa-solid fa-pencil"></i></span></a></li>
+                <li style="--delay-order: 3;"><a id="link-3" href="mailto:andrexorigin@gmail.com"><i class="fa-solid fa-envelope icon"></i><div class="link-text-complex"><span id="link-text-3.1">E-mail</span><small id="link-text-3.2">andrexorigin@gmail.com</small></div><span class="edit-icon" data-edit-link="3" title="Editar Link"><i class="fa-solid fa-pencil"></i></span></a></li>
             </ul>
         </section>
-
-        <footer class="footer">
+        <footer id="page-footer" class="footer">
             <p>Feito com <i class="fa-solid fa-code"></i> e <i class="fa-solid fa-heart"></i></p>
-            
-            <!-- ★ NOVO: Painel de Controle do Admin -->
-            <div id="admin-controls">
-                <button id="exit-admin-button">
-                    <i class="fa-solid fa-lock"></i> Trancar Site
-                </button>
-            </div>
+            <div id="admin-controls"><button id="exit-admin-button"><i class="fa-solid fa-lock"></i> Trancar Site</button></div>
         </footer>
-
     </main>
+
+    <!-- ★ NOVO: HTML do Cofre de PIN -->
+    <div id="pin-modal-overlay" class="pin-modal-overlay hidden">
+        <div id="pin-modal-box" class="pin-modal">
+            <h3><i class="fa-solid fa-shield-halved"></i> Modo Autor</h3>
+            <p id="pin-error"> </p>
+            <input type="password" id="pin-input" maxlength="4" pattern="\d*" inputmode="numeric">
+            <div class="pin-modal-actions">
+                <button id="pin-cancel">Cancelar</button>
+                <button id="pin-submit">Entrar</button>
+            </div>
+        </div>
+    </div>
 
     <!-- =================================================================== -->
     <!-- JAVASCRIPT (O CÉREBRO DO MODO AUTOR) -->
     <!-- =================================================================== -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const pageBody = document.getElementById('page-body');
-            const EDITABLE_ELEMENTS = {
-                'profile-name': { selector: '#profile-name', default: 'Andrex' },
-                'profile-tagline': { selector: '#profile-tagline', default: 'Sua Tagline | Edite como preferir' },
-                'link1-text': { selector: '#link-text-1', default: 'Facebook' },
-                'link1-href': { selector: '#link-1', attribute: 'href', default: 'https://www.facebook.com/Andr3xLuis' },
-                'link2-text': { selector: '#link-text-2', default: 'Portfólio' },
-                'link2-href': { selector: '#link-2', attribute: 'href', default: '#' },
-                'link3-text1': { selector: '#link-text-3\\.1', default: 'E-mail' },
-                'link3-text2': { selector: '#link-text-3\\.2', default: 'andrexorigin@gmail.com' },
-                'link3-href': { selector: '#link-3', attribute: 'href', default: 'mailto:andrexorigin@gmail.com' },
-            };
+            // ★ ATUALIZADO: Configuração do Modo Autor
+            // Para alterar o seu PIN, mude o valor abaixo.
+            const AUTHOR_PIN = '1234';
 
-            // Carrega todos os dados salvos ao iniciar a página
-            const loadData = () => {
-                for (const key in EDITABLE_ELEMENTS) {
-                    const config = EDITABLE_ELEMENTS[key];
-                    const element = document.querySelector(config.selector);
-                    if (!element) continue;
+            const pageBody = document.querySelector('body');
+            const EDITABLE_ELEMENTS = { 'profile-name': { selector: '#profile-name', default: 'Andrex' }, 'profile-tagline': { selector: '#profile-tagline', default: 'Sua Tagline | Edite como preferir' }, 'link1-text': { selector: '#link-text-1', default: 'Facebook' }, 'link1-href': { selector: '#link-1', attribute: 'href', default: 'https://www.facebook.com/Andr3xLuis' }, 'link2-text': { selector: '#link-text-2', default: 'Portfólio' }, 'link2-href': { selector: '#link-2', attribute: 'href', default: '#' }, 'link3-text1': { selector: '#link-text-3\\.1', default: 'E-mail' }, 'link3-text2': { selector: '#link-text-3\\.2', default: 'andrexorigin@gmail.com' }, 'link3-href': { selector: '#link-3', attribute: 'href', default: 'mailto:andrexorigin@gmail.com' }, };
+            const pinModalOverlay = document.getElementById('pin-modal-overlay');
+            const pinModalBox = document.getElementById('pin-modal-box');
+            const pinInput = document.getElementById('pin-input');
+            const pinError = document.getElementById('pin-error');
+            const pinSubmit = document.getElementById('pin-submit');
+            const pinCancel = document.getElementById('pin-cancel');
+            const pageFooter = document.getElementById('page-footer');
 
-                    const savedValue = localStorage.getItem(key) || config.default;
-
-                    if (config.attribute) {
-                        element.setAttribute(config.attribute, savedValue);
-                    } else {
-                        element.textContent = savedValue;
-                    }
-                }
-            };
+            const loadData = () => { for (const key in EDITABLE_ELEMENTS) { const config = EDITABLE_ELEMENTS[key]; const element = document.querySelector(config.selector); if (!element) continue; const savedValue = localStorage.getItem(key) || config.default; if (config.attribute) { element.setAttribute(config.attribute, savedValue); } else { element.textContent = savedValue; } } };
+            const enterAdminMode = () => { pageBody.classList.add('admin-mode'); localStorage.setItem('isAdmin', 'true'); };
+            const exitAdminMode = () => { pageBody.classList.remove('admin-mode'); localStorage.removeItem('isAdmin'); };
             
-            // Entra no Modo Autor
-            const enterAdminMode = () => {
-                pageBody.classList.add('admin-mode');
-                localStorage.setItem('isAdmin', 'true');
-            };
-
-            // Sai do Modo Autor
-            const exitAdminMode = () => {
-                pageBody.classList.remove('admin-mode');
-                localStorage.removeItem('isAdmin');
-            };
-
-            // Função genérica para editar um campo de texto
-            const editText = (key) => {
-                const config = EDITABLE_ELEMENTS[key];
-                const element = document.querySelector(config.selector);
-                const currentValue = element.textContent;
-                const newValue = prompt(`Editar ${key}:`, currentValue);
-                if (newValue !== null && newValue !== currentValue) {
-                    element.textContent = newValue;
-                    localStorage.setItem(key, newValue);
-                }
-            };
-
-            // Função para editar um link (texto e URL)
-            const editLink = (id) => {
-                if(id === '3'){ // Caso especial para o link de e-mail
-                    editText(`link${id}-text1`);
-                    editText(`link${id}-text2`);
-                    const hrefKey = `link${id}-href`;
-                    const hrefConfig = EDITABLE_ELEMENTS[hrefKey];
-                    const hrefElement = document.querySelector(hrefConfig.selector);
-                    const currentHref = hrefElement.getAttribute('href');
-                    const newHref = prompt(`Editar URL do Link ${id} (mailto:seuemail@site.com):`, currentHref);
-                    if (newHref !== null && newHref !== currentHref) {
-                        hrefElement.setAttribute('href', newHref);
-                        localStorage.setItem(hrefKey, newHref);
-                    }
+            const showPinModal = () => { pinInput.value = ''; pinError.innerHTML = ' '; pinModalOverlay.classList.remove('hidden'); pinInput.focus(); };
+            const hidePinModal = () => { pinModalOverlay.classList.add('hidden'); };
+            
+            const checkPin = () => {
+                if (pinInput.value === AUTHOR_PIN) {
+                    enterAdminMode();
+                    hidePinModal();
                 } else {
-                    editText(`link${id}-text`);
-                    const hrefKey = `link${id}-href`;
-                    const hrefConfig = EDITABLE_ELEMENTS[hrefKey];
-                    const hrefElement = document.querySelector(hrefConfig.selector);
-                    const currentHref = hrefElement.getAttribute('href');
-                    const newHref = prompt(`Editar URL do Link ${id}:`, currentHref);
-                    if (newHref !== null && newHref !== currentHref) {
-                        hrefElement.setAttribute('href', newHref);
-                        localStorage.setItem(hrefKey, newHref);
-                    }
+                    pinError.textContent = 'PIN Incorreto';
+                    pinModalBox.classList.add('shake');
+                    pinInput.value = '';
+                    setTimeout(() => pinModalBox.classList.remove('shake'), 500);
                 }
             };
 
-            // Event listener para os ícones de edição
-            document.querySelectorAll('.edit-icon').forEach(icon => {
-                icon.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    const textKey = icon.dataset.edit;
-                    const linkId = icon.dataset.editLink;
-                    if (textKey) editText(textKey);
-                    if (linkId) editLink(linkId);
-                });
-            });
+            const editText = (key) => { const config = EDITABLE_ELEMENTS[key]; const element = document.querySelector(config.selector); const currentValue = element.textContent; const newValue = prompt(`Editar ${key}:`, currentValue); if (newValue !== null && newValue !== currentValue) { element.textContent = newValue; localStorage.setItem(key, newValue); } };
+            const editLink = (id) => { if(id === '3'){ editText(`link${id}-text1`); editText(`link${id}-text2`); const hrefKey = `link${id}-href`; const hrefConfig = EDITABLE_ELEMENTS[hrefKey]; const hrefElement = document.querySelector(hrefConfig.selector); const currentHref = hrefElement.getAttribute('href'); const newHref = prompt(`Editar E-mail (mailto:seuemail@site.com):`, currentHref); if (newHref !== null && newHref !== currentHref) { hrefElement.setAttribute('href', newHref); localStorage.setItem(hrefKey, newHref); } } else { editText(`link${id}-text`); const hrefKey = `link${id}-href`; const hrefConfig = EDITABLE_ELEMENTS[hrefKey]; const hrefElement = document.querySelector(hrefConfig.selector); const currentHref = hrefElement.getAttribute('href'); const newHref = prompt(`Editar URL do Link ${id}:`, currentHref); if (newHref !== null && newHref !== currentHref) { hrefElement.setAttribute('href', newHref); localStorage.setItem(hrefKey, newHref); } } };
+            
+            document.querySelectorAll('.edit-icon').forEach(icon => { icon.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); const textKey = icon.dataset.edit; const linkId = icon.dataset.editLink; if (textKey) editText(textKey); if (linkId) editLink(linkId); }); });
+            document.getElementById('exit-admin-button').addEventListener('click', exitAdminMode);
+            
+            pinSubmit.addEventListener('click', checkPin);
+            pinInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') checkPin(); });
+            pinCancel.addEventListener('click', hidePinModal);
+            pinModalOverlay.addEventListener('click', (e) => { if (e.target === pinModalOverlay) hidePinModal(); });
 
-            // Event listener para a chave secreta
-            document.addEventListener('keydown', (e) => {
-                if (e.ctrlKey && e.shiftKey && e.key === 'E') {
-                    e.preventDefault();
+            let clickCount = 0;
+            let clickTimer = null;
+            pageFooter.addEventListener('click', () => {
+                clickCount++;
+                if (clickTimer) clearTimeout(clickTimer);
+                clickTimer = setTimeout(() => { clickCount = 0; }, 2000); // Reseta após 2 segundos
+                if (clickCount === 5) {
+                    clickCount = 0;
+                    clearTimeout(clickTimer);
                     if (!pageBody.classList.contains('admin-mode')) {
-                        enterAdminMode();
+                        showPinModal();
                     }
                 }
             });
-            
-            // Event listener para o botão de sair
-            document.getElementById('exit-admin-button').addEventListener('click', exitAdminMode);
 
-            // Carrega os dados e verifica o estado do admin ao iniciar
             loadData();
-            if (localStorage.getItem('isAdmin') === 'true') {
-                enterAdminMode();
-            }
+            if (localStorage.getItem('isAdmin') === 'true') enterAdminMode();
 
-            // --- Efeito 3D do Card (código anterior) ---
+            // Efeito 3D do Card
             const card = document.querySelector('.card-container');
-            if (window.matchMedia('(pointer: fine)').matches) {
-                card.addEventListener('mousemove', (e) => {
-                    const rect = card.getBoundingClientRect();
-                    const x = e.clientX - rect.left - rect.width / 2;
-                    const y = e.clientY - rect.top - rect.height / 2;
-                    const rotateX = (y / (rect.height / 2)) * -8;
-                    const rotateY = (x / (rect.width / 2)) * 8;
-                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
-                    card.style.boxShadow = `0 20px 50px ${getComputedStyle(card).getPropertyValue('--shadow-color')}`;
-                });
-                card.addEventListener('mouseleave', () => {
-                    card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
-                    card.style.boxShadow = `0 10px 40px ${getComputedStyle(card).getPropertyValue('--shadow-color')}`;
-                });
-            }
+            if (window.matchMedia('(pointer: fine)').matches) { card.addEventListener('mousemove', (e) => { const rect = card.getBoundingClientRect(); const x = e.clientX - rect.left - rect.width / 2; const y = e.clientY - rect.top - rect.height / 2; const rotateX = (y / (rect.height / 2)) * -8; const rotateY = (x / (rect.width / 2)) * 8; card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`; card.style.boxShadow = `0 20px 50px ${getComputedStyle(card).getPropertyValue('--shadow-color')}`; }); card.addEventListener('mouseleave', () => { card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)'; card.style.boxShadow = `0 10px 40px ${getComputedStyle(card).getPropertyValue('--shadow-color')}`; }); }
         });
     </script>
 </body>
