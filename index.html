@@ -44,17 +44,14 @@
         }
         .profile { margin-bottom: 30px; position: relative; }
         
-        /* ★ ATUALIZADO: Contêiner para a foto de perfil e seu ícone de edição */
         .profile-picture-container {
-            position: relative;
-            display: inline-block; /* Garante que o container se ajuste ao tamanho da imagem */
-            margin-bottom: 20px;
+            position: relative; display: inline-block; margin-bottom: 20px;
         }
         .profile-picture {
             width: 140px; height: 140px; object-fit: cover; border-radius: 50%;
             border: 4px solid var(--accent-color); margin: 0 auto;
             box-shadow: 0 0 30px var(--accent-shadow-color);
-            transition: transform 0.3s var(--ease-out-cubic);
+            transition: transform 0.3s var(--ease-out-cubic), border-color 0.3s ease;
         }
         .profile-picture:hover { transform: scale(1.05) rotate(3deg); }
         .profile h1, .profile p { position: relative; display: inline-block; }
@@ -75,26 +72,16 @@
         .footer { margin-top: 40px; font-size: 0.9em; color: var(--secondary-text-color); cursor: pointer; }
         .footer .fa-heart { color: var(--accent-color); animation: pulse 1.5s infinite; }
         
-        /* ★ ATUALIZADO: Estilos do Modo Autor, ícones de edição e Cofre de PIN */
         .edit-icon { display: none; margin-left: 10px; color: var(--secondary-text-color); cursor: pointer; font-size: 0.7em; transition: all 0.2s ease; vertical-align: middle; }
         .edit-icon:hover { color: var(--accent-color); transform: scale(1.2); }
         
-        /* ★ NOVO: Estilo específico para o ícone de edição da foto de perfil */
         .profile-picture-container .edit-icon {
-            position: absolute;
-            bottom: 5px; right: 5px;
-            background-color: var(--card-color);
-            border: 2px solid var(--accent-color);
-            border-radius: 50%;
-            width: 35px; height: 35px;
-            display: none; /* Escondido por padrão */
-            align-items: center;
-            justify-content: center;
-            font-size: 1em; /* Tamanho do ícone de câmera */
-            margin-left: 0; /* Reseta a margem */
+            position: absolute; bottom: 5px; right: 5px; background-color: var(--card-color);
+            border: 2px solid var(--accent-color); border-radius: 50%; width: 35px; height: 35px;
+            display: none; align-items: center; justify-content: center; font-size: 1em; margin-left: 0;
         }
         .profile-picture-container .edit-icon i { margin: 0; }
-        body.admin-mode .profile-picture-container .edit-icon { display: flex; } /* Mostra no modo admin */
+        body.admin-mode .profile-picture-container .edit-icon { display: flex; }
 
         #admin-controls { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border-color); }
         #exit-admin-button { background: none; border: 1px solid var(--accent-color-hover); color: var(--accent-color-hover); padding: 8px 15px; border-radius: var(--border-radius); cursor: pointer; font-weight: 600; font-family: var(--font-family); transition: all 0.2s ease; }
@@ -103,7 +90,6 @@
         body.admin-mode .edit-icon { display: inline-block; }
         body.admin-mode #admin-controls { display: block; }
         
-        /* Estilos do Modal de PIN */
         .pin-modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7);
             z-index: 1000; display: flex; align-items: center; justify-content: center;
@@ -118,22 +104,26 @@
         .pin-modal-overlay:not(.hidden) .pin-modal { transform: scale(1); }
         .pin-modal.shake { animation: shake 0.5s; }
         .pin-modal h3 { margin-bottom: 20px; font-size: 1.5em; }
-        #pin-input {
-            width: 100%; padding: 15px; border-radius: var(--border-radius); border: 2px solid var(--border-color);
-            background: var(--bg-color); color: var(--primary-text-color); text-align: center; font-size: 2em;
-            letter-spacing: 15px; margin-bottom: 10px; font-family: 'Poppins', sans-serif;
-        }
+        #pin-input { width: 100%; padding: 15px; border-radius: var(--border-radius); border: 2px solid var(--border-color); background: var(--bg-color); color: var(--primary-text-color); text-align: center; font-size: 2em; letter-spacing: 15px; margin-bottom: 10px; font-family: 'Poppins', sans-serif; }
         #pin-input:focus { border-color: var(--accent-color); outline: none; }
         #pin-error { color: #e74c3c; min-height: 20px; font-weight: 600; }
         .pin-modal-actions { display: flex; gap: 10px; margin-top: 20px; }
-        .pin-modal-actions button {
-            flex-grow: 1; padding: 12px; border: none; border-radius: var(--border-radius); font-weight: 600;
-            cursor: pointer; transition: all 0.2s ease; font-family: var(--font-family);
-        }
+        .pin-modal-actions button { flex-grow: 1; padding: 12px; border: none; border-radius: var(--border-radius); font-weight: 600; cursor: pointer; transition: all 0.2s ease; font-family: var(--font-family); }
         #pin-submit { background-color: var(--accent-color); color: white; }
         #pin-submit:hover { background-color: var(--accent-color-hover); }
         #pin-cancel { background-color: var(--border-color); color: var(--secondary-text-color); }
         #pin-cancel:hover { background-color: #4a4b4d; }
+
+        /* ★ NOVO: Estilo para notificação de salvamento */
+        #save-status {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background-color: var(--accent-color); color: white; padding: 10px 20px;
+            border-radius: var(--border-radius); font-weight: 600;
+            box-shadow: 0 4px 15px var(--accent-shadow-color);
+            opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 2000; pointer-events: none;
+        }
+        #save-status.show { opacity: 1; transform: translateX(-50%) translateY(-10px); }
 
         .hidden { display: none !important; }
 
@@ -144,22 +134,23 @@
 </head>
 
 <body>
+    <!-- ★ NOVO: Elemento de notificação de salvamento -->
+    <div id="save-status"></div>
 
     <main class="card-container">
         <header class="profile">
-            <!-- ★ ATUALIZADO: Foto de perfil agora dentro de um contêiner para o ícone de edição -->
             <div class="profile-picture-container">
-                <img src="https://i.imgur.com/8BqYJ7k.jpeg" alt="Ilustração de perfil de Andrex" class="profile-picture" id="profile-picture-img">
+                <img src="" alt="Ilustração de perfil de Andrex" class="profile-picture" id="profile-picture-img">
                 <span class="edit-icon" data-edit="profile-picture" title="Editar Foto (URL)"><i class="fa-solid fa-camera"></i></span>
             </div>
-            <h1><span id="profile-name">Andrex</span><span class="edit-icon" data-edit="profile-name" title="Editar Nome"><i class="fa-solid fa-pencil"></i></span></h1>
-            <p><span id="profile-tagline">Sua Tagline | Edite como preferir</span><span class="edit-icon" data-edit="profile-tagline" title="Editar Tagline"><i class="fa-solid fa-pencil"></i></span></p>
+            <h1><span id="profile-name"></span><span class="edit-icon" data-edit="profile-name" title="Editar Nome"><i class="fa-solid fa-pencil"></i></span></h1>
+            <p><span id="profile-tagline"></span><span class="edit-icon" data-edit="profile-tagline" title="Editar Tagline"><i class="fa-solid fa-pencil"></i></span></p>
         </header>
         <section class="links">
             <ul>
-                <li style="--delay-order: 1;"><a id="link-1" href="https://www.facebook.com/Andr3xLuis" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook icon"></i><span id="link-text-1" class="link-text">Facebook</span><span class="edit-icon" data-edit-link="1" title="Editar Link"><i class="fa-solid fa-pencil"></i></span></a></li>
-                <li style="--delay-order: 2;"><a id="link-2" href="#" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-globe icon"></i><span id="link-text-2" class="link-text">Portfólio</span><span class="edit-icon" data-edit-link="2" title="Editar Link"><i class="fa-solid fa-pencil"></i></span></a></li>
-                <li style="--delay-order: 3;"><a id="link-3" href="mailto:andrexorigin@gmail.com"><i class="fa-solid fa-envelope icon"></i><div class="link-text-complex"><span id="link-text-3.1">E-mail</span><small id="link-text-3.2">andrexorigin@gmail.com</small></div><span class="edit-icon" data-edit-link="3" title="Editar Link"><i class="fa-solid fa-pencil"></i></span></a></li>
+                <li style="--delay-order: 1;"><a id="link-1" href="" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook icon"></i><span id="link-text-1" class="link-text"></span><span class="edit-icon" data-edit-link="1" title="Editar Link"><i class="fa-solid fa-pencil"></i></span></a></li>
+                <li style="--delay-order: 2;"><a id="link-2" href="" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-globe icon"></i><span id="link-text-2" class="link-text"></span><span class="edit-icon" data-edit-link="2" title="Editar Link"><i class="fa-solid fa-pencil"></i></span></a></li>
+                <li style="--delay-order: 3;"><a id="link-3" href=""><i class="fa-solid fa-envelope icon"></i><div class="link-text-complex"><span id="link-text-3.1"></span><small id="link-text-3.2"></small></div><span class="edit-icon" data-edit-link="3" title="Editar Link"><i class="fa-solid fa-pencil"></i></span></a></li>
             </ul>
         </section>
         <footer id="page-footer" class="footer">
@@ -168,7 +159,6 @@
         </footer>
     </main>
 
-    <!-- HTML do Cofre de PIN -->
     <div id="pin-modal-overlay" class="pin-modal-overlay hidden">
         <div id="pin-modal-box" class="pin-modal">
             <h3><i class="fa-solid fa-shield-halved"></i> Modo Autor</h3>
@@ -186,26 +176,19 @@
     <!-- =================================================================== -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // ★ ATUALIZADO: Configuração do Modo Autor
-            // O PIN foi alterado conforme solicitado.
-            const AUTHOR_PIN = '5381';
-
-            const pageBody = document.querySelector('body');
+            // ★★★ IMPORTANTE: PREENCHA COM SUAS CHAVES DO JSONBIN.IO ★★★
+            const JSONBIN_ID = '684f29738a456b7966aeb4de'; // Pegue na URL do seu bin (ex: 65a1b2c3d4e5f67890ab)
+            const JSONBIN_API_KEY = '$2a$10$NICad74I0SXWBZMw15PCleRSa5t8pTeErKGD9xAocMj3fZoWp0TVq'; // Pegue na seção "API Keys" do seu painel
+            // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
             
-            // ★ ATUALIZADO: 'EDITABLE_ELEMENTS' agora inclui a foto de perfil.
-            const EDITABLE_ELEMENTS = {
-                'profile-name': { selector: '#profile-name', default: 'Andrex' },
-                'profile-tagline': { selector: '#profile-tagline', default: 'Sua Tagline | Edite como preferir' },
-                'profile-picture': { selector: '#profile-picture-img', attribute: 'src', default: 'https://i.imgur.com/8BqYJ7k.jpeg' },
-                'link1-text': { selector: '#link-text-1', default: 'Facebook' },
-                'link1-href': { selector: '#link-1', attribute: 'href', default: 'https://www.facebook.com/Andr3xLuis' },
-                'link2-text': { selector: '#link-text-2', default: 'Portfólio' },
-                'link2-href': { selector: '#link-2', attribute: 'href', default: '#' },
-                'link3-text1': { selector: '#link-text-3\\.1', default: 'E-mail' },
-                'link3-text2': { selector: '#link-text-3\\.2', default: 'andrexorigin@gmail.com' },
-                'link3-href': { selector: '#link-3', attribute: 'href', default: 'mailto:andrexorigin@gmail.com' },
-            };
+            const AUTHOR_PIN = '5381';
+            const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
+            
+            // Elementos da página
+            const pageBody = document.querySelector('body');
+            const saveStatus = document.getElementById('save-status');
 
+            // Elementos de edição
             const pinModalOverlay = document.getElementById('pin-modal-overlay');
             const pinModalBox = document.getElementById('pin-modal-box');
             const pinInput = document.getElementById('pin-input');
@@ -214,27 +197,72 @@
             const pinCancel = document.getElementById('pin-cancel');
             const pageFooter = document.getElementById('page-footer');
 
-            // Esta função carrega os dados salvos no localStorage. Funciona para texto e atributos.
-            const loadData = () => {
-                for (const key in EDITABLE_ELEMENTS) {
-                    const config = EDITABLE_ELEMENTS[key];
-                    const element = document.querySelector(config.selector);
-                    if (!element) continue;
-                    const savedValue = localStorage.getItem(key) || config.default;
-                    if (config.attribute) {
-                        element.setAttribute(config.attribute, savedValue);
-                    } else {
-                        element.textContent = savedValue;
-                    }
+            let currentData = {}; // Objeto para guardar os dados atuais do site
+
+            // Função para mostrar notificação de status
+            const showStatus = (message, duration = 2000) => {
+                saveStatus.textContent = message;
+                saveStatus.classList.add('show');
+                setTimeout(() => saveStatus.classList.remove('show'), duration);
+            };
+
+            // ★ ATUALIZADO: Função para aplicar os dados carregados na página
+            const updateDOM = (data) => {
+                document.getElementById('profile-name').textContent = data['profile-name'];
+                document.getElementById('profile-tagline').textContent = data['profile-tagline'];
+                document.getElementById('profile-picture-img').src = data['profile-picture'];
+                
+                document.getElementById('link-text-1').textContent = data['link1-text'];
+                document.getElementById('link-1').href = data['link1-href'];
+                
+                document.getElementById('link-text-2').textContent = data['link2-text'];
+                document.getElementById('link-2').href = data['link2-href'];
+
+                document.getElementById('link-text-3.1').textContent = data['link3-text1'];
+                document.getElementById('link-text-3.2').textContent = data['link3-text2'];
+                document.getElementById('link-3').href = data['link3-href'];
+            };
+            
+            // ★ NOVO: Função para carregar dados do JSONBin
+            const loadData = async () => {
+                try {
+                    const response = await fetch(`${JSONBIN_URL}/latest`);
+                    if (!response.ok) throw new Error(`Erro ao carregar: ${response.statusText}`);
+                    const result = await response.json();
+                    currentData = result.record; // Armazena os dados carregados
+                    updateDOM(currentData);
+                } catch (error) {
+                    console.error('Falha ao carregar dados:', error);
+                    alert('Não foi possível carregar os dados do site. Verifique sua conexão e a configuração do JSONBin.');
                 }
             };
             
+            // ★ NOVO: Função para salvar dados no JSONBin
+            const saveData = async () => {
+                showStatus('Salvando...', 60000); // Mostra "Salvando..." por até 1 minuto
+                try {
+                    const response = await fetch(JSONBIN_URL, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Master-Key': JSONBIN_API_KEY
+                        },
+                        body: JSON.stringify(currentData)
+                    });
+                    if (!response.ok) throw new Error(`Erro ao salvar: ${response.statusText}`);
+                    showStatus('Salvo com sucesso!');
+                } catch (error) {
+                    console.error('Falha ao salvar dados:', error);
+                    showStatus('Erro ao salvar!', 3000);
+                    alert('Não foi possível salvar as alterações. Verifique sua conexão e a configuração do JSONBin.');
+                }
+            };
+
             const enterAdminMode = () => { pageBody.classList.add('admin-mode'); localStorage.setItem('isAdmin', 'true'); };
             const exitAdminMode = () => { pageBody.classList.remove('admin-mode'); localStorage.removeItem('isAdmin'); };
-            
             const showPinModal = () => { pinInput.value = ''; pinError.innerHTML = ' '; pinModalOverlay.classList.remove('hidden'); pinInput.focus(); };
-            const hidePinModal = () => { pinModalOverlay.classList.add('hidden'); };
-            
+            const hidePinModal = () => pinModalOverlay.classList.add('hidden');
+
             const checkPin = () => {
                 if (pinInput.value === AUTHOR_PIN) {
                     enterAdminMode();
@@ -247,42 +275,17 @@
                 }
             };
 
-            const editText = (key) => {
-                const config = EDITABLE_ELEMENTS[key];
-                const element = document.querySelector(config.selector);
-                const currentValue = element.textContent;
-                const newValue = prompt(`Editar "${currentValue}":`, currentValue);
-                if (newValue !== null && newValue !== currentValue) {
-                    element.textContent = newValue;
-                    localStorage.setItem(key, newValue);
-                }
-            };
-            
-            // ★ NOVO: Função genérica para editar atributos (URL da foto, links, etc.)
-            const editAttribute = (key, promptMessage) => {
-                const config = EDITABLE_ELEMENTS[key];
-                const element = document.querySelector(config.selector);
-                const currentValue = element.getAttribute(config.attribute);
+            // ★ ATUALIZADO: Funções de edição agora modificam `currentData` e chamam `saveData`
+            const editValue = (key, promptMessage) => {
+                const currentValue = currentData[key];
                 const newValue = prompt(promptMessage, currentValue);
-                // Verifica se o valor é novo e não está vazio
-                if (newValue && newValue.trim() !== '' && newValue !== currentValue) {
-                    element.setAttribute(config.attribute, newValue);
-                    localStorage.setItem(key, newValue);
+                if (newValue !== null && newValue !== currentValue) {
+                    currentData[key] = newValue;
+                    updateDOM(currentData); // Atualiza a tela imediatamente
+                    saveData(); // Salva no banco de dados online
                 }
             };
 
-            const editLink = (id) => {
-                if (id === '3') { // Caso especial do link de e-mail com duas linhas
-                    editText(`link${id}-text1`);
-                    editText(`link${id}-text2`);
-                    editAttribute(`link${id}-href`, `Editar E-mail (mailto:seuemail@site.com):`);
-                } else {
-                    editText(`link${id}-text`);
-                    editAttribute(`link${id}-href`, `Editar URL do Link ${id}:`);
-                }
-            };
-            
-            // ★ ATUALIZADO: O listener de eventos agora identifica o que editar
             document.querySelectorAll('.edit-icon').forEach(icon => {
                 icon.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -290,18 +293,22 @@
                     const targetKey = icon.dataset.edit;
                     const linkId = icon.dataset.editLink;
 
-                    if (targetKey === 'profile-picture') {
-                        editAttribute('profile-picture', 'Insira a URL da nova imagem de perfil:');
-                    } else if (targetKey) {
-                        editText(targetKey);
+                    if (targetKey) {
+                        editValue(targetKey, `Editar ${targetKey}:`);
                     } else if (linkId) {
-                        editLink(linkId);
+                        if (linkId === '3') {
+                            editValue(`link${linkId}-text1`, 'Editar Título do E-mail:');
+                            editValue(`link${linkId}-text2`, 'Editar Endereço do E-mail:');
+                            editValue(`link${linkId}-href`, 'Editar Link do E-mail (mailto:):');
+                        } else {
+                            editValue(`link${linkId}-text`, `Editar Texto do Link ${linkId}:`);
+                            editValue(`link${linkId}-href`, `Editar URL do Link ${linkId}:`);
+                        }
                     }
                 });
             });
 
             document.getElementById('exit-admin-button').addEventListener('click', exitAdminMode);
-            
             pinSubmit.addEventListener('click', checkPin);
             pinInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') checkPin(); });
             pinCancel.addEventListener('click', hidePinModal);
@@ -310,10 +317,10 @@
             let clickCount = 0;
             let clickTimer = null;
             pageFooter.addEventListener('click', () => {
-                if (pageBody.classList.contains('admin-mode')) return; // Não faz nada se já estiver no modo admin
+                if (pageBody.classList.contains('admin-mode')) return;
                 clickCount++;
                 if (clickTimer) clearTimeout(clickTimer);
-                clickTimer = setTimeout(() => { clickCount = 0; }, 2000); // Reseta após 2 segundos
+                clickTimer = setTimeout(() => { clickCount = 0; }, 2000);
                 if (clickCount === 5) {
                     clickCount = 0;
                     clearTimeout(clickTimer);
@@ -321,10 +328,13 @@
                 }
             });
 
-            loadData();
-            if (localStorage.getItem('isAdmin') === 'true') enterAdminMode();
-
-            // Efeito 3D do Card
+            // Inicialização da página
+            loadData(); // Carrega os dados do banco de dados online ao iniciar
+            if (localStorage.getItem('isAdmin') === 'true') {
+                enterAdminMode(); // Mantém o modo admin se já estava logado
+            }
+            
+            // Efeito 3D do Card (sem alterações)
             const card = document.querySelector('.card-container');
             if (window.matchMedia('(pointer: fine)').matches) { card.addEventListener('mousemove', (e) => { const rect = card.getBoundingClientRect(); const x = e.clientX - rect.left - rect.width / 2; const y = e.clientY - rect.top - rect.height / 2; const rotateX = (y / (rect.height / 2)) * -8; const rotateY = (x / (rect.width / 2)) * 8; card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`; card.style.boxShadow = `0 20px 50px ${getComputedStyle(card).getPropertyValue('--shadow-color')}`; }); card.addEventListener('mouseleave', () => { card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)'; card.style.boxShadow = `0 10px 40px ${getComputedStyle(card).getPropertyValue('--shadow-color')}`; }); }
         });
