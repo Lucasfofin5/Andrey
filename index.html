@@ -11,9 +11,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <style>
-        /* =================================================================== */
-        /* TEMAS E VARIÁVEIS DE COR */
-        /* =================================================================== */
         :root { /* Tema Escuro (Padrão) */
             --bg-color: #1a1a1d; --card-color: #242526; --primary-text-color: #f5f5f5;
             --secondary-text-color: #b0b3b8; --accent-color: #3498db; --accent-color-hover: #2980b9;
@@ -33,9 +30,6 @@
             --header-text-shadow: 0 0 5px var(--accent-color), 0 0 10px var(--accent-color);
         }
 
-        /* =================================================================== */
-        /* ESTILOS GERAIS */
-        /* =================================================================== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body {
@@ -52,32 +46,16 @@
             transition: all 0.3s ease; position: relative;
         }
         
-        .theme-switcher {
-            position: absolute; top: 15px; right: 15px; display: flex; gap: 8px;
-            background-color: rgba(0,0,0,0.1); padding: 5px; border-radius: 50px;
-        }
-        .theme-button {
-            background: none; border: none; color: var(--secondary-text-color);
-            cursor: pointer; font-size: 1em; width: 30px; height: 30px;
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            transition: all 0.2s ease;
-        }
+        .theme-switcher { position: absolute; top: 15px; right: 15px; display: flex; gap: 8px; background-color: rgba(0,0,0,0.1); padding: 5px; border-radius: 50px; }
+        .theme-button { background: none; border: none; color: var(--secondary-text-color); cursor: pointer; font-size: 1em; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
         .theme-button:hover { color: var(--primary-text-color); }
         .theme-button.active { color: var(--accent-color); background-color: rgba(255,255,255,0.1); }
 
         .profile { margin-bottom: 30px; margin-top: 30px; position: relative; }
         .profile-picture-container { position: relative; display: inline-block; margin-bottom: 20px; }
-        .profile-picture {
-            width: 140px; height: 140px; object-fit: cover; border-radius: 50%;
-            border: 4px solid var(--accent-color); margin: 0 auto;
-            box-shadow: 0 0 30px var(--accent-shadow-color);
-            transition: transform 0.3s cubic-bezier(0.215, 0.610, 0.355, 1), border-color 0.3s ease;
-        }
+        .profile-picture { width: 140px; height: 140px; object-fit: cover; border-radius: 50%; border: 4px solid var(--accent-color); margin: 0 auto; box-shadow: 0 0 30px var(--accent-shadow-color); transition: transform 0.3s cubic-bezier(0.215, 0.610, 0.355, 1), border-color 0.3s ease; }
         .profile-picture:hover { transform: scale(1.05) rotate(3deg); }
-        .profile h1 {
-            font-size: 2.2em; font-weight: 700; margin-bottom: 8px; line-height: 1.2;
-            text-shadow: var(--header-text-shadow); transition: text-shadow 0.3s ease;
-        }
+        .profile h1 { font-size: 2.2em; font-weight: 700; margin-bottom: 8px; line-height: 1.2; text-shadow: var(--header-text-shadow); transition: text-shadow 0.3s ease; }
         .profile p { color: var(--secondary-text-color); font-size: 1.1em; font-weight: 300; transition: color 0.3s ease; }
         .profile h1, .profile p { position: relative; display: inline-block; }
 
@@ -91,35 +69,15 @@
         .link-text-complex small { font-size: 0.8em; font-weight: 300; opacity: 0.7; margin-top: 2px; }
         .links li { opacity: 0; animation: entrance-pop-in 0.7s cubic-bezier(0.215, 0.610, 0.355, 1) forwards; animation-delay: calc(var(--delay-order) * 100ms + 0.4s); }
         
-        /* ★ ATUALIZADO: Estilos premium para o botão iFood, agora dentro da lista */
-        #ifood-link {
-            background: linear-gradient(175deg, #fa1d2d, #d01825);
-            color: #ffffff;
-            font-weight: 700;
-            border: none; /* A borda é substituída pelo brilho */
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15);
-            animation: pulse-glow 2.5s infinite;
-        }
-        #ifood-link:hover {
-            background: linear-gradient(175deg, #ff3c4a, #e0202f);
-            animation: none; /* Para a animação de brilho para dar prioridade à sombra do hover */
-            box-shadow: 0 10px 25px rgba(234, 29, 44, 0.5); /* Sombra mais forte no hover */
-            transform: translateY(-5px) scale(1.03); /* Mantém a interação de levantar */
-        }
-        #ifood-link:hover .icon {
-            transform: scale(1.2) rotate(-8deg);
-        }
+        #ifood-link { background: linear-gradient(175deg, #fa1d2d, #d01825); color: #ffffff; font-weight: 700; border: none; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15); animation: pulse-glow 2.5s infinite; }
+        #ifood-link:hover { background: linear-gradient(175deg, #ff3c4a, #e0202f); animation: none; box-shadow: 0 10px 25px rgba(234, 29, 44, 0.5); transform: translateY(-5px) scale(1.03); }
+        #ifood-link:hover .icon { transform: scale(1.2) rotate(-8deg); }
 
         .footer { margin-top: 40px; font-size: 0.9em; color: var(--secondary-text-color); width: 100%; transition: color 0.3s ease; cursor: pointer; }
         .footer .fa-heart { color: var(--accent-color); animation: pulse 1.5s infinite; }
         
         #like-section { margin-top: 25px; padding-top: 25px; border-top: 1px solid var(--border-color); transition: border-color 0.3s ease; }
-        #like-button {
-            background-color: rgba(255, 255, 255, 0.05); color: var(--primary-text-color);
-            border: 1px solid var(--border-color); padding: 10px 20px; border-radius: 50px;
-            cursor: pointer; font-family: 'Poppins', sans-serif; font-weight: 600;
-            font-size: 1em; transition: all 0.2s ease;
-        }
+        #like-button { background-color: rgba(255, 255, 255, 0.05); color: var(--primary-text-color); border: 1px solid var(--border-color); padding: 10px 20px; border-radius: 50px; cursor: pointer; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 1em; transition: all 0.2s ease; }
         #like-button:hover { background-color: var(--border-color); transform: translateY(-2px); }
         #like-button.liked { background-color: var(--accent-color); border-color: var(--accent-color); color: white; }
         #like-button .fa-thumbs-up { margin-right: 8px; }
@@ -156,12 +114,7 @@
         @keyframes entrance-pop-in { from { opacity: 0; transform: translateY(20px) scale(0.95); filter: blur(3px); } to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } }
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
         @keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); } 20%, 40%, 60%, 80% { transform: translateX(10px); } }
-        /* ★ ATUALIZADO: Animação de brilho para o botão iFood */
-        @keyframes pulse-glow {
-            0%   { box-shadow: 0 0 5px rgba(234, 29, 44, 0.5), inset 0 0 2px rgba(255,255,255,0.1); }
-            50%  { box-shadow: 0 0 12px rgba(255, 45, 60, 0.8), inset 0 0 2px rgba(255,255,255,0.1); }
-            100% { box-shadow: 0 0 5px rgba(234, 29, 44, 0.5), inset 0 0 2px rgba(255,255,255,0.1); }
-        }
+        @keyframes pulse-glow { 0% { box-shadow: 0 0 5px rgba(234, 29, 44, 0.5), inset 0 0 2px rgba(255,255,255,0.1); } 50% { box-shadow: 0 0 12px rgba(255, 45, 60, 0.8), inset 0 0 2px rgba(255,255,255,0.1); } 100% { box-shadow: 0 0 5px rgba(234, 29, 44, 0.5), inset 0 0 2px rgba(255,255,255,0.1); } }
     </style>
 </head>
 
@@ -185,15 +138,8 @@
         </header>
         
         <section class="links">
-            <!-- ★ ATUALIZADO: Botão iFood agora é o primeiro item da lista principal -->
             <ul>
-                <li style="--delay-order: 0;">
-                    <a id="ifood-link" href="#" target="_blank" rel="noopener noreferrer">
-                        <i class="fa-solid fa-motorcycle icon"></i>
-                        <span id="ifood-text" class="link-text"></span>
-                        <span class="edit-icon" data-edit-special="ifood" title="Editar Link iFood"><i class="fa-solid fa-pencil"></i></span>
-                    </a>
-                </li>
+                <li style="--delay-order: 0;"> <a id="ifood-link" href="#" target="_blank" rel="noopener noreferrer"> <i class="fa-solid fa-motorcycle icon"></i> <span id="ifood-text" class="link-text"></span> <span class="edit-icon" data-edit-special="ifood" title="Editar Link iFood"><i class="fa-solid fa-pencil"></i></span> </a> </li>
                 <li style="--delay-order: 1;"><a id="link-1" href="" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook icon"></i><span id="link-text-1" class="link-text"></span><span class="edit-icon" data-edit-link="1" title="Editar Link"><i class="fa-solid fa-pencil"></i></span></a></li>
                 <li style="--delay-order: 2;"><a id="link-2" href="" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-globe icon"></i><span id="link-text-2" class="link-text"></span><span class="edit-icon" data-edit-link="2" title="Editar Link"><i class="fa-solid fa-pencil"></i></span></a></li>
                 <li style="--delay-order: 3;"><a id="link-3" href=""><i class="fa-solid fa-envelope icon"></i><div class="link-text-complex"><span id="link-text-3.1"></span><small id="link-text-3.2"></small></div><span class="edit-icon" data-edit-link="3" title="Editar Link"><i class="fa-solid fa-pencil"></i></span></a></li>
@@ -206,33 +152,21 @@
         </section>
         
         <footer id="main-footer" class="footer">
-            <div id="like-section">
-                <button id="like-button" title="Curta este perfil!">
-                    <i class="fa-solid fa-thumbs-up"></i><span id="like-count">0</span>
-                </button>
-            </div>
-            <div class="footer-content">
-                <p>Feito com <i class="fa-solid fa-code"></i> e <i class="fa-solid fa-heart"></i></p>
-            </div>
+            <div id="like-section"> <button id="like-button" title="Curta este perfil!"> <i class="fa-solid fa-thumbs-up"></i><span id="like-count">0</span> </button> </div>
+            <div class="footer-content"> <p>Feito com <i class="fa-solid fa-code"></i> e <i class="fa-solid fa-heart"></i></p> </div>
             <div id="admin-controls"><button id="exit-admin-button"><i class="fa-solid fa-lock"></i> Trancar Site</button></div>
         </footer>
     </main>
 
     <div id="pin-modal-overlay" class="pin-modal-overlay" style="display:none !important">
         <div id="pin-modal-box" class="pin-modal">
-            <h3><i class="fa-solid fa-shield-halved"></i> Modo Autor</h3>
-            <p id="pin-error"> </p>
+            <h3><i class="fa-solid fa-shield-halved"></i> Modo Autor</h3> <p id="pin-error"> </p>
             <input type="password" id="pin-input" maxlength="4" pattern="\d*" inputmode="numeric">
-            <div class="pin-modal-actions">
-                <button id="pin-cancel">Cancelar</button>
-                <button id="pin-submit">Entrar</button>
-            </div>
+            <div class="pin-modal-actions"> <button id="pin-cancel">Cancelar</button> <button id="pin-submit">Entrar</button> </div>
         </div>
     </div>
 
     <script>
-        // O código JavaScript permanece o mesmo da versão anterior, pois a mudança foi apenas visual (CSS e HTML).
-        // Ele está completo abaixo para garantir a funcionalidade total.
         document.addEventListener('DOMContentLoaded', () => {
             const JSONBIN_ID = '684f2cda8a456b7966aeb5d3';
             const JSONBIN_API_KEY = '$2a$10$NICad74I0SXWBZMw15PCleRSa5t8pTeErKGD9xAocMj3fZoWp0TVq';
@@ -267,10 +201,8 @@
                 document.getElementById('profile-name').textContent = data['profile-name'];
                 document.getElementById('profile-tagline').textContent = data['profile-tagline'];
                 document.getElementById('profile-picture-img').src = data['profile-picture'];
-                
                 document.getElementById('ifood-text').textContent = data['ifood-text'];
                 document.getElementById('ifood-link').href = data['ifood-href'];
-
                 for (let i = 1; i <= 8; i++) {
                     const linkEl = document.getElementById(`link-${i}`);
                     if (!linkEl) continue;
@@ -308,7 +240,6 @@
                 if (isSaving) return;
                 isSaving = true;
                 if (!isLikeAction) showStatus('Salvando...', 60000);
-                
                 try {
                     const response = await fetch(JSONBIN_URL, {
                         method: 'PUT',
@@ -317,12 +248,8 @@
                     });
                     if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
                     if (!isLikeAction) showStatus('Salvo com sucesso!');
-                } catch (error) {
-                    console.error('Falha ao salvar dados:', error);
-                    showStatus('Erro ao salvar!', 3000);
-                } finally {
-                    isSaving = false;
-                }
+                } catch (error) { console.error('Falha ao salvar dados:', error); showStatus('Erro ao salvar!', 3000); } 
+                finally { isSaving = false; }
             };
 
             likeButton.addEventListener('click', (e) => {
@@ -341,16 +268,12 @@
             });
 
             themeButtons.forEach(button => {
-                button.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    setTheme(button.dataset.theme);
-                });
+                button.addEventListener('click', (e) => { e.stopPropagation(); setTheme(button.dataset.theme); });
             });
 
             document.getElementById('link-8').addEventListener('click', (e) => {
                 e.preventDefault();
-                const discordUsername = currentData['link8-text2'];
-                navigator.clipboard.writeText(discordUsername).then(() => showStatus('Username copiado!'));
+                navigator.clipboard.writeText(currentData['link8-text2']).then(() => showStatus('Username copiado!'));
             });
             
             const pinModalOverlay = document.getElementById('pin-modal-overlay');
@@ -358,16 +281,12 @@
             const pinInput = document.getElementById('pin-input');
             const showPinModal = () => {
                 pinModalOverlay.style.display = 'flex';
-                setTimeout(() => {
-                    pinModalOverlay.style.opacity = 1;
-                }, 10);
+                setTimeout(() => { pinModalOverlay.style.opacity = 1; }, 10);
                 pinInput.focus();
             };
             const hidePinModal = () => {
                 pinModalOverlay.style.opacity = 0;
-                setTimeout(() => {
-                    pinModalOverlay.style.display = 'none';
-                }, 300);
+                setTimeout(() => { pinModalOverlay.style.display = 'none'; }, 300);
             };
 
             let clickCount = 0;
@@ -378,11 +297,7 @@
                 clickCount++;
                 if (clickTimer) clearTimeout(clickTimer);
                 clickTimer = setTimeout(() => { clickCount = 0; }, 2000);
-                if (clickCount === 5) {
-                    clickCount = 0;
-                    clearTimeout(clickTimer);
-                    showPinModal();
-                }
+                if (clickCount === 5) { clickCount = 0; clearTimeout(clickTimer); showPinModal(); }
             });
             
             document.querySelectorAll('.edit-icon').forEach(icon => {
@@ -391,31 +306,18 @@
                     const linkId = icon.dataset.editLink;
                     const specialKey = icon.dataset.editSpecial;
                     const textKey = icon.dataset.edit;
-
                     const editValue = (key, promptMessage) => {
                         const currentValue = currentData[key];
                         const newValue = prompt(promptMessage, currentValue);
-                        if (newValue !== null && newValue !== currentValue) {
-                            currentData[key] = newValue;
-                            updateDOM(currentData);
-                            saveData();
-                        }
+                        if (newValue !== null && newValue !== currentValue) { currentData[key] = newValue; updateDOM(currentData); saveData(); }
                     };
-
-                    if (textKey) {
-                        editValue(textKey, `Editar ${textKey}:`);
-                    } else if (specialKey === 'ifood') {
-                        editValue('ifood-text', 'Editar Texto do Botão iFood:');
-                        editValue('ifood-href', 'Editar URL do iFood:');
-                    } else if (linkId) {
+                    if (textKey) { editValue(textKey, `Editar ${textKey}:`); } 
+                    else if (specialKey === 'ifood') { editValue('ifood-text', 'Editar Texto do Botão iFood:'); editValue('ifood-href', 'Editar URL do iFood:'); } 
+                    else if (linkId) {
                         if (linkId === '3' || linkId === '8') {
-                            editValue(`link${linkId}-text1`, `Editar Título do Link ${linkId}:`);
-                            editValue(`link${linkId}-text2`, `Editar Subtexto do Link ${linkId}:`);
-                            if (linkId === '3') editValue('link3-href', 'Editar Link do E-mail (mailto:):');
-                        } else {
-                            editValue(`link${linkId}-text`, `Editar Texto do Link ${linkId}:`);
-                            editValue(`link${linkId}-href`, `Editar URL do Link ${linkId}:`);
-                        }
+                            editValue(`link${linkId}-text1`, `Editar Título:`); editValue(`link${linkId}-text2`, `Editar Subtexto:`);
+                            if (linkId === '3') editValue('link3-href', 'Editar Link (mailto:):');
+                        } else { editValue(`link${linkId}-text`, `Editar Texto:`); editValue(`link${linkId}-href`, `Editar URL:`); }
                     }
                 });
             });
