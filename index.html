@@ -73,7 +73,6 @@
         #ifood-link:hover { background: linear-gradient(175deg, #ff3c4a, #e0202f); animation: none; box-shadow: 0 10px 25px rgba(234, 29, 44, 0.5); transform: translateY(-5px) scale(1.03); }
         #ifood-link:hover .icon { transform: scale(1.2) rotate(-8deg); }
 
-        /* ★ NOVO: Estilos da Boombox */
         #boombox-section {
             margin-top: 25px; padding: 20px; border-top: 1px solid var(--border-color);
             background-color: rgba(0,0,0,0.1); border-radius: var(--border-radius);
@@ -161,7 +160,8 @@
 
 <body>
     <div id="save-status"></div>
-    <audio id="audio-player" loop style="display: none;"></audio>
+    <!-- ★ CORRIGIDO: Adicionado crossorigin="anonymous" para o visualizador de áudio funcionar corretamente -->
+    <audio id="audio-player" loop style="display: none;" crossorigin="anonymous"></audio>
 
     <main class="card-container">
         <div class="theme-switcher">
@@ -194,7 +194,6 @@
         </section>
         
         <footer id="main-footer" class="footer">
-            <!-- ★ ATUALIZADO: Estrutura da Boombox -->
             <section id="boombox-section">
                 <div class="boombox-art"><i class="fa-solid fa-music"></i></div>
                 <div class="boombox-info-wrapper">
@@ -209,9 +208,7 @@
                          <div class="player-controls">
                             <button id="play-pause-btn" title="Play/Pause"><i class="fa-solid fa-play"></i></button>
                         </div>
-                        <div class="audio-visualizer" id="audio-visualizer">
-                            <!-- Barras do visualizador serão geradas por JS -->
-                        </div>
+                        <div class="audio-visualizer" id="audio-visualizer"></div>
                     </div>
                 </div>
             </section>
@@ -236,7 +233,7 @@
             const JSONBIN_API_KEY = '$2a$10$NICad74I0SXWBZMw15PCleRSa5t8pTeErKGD9xAocMj3fZoWp0TVq';
             const AUTHOR_PIN = '5381';
             
-            // ★ ATUALIZADO: Lógica completa da Boombox
+            // ★ CORRIGIDO: Lógica da Boombox refeita para ser mais robusta
             const audioPlayer = document.getElementById('audio-player');
             const playPauseBtn = document.getElementById('play-pause-btn');
             const songTitleEl = document.getElementById('song-title');
@@ -252,20 +249,12 @@
             };
             
             let audioContext, analyser, source, dataArray;
-            let visualizerInitialized = false;
+            let isAudioInitialized = false;
             const NUM_VISUALIZER_BARS = 12;
 
-            // Gera as barras do visualizador dinamicamente
-            for (let i = 0; i < NUM_VISUALIZER_BARS; i++) {
-                const bar = document.createElement('div');
-                bar.classList.add('visualizer-bar');
-                visualizerContainer.appendChild(bar);
-            }
-            const visualizerBars = document.querySelectorAll('.visualizer-bar');
+            function initAudioSystem() {
+                if (isAudioInitialized) return;
 
-            function initAudioAndVisualizer() {
-                if (visualizerInitialized) return;
-                
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 source = audioContext.createMediaElementSource(audioPlayer);
                 analyser = audioContext.createAnalyser();
@@ -273,63 +262,72 @@
                 source.connect(analyser);
                 analyser.connect(audioContext.destination);
                 
-                analyser.fftSize = 64; // Menor valor para barras mais reativas
+                analyser.fftSize = 64;
                 const bufferLength = analyser.frequencyBinCount;
                 dataArray = new Uint8Array(bufferLength);
                 
-                visualizerInitialized = true;
-                drawVisualizer(); // Inicia o loop de animação
+                // Gera as barras do visualizador uma única vez
+                for (let i = 0; i < NUM_VISUALIZER_BARS; i++) {
+                    const bar = document.createElement('div');
+                    bar.classList.add('visualizer-bar');
+                    visualizerContainer.appendChild(bar);
+                }
+                
+                isAudioInitialized = true;
+                animateVisualizer();
             }
 
-            function drawVisualizer() {
-                if (!visualizerInitialized || audioPlayer.paused) {
-                    // Pausa a animação se a música estiver pausada
-                    visualizerBars.forEach(bar => bar.style.height = '5%');
-                    requestAnimationFrame(drawVisualizer);
+            function animateVisualizer() {
+                if (!isAudioInitialized) return;
+                
+                requestAnimationFrame(animateVisualizer);
+                
+                if (audioPlayer.paused) {
+                    // Reseta as barras para o estado inicial se a música estiver pausada
+                    visualizerContainer.childNodes.forEach(bar => bar.style.height = '5%');
                     return;
                 }
                 
-                requestAnimationFrame(drawVisualizer);
                 analyser.getByteFrequencyData(dataArray);
-
+                const bars = visualizerContainer.childNodes;
                 const barStep = Math.floor(dataArray.length / NUM_VISUALIZER_BARS);
+
                 for(let i = 0; i < NUM_VISUALIZER_BARS; i++) {
-                    const bar = visualizerBars[i];
+                    const bar = bars[i];
                     if (bar) {
-                        // Mapeia o valor de frequência para uma altura entre 5% e 100%
                         const height = Math.max(5, (dataArray[i * barStep] / 255) * 100);
                         bar.style.height = `${height}%`;
                     }
                 }
             }
+            
+            playPauseBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
 
-            function togglePlayPause() {
-                if (!visualizerInitialized) {
-                    // Na primeira vez que o usuário clica, inicializamos o AudioContext.
-                    // Isso é necessário devido às políticas de autoplay dos navegadores.
-                    initAudioAndVisualizer();
+                // Inicializa o sistema de áudio no primeiro clique do usuário
+                if (!isAudioInitialized) {
+                    initAudioSystem();
                 }
 
+                // Garante que o AudioContext seja retomado se estiver suspenso
                 if (audioContext.state === 'suspended') {
                     audioContext.resume();
                 }
 
                 if (audioPlayer.paused) {
-                    audioPlayer.play().catch(e => console.error("Erro ao tocar áudio:", e));
+                    audioPlayer.play().catch(err => console.error("Erro ao tocar áudio:", err));
                 } else {
                     audioPlayer.pause();
                 }
-            }
-            
+            });
+
             audioPlayer.addEventListener('play', () => {
                 playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-                if(visualizerInitialized) drawVisualizer(); // Garante que o visualizador reinicie
             });
             audioPlayer.addEventListener('pause', () => {
                 playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
             });
             
-            // Atualiza a barra de progresso
             audioPlayer.addEventListener('timeupdate', () => {
                 if (audioPlayer.duration) {
                     const progressPercent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
@@ -337,27 +335,19 @@
                 }
             });
 
-            // Permite clicar na barra de progresso para avançar/retroceder
             progressContainer.addEventListener('click', (e) => {
-                if (!audioPlayer.duration) return;
+                if (!isAudioInitialized || !audioPlayer.duration) return;
                 const rect = progressContainer.getBoundingClientRect();
                 const clickX = e.clientX - rect.left;
-                const width = rect.width;
-                const newTime = (clickX / width) * audioPlayer.duration;
+                const newTime = (clickX / rect.width) * audioPlayer.duration;
                 audioPlayer.currentTime = newTime;
             });
             
-            playPauseBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                togglePlayPause();
-            });
-            
-            // Carrega a música no início
             songTitleEl.textContent = lofiTrack.title;
             songArtistEl.textContent = lofiTrack.artist;
             audioPlayer.src = lofiTrack.src;
             
-            // ... (O resto do código JS permanece o mesmo, sem alterações)
+            // --- O RESTANTE DO CÓDIGO JS PERMANECE O MESMO ---
             const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
             const LIKE_STORAGE_KEY = 'userHasLikedProfile_v2'; 
             const THEME_STORAGE_KEY = 'selectedTheme_v1';
