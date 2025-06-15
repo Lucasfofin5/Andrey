@@ -46,7 +46,7 @@
             transition: all 0.3s ease; position: relative;
         }
         
-        .theme-switcher { position: absolute; top: 15px; right: 15px; display: flex; gap: 8px; background-color: rgba(0,0,0,0.1); padding: 5px; border-radius: 50px; }
+        .theme-switcher { position: absolute; top: 15px; right: 15px; display: flex; gap: 8px; background-color: rgba(0,0,0,0.1); padding: 5px; border-radius: 50px; z-index: 10; }
         .theme-button { background: none; border: none; color: var(--secondary-text-color); cursor: pointer; font-size: 1em; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
         .theme-button:hover { color: var(--primary-text-color); }
         .theme-button.active { color: var(--accent-color); background-color: rgba(255,255,255,0.1); }
@@ -73,7 +73,6 @@
         #ifood-link:hover { background: linear-gradient(175deg, #ff3c4a, #e0202f); animation: none; box-shadow: 0 10px 25px rgba(234, 29, 44, 0.5); transform: translateY(-5px) scale(1.03); }
         #ifood-link:hover .icon { transform: scale(1.2) rotate(-8deg); }
 
-        /* ★ NOVO: Estilos para o Player de Música */
         #music-player-section { margin-top: 25px; padding-top: 25px; border-top: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; gap: 15px; }
         #song-info { text-align: left; flex-grow: 1; min-width: 0; }
         #song-title { font-weight: 600; font-size: 0.95em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -94,11 +93,37 @@
 
         .edit-icon { display: none; margin-left: 10px; color: var(--secondary-text-color); cursor: pointer; font-size: 0.7em; transition: all 0.2s ease; vertical-align: middle; }
         
+        .profile-picture-container .edit-icon { position: absolute; bottom: 5px; right: 5px; background-color: var(--card-color); border: 2px solid var(--accent-color); border-radius: 50%; width: 35px; height: 35px; display: none; align-items: center; justify-content: center; font-size: 1em; margin-left: 0; }
+        .profile-picture-container .edit-icon i { margin: 0; }
+        body.admin-mode .profile-picture-container .edit-icon { display: flex; }
+        #admin-controls { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border-color); transition: border-color 0.3s ease; }
+        #exit-admin-button { background: none; border: 1px solid var(--accent-color-hover); color: var(--accent-color-hover); padding: 8px 15px; border-radius: var(--border-radius); cursor: pointer; font-weight: 600; transition: all 0.2s ease; }
+        #exit-admin-button:hover { background: var(--accent-color-hover); color: var(--card-color); }
+        body.admin-mode .edit-icon { display: inline-block; }
+        body.admin-mode #admin-controls { display: block; }
+        
+        .pin-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
+        .pin-modal-overlay:not(.hidden) { opacity: 1; pointer-events: auto; }
+        .pin-modal { background: var(--card-color); padding: 30px; border-radius: var(--border-radius); width: 90%; max-width: 320px; text-align: center; border: 1px solid var(--border-color); transform: scale(0.9); transition: transform 0.3s ease; }
+        .pin-modal-overlay:not(.hidden) .pin-modal { transform: scale(1); }
+        .pin-modal.shake { animation: shake 0.5s; }
+        #pin-input { width: 100%; padding: 15px; border-radius: var(--border-radius); border: 2px solid var(--border-color); background: var(--bg-color); color: var(--primary-text-color); text-align: center; font-size: 2em; letter-spacing: 15px; margin-bottom: 10px; font-family: 'Poppins', sans-serif; }
+        #pin-input:focus { border-color: var(--accent-color); outline: none; }
+        #pin-error { color: #e74c3c; min-height: 20px; font-weight: 600; }
+        #pin-modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+        #pin-modal-actions button { flex-grow: 1; padding: 12px; border: none; border-radius: var(--border-radius); font-weight: 600; cursor: pointer; transition: all 0.2s ease; font-family: var(--font-family); }
+        #pin-submit { background-color: var(--accent-color); color: white; }
+        #pin-submit:hover { background-color: var(--accent-color-hover); }
+        #pin-cancel { background-color: var(--border-color); color: var(--secondary-text-color); }
+        #pin-cancel:hover { background-color: #4a4b4d; }
+        #save-status { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: var(--accent-color); color: white; padding: 10px 20px; border-radius: var(--border-radius); font-weight: 600; box-shadow: 0 4px 15px var(--accent-shadow-color); opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease; z-index: 2000; pointer-events: none; }
+        #save-status.show { opacity: 1; transform: translateX(-50%) translateY(-10px); }
+
         @keyframes entrance-pop-in { from { opacity: 0; transform: translateY(20px) scale(0.95); filter: blur(3px); } to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } }
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
         @keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); } 20%, 40%, 60%, 80% { transform: translateX(10px); } }
         @keyframes pulse-glow { 0% { box-shadow: 0 0 5px rgba(234, 29, 44, 0.5), inset 0 0 2px rgba(255,255,255,0.1); } 50% { box-shadow: 0 0 12px rgba(255, 45, 60, 0.8), inset 0 0 2px rgba(255,255,255,0.1); } 100% { box-shadow: 0 0 5px rgba(234, 29, 44, 0.5), inset 0 0 2px rgba(255,255,255,0.1); } }
-        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-25%); } }
+        @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-25%); } }
     </style>
 </head>
 
@@ -106,8 +131,22 @@
     <div id="save-status"></div>
 
     <main class="card-container">
-        <div class="theme-switcher"><!-- ... botões de tema ... --></div>
-        <header class="profile"><!-- ... seu perfil ... --></header>
+        <!-- ★ CORRIGIDO: HTML completo do seletor de temas -->
+        <div class="theme-switcher">
+            <button class="theme-button" data-theme="light" title="Modo Claro"><i class="fa-solid fa-sun"></i></button>
+            <button class="theme-button" data-theme="dark" title="Modo Escuro"><i class="fa-solid fa-moon"></i></button>
+            <button class="theme-button" data-theme="neon" title="Modo Neon"><i class="fa-solid fa-bolt"></i></button>
+        </div>
+
+        <!-- ★ CORRIGIDO: HTML completo do perfil -->
+        <header class="profile">
+            <div class="profile-picture-container">
+                <img src="" alt="Ilustração de perfil" class="profile-picture" id="profile-picture-img">
+                <span class="edit-icon" data-edit="profile-picture" title="Editar Foto (URL)"><i class="fa-solid fa-camera"></i></span>
+            </div>
+            <h1><span id="profile-name">Carregando...</span><span class="edit-icon" data-edit="profile-name" title="Editar Nome"><i class="fa-solid fa-pencil"></i></span></h1>
+            <p><span id="profile-tagline"></span><span class="edit-icon" data-edit="profile-tagline" title="Editar Tagline"><i class="fa-solid fa-pencil"></i></span></p>
+        </header>
         
         <section class="links">
             <ul>
@@ -124,43 +163,47 @@
         </section>
         
         <footer id="main-footer" class="footer">
-            <!-- ★ NOVO: Seção do Player de Música -->
             <section id="music-player-section">
-                <div id="song-info">
-                    <div id="song-title">Lofi Boombox</div>
-                </div>
+                <div id="song-info"> <div id="song-title">Lofi Boombox</div> </div>
                 <div class="player-controls">
                     <button id="prev-btn" title="Anterior"><i class="fa-solid fa-backward-step"></i></button>
                     <button id="play-pause-btn" title="Play/Pause"><i class="fa-solid fa-play"></i></button>
                     <button id="next-btn" title="Próxima"><i class="fa-solid fa-forward-step"></i></button>
                 </div>
             </section>
-
             <div id="like-section"> <button id="like-button" title="Curta este perfil!"> <i class="fa-solid fa-thumbs-up"></i><span id="like-count">0</span> </button> </div>
             <div class="footer-content"> <p>Feito com <i class="fa-solid fa-code"></i> e <i class="fa-solid fa-heart"></i></p> </div>
             <div id="admin-controls"><button id="exit-admin-button"><i class="fa-solid fa-lock"></i> Trancar Site</button></div>
         </footer>
     </main>
 
-    <div id="pin-modal-overlay" class="pin-modal-overlay" style="display:none !important"><!-- ... modal de pin ... --></div>
+    <!-- ★ CORRIGIDO: HTML completo do modal de PIN -->
+    <div id="pin-modal-overlay" class="pin-modal-overlay" style="display:none !important">
+        <div id="pin-modal-box" class="pin-modal">
+            <h3><i class="fa-solid fa-shield-halved"></i> Modo Autor</h3>
+            <p id="pin-error"> </p>
+            <input type="password" id="pin-input" maxlength="4" pattern="\d*" inputmode="numeric">
+            <div class="pin-modal-actions">
+                <button id="pin-cancel">Cancelar</button>
+                <button id="pin-submit">Entrar</button>
+            </div>
+        </div>
+    </div>
 
     <script>
+        // O código JavaScript permanece o mesmo da versão anterior, pois o erro foi apenas no HTML.
+        // Ele está completo abaixo para garantir a funcionalidade total.
         document.addEventListener('DOMContentLoaded', () => {
-            // ... (Código de configuração JSONBin, temas, etc. permanece igual)
             const JSONBIN_ID = '684f2cda8a456b7966aeb5d3';
             const JSONBIN_API_KEY = '$2a$10$NICad74I0SXWBZMw15PCleRSa5t8pTeErKGD9xAocMj3fZoWp0TVq';
             const AUTHOR_PIN = '5381';
-
-            // ★ NOVO: Lógica do Player de Música
+            
             const audioPlayer = document.createElement('audio');
             const playPauseBtn = document.getElementById('play-pause-btn');
             const prevBtn = document.getElementById('prev-btn');
             const nextBtn = document.getElementById('next-btn');
             const songTitleEl = document.getElementById('song-title');
             
-            // ★ EDITE SUA PLAYLIST AQUI ★
-            // Adicione ou remova músicas neste formato. Use links diretos para arquivos .mp3.
-            // Fonte das músicas: Pixabay.com (royalty-free)
             const playlist = [
                 { title: "Lofi Chill - Oleksii Kaplunskyi", src: "https://cdn.pixabay.com/audio/2022/02/07/audio_8734a02967.mp3" },
                 { title: "Just Relax - Lesfm", src: "https://cdn.pixabay.com/audio/2022/05/17/audio_dd7c07c134.mp3" },
@@ -171,55 +214,20 @@
             let currentTrackIndex = 0;
             let isPlaying = false;
 
-            function loadTrack(trackIndex) {
-                audioPlayer.src = playlist[trackIndex].src;
-                songTitleEl.textContent = playlist[trackIndex].title;
-                audioPlayer.load();
-            }
+            function loadTrack(trackIndex) { audioPlayer.src = playlist[trackIndex].src; songTitleEl.textContent = playlist[trackIndex].title; audioPlayer.load(); }
+            function playTrack() { isPlaying = true; audioPlayer.play(); playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'; }
+            function pauseTrack() { isPlaying = false; audioPlayer.pause(); playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>'; }
+            function togglePlayPause() { if (isPlaying) { pauseTrack(); } else { playTrack(); } }
+            function nextTrack() { currentTrackIndex = (currentTrackIndex + 1) % playlist.length; loadTrack(currentTrackIndex); playTrack(); }
+            function prevTrack() { currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length; loadTrack(currentTrackIndex); playTrack(); }
 
-            function playTrack() {
-                isPlaying = true;
-                audioPlayer.play();
-                playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-            }
-
-            function pauseTrack() {
-                isPlaying = false;
-                audioPlayer.pause();
-                playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
-            }
-
-            function togglePlayPause() {
-                if (isPlaying) {
-                    pauseTrack();
-                } else {
-                    playTrack();
-                }
-            }
-
-            function nextTrack() {
-                currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
-                loadTrack(currentTrackIndex);
-                playTrack();
-            }
-
-            function prevTrack() {
-                currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
-                loadTrack(currentTrackIndex);
-                playTrack();
-            }
-
-            // Listeners dos controles de música
             playPauseBtn.addEventListener('click', (e) => { e.stopPropagation(); togglePlayPause(); });
             nextBtn.addEventListener('click', (e) => { e.stopPropagation(); nextTrack(); });
             prevBtn.addEventListener('click', (e) => { e.stopPropagation(); prevTrack(); });
             audioPlayer.addEventListener('ended', nextTrack);
             
-            // Carga inicial da primeira música
             loadTrack(currentTrackIndex);
             
-            // O resto do código (carregamento de dados, modo admin, etc.) permanece o mesmo.
-            // ... (código completo aqui para garantir funcionalidade)
             const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
             const LIKE_STORAGE_KEY = 'userHasLikedProfile_v2'; 
             const THEME_STORAGE_KEY = 'selectedTheme_v1';
