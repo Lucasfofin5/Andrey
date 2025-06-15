@@ -52,7 +52,6 @@
             transition: all 0.3s ease; position: relative;
         }
         
-        /* ★ NOVO: Seletor de Tema */
         .theme-switcher {
             position: absolute; top: 15px; right: 15px; display: flex; gap: 8px;
             background-color: rgba(0,0,0,0.1); padding: 5px; border-radius: 50px;
@@ -93,8 +92,8 @@
 
         .links li { opacity: 0; animation: entrance-pop-in 0.7s cubic-bezier(0.215, 0.610, 0.355, 1) forwards; animation-delay: calc(var(--delay-order) * 100ms + 0.4s); }
         
-        .footer { margin-top: 40px; font-size: 0.9em; color: var(--secondary-text-color); width: 100%; transition: color 0.3s ease; }
-        .footer-content { cursor: pointer; }
+        /* ★ ATUALIZADO: O cursor pointer agora está no rodapé principal */
+        .footer { margin-top: 40px; font-size: 0.9em; color: var(--secondary-text-color); width: 100%; transition: color 0.3s ease; cursor: pointer; }
         .footer .fa-heart { color: var(--accent-color); animation: pulse 1.5s infinite; }
         
         #like-section { margin-top: 25px; padding-top: 25px; border-top: 1px solid var(--border-color); transition: border-color 0.3s ease; }
@@ -132,14 +131,19 @@
             opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
         }
         .pin-modal-overlay:not(.hidden) { opacity: 1; pointer-events: auto; }
-        .pin-modal {
-            background: var(--card-color); padding: 30px; border-radius: var(--border-radius);
-            width: 90%; max-width: 320px; text-align: center; border: 1px solid var(--border-color);
-            transform: scale(0.9); transition: transform 0.3s ease;
-        }
+        .pin-modal { background: var(--card-color); padding: 30px; border-radius: var(--border-radius); width: 90%; max-width: 320px; text-align: center; border: 1px solid var(--border-color); transform: scale(0.9); transition: transform 0.3s ease; }
         .pin-modal-overlay:not(.hidden) .pin-modal { transform: scale(1); }
         .pin-modal.shake { animation: shake 0.5s; }
         #pin-input { width: 100%; padding: 15px; border-radius: var(--border-radius); border: 2px solid var(--border-color); background: var(--bg-color); color: var(--primary-text-color); text-align: center; font-size: 2em; letter-spacing: 15px; margin-bottom: 10px; font-family: 'Poppins', sans-serif; }
+        #pin-input:focus { border-color: var(--accent-color); outline: none; }
+        #pin-error { color: #e74c3c; min-height: 20px; font-weight: 600; }
+        #pin-modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+        #pin-modal-actions button { flex-grow: 1; padding: 12px; border: none; border-radius: var(--border-radius); font-weight: 600; cursor: pointer; transition: all 0.2s ease; font-family: var(--font-family); }
+        #pin-submit { background-color: var(--accent-color); color: white; }
+        #pin-submit:hover { background-color: var(--accent-color-hover); }
+        #pin-cancel { background-color: var(--border-color); color: var(--secondary-text-color); }
+        #pin-cancel:hover { background-color: #4a4b4d; }
+
         #save-status {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
             background-color: var(--accent-color); color: white; padding: 10px 20px;
@@ -160,7 +164,6 @@
     <div id="save-status"></div>
 
     <main class="card-container">
-        <!-- ★ NOVO: Seletor de Tema -->
         <div class="theme-switcher">
             <button class="theme-button" data-theme="light" title="Modo Claro"><i class="fa-solid fa-sun"></i></button>
             <button class="theme-button" data-theme="dark" title="Modo Escuro"><i class="fa-solid fa-moon"></i></button>
@@ -184,25 +187,33 @@
                 <li style="--delay-order: 5;"><a id="link-5" href="" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp icon"></i><span id="link-text-5" class="link-text"></span><span class="edit-icon" data-edit-link="5" title="Editar Link"><i class="fa-solid fa-pencil"></i></span></a></li>
                 <li style="--delay-order: 6;"><a id="link-6" href="" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-steam icon"></i><span id="link-text-6" class="link-text"></span><span class="edit-icon" data-edit-link="6" title="Editar Link"><i class="fa-solid fa-pencil"></i></span></a></li>
                 <li style="--delay-order: 7;"><a id="link-7" href="" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-tv icon"></i><span id="link-text-7" class="link-text"></span><span class="edit-icon" data-edit-link="7" title="Editar Link"><i class="fa-solid fa-pencil"></i></span></a></li>
-                <!-- ★ ATUALIZADO: Botão Discord com username visível -->
                 <li style="--delay-order: 8;"><a id="link-8" href="#"><i class="fa-brands fa-discord icon"></i><div class="link-text-complex"><span id="link-text-8.1"></span><small id="link-text-8.2"></small></div><span class="edit-icon" data-edit-link="8" title="Editar Link"><i class="fa-solid fa-pencil"></i></span></a></li>
             </ul>
         </section>
-        <footer class="footer">
+        <!-- ★ ATUALIZADO: O ID para o listener de clique agora está no elemento footer principal -->
+        <footer id="main-footer" class="footer">
             <div id="like-section">
                 <button id="like-button" title="Curta este perfil!">
                     <i class="fa-solid fa-thumbs-up"></i><span id="like-count">0</span>
                 </button>
             </div>
-            <div id="page-footer" class="footer-content">
+            <div class="footer-content">
                 <p>Feito com <i class="fa-solid fa-code"></i> e <i class="fa-solid fa-heart"></i></p>
             </div>
             <div id="admin-controls"><button id="exit-admin-button"><i class="fa-solid fa-lock"></i> Trancar Site</button></div>
         </footer>
     </main>
 
-    <div id="pin-modal-overlay" class="pin-modal-overlay" style="display:none">
-        <!-- ... conteúdo do modal de pin ... -->
+    <div id="pin-modal-overlay" class="pin-modal-overlay" style="display:none !important">
+        <div id="pin-modal-box" class="pin-modal">
+            <h3><i class="fa-solid fa-shield-halved"></i> Modo Autor</h3>
+            <p id="pin-error"> </p>
+            <input type="password" id="pin-input" maxlength="4" pattern="\d*" inputmode="numeric">
+            <div class="pin-modal-actions">
+                <button id="pin-cancel">Cancelar</button>
+                <button id="pin-submit">Entrar</button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -216,10 +227,13 @@
             
             const pageBody = document.body;
             const saveStatus = document.getElementById('save-status');
-            const pageFooter = document.getElementById('page-footer');
+            // ★ ATUALIZADO: Seleciona o elemento footer principal
+            const mainFooter = document.getElementById('main-footer');
             const likeButton = document.getElementById('like-button');
             const likeCountSpan = document.getElementById('like-count');
             const themeButtons = document.querySelectorAll('.theme-button');
+            const pinModalOverlay = document.getElementById('pin-modal-overlay');
+            const pinModalBox = document.getElementById('pin-modal-box');
             
             let currentData = {};
             let isSaving = false;
@@ -230,7 +244,6 @@
                 setTimeout(() => saveStatus.classList.remove('show'), duration);
             };
             
-            // ★ NOVO: Função para definir o tema
             const setTheme = (theme) => {
                 pageBody.setAttribute('data-theme', theme);
                 localStorage.setItem(THEME_STORAGE_KEY, theme);
@@ -245,13 +258,15 @@
                 document.getElementById('profile-picture-img').src = data['profile-picture'];
                 
                 for (let i = 1; i <= 8; i++) {
+                    const linkEl = document.getElementById(`link-${i}`);
+                    if (!linkEl) continue;
                     if(i === 3 || i === 8) { // Links complexos (E-mail, Discord)
                         document.getElementById(`link-text-${i}.1`).textContent = data[`link${i}-text1`];
                         document.getElementById(`link-text-${i}.2`).textContent = data[`link${i}-text2`];
-                        if(i === 3) document.getElementById(`link-${i}`).href = data[`link${i}-href`];
+                        if(i === 3) linkEl.href = data[`link${i}-href`];
                     } else { // Links simples
                         document.getElementById(`link-text-${i}`).textContent = data[`link${i}-text`];
-                        document.getElementById(`link-${i}`).href = data[`link${i}-href`];
+                        linkEl.href = data[`link${i}-href`];
                     }
                 }
                 likeCountSpan.textContent = data['like-count'] || 0;
@@ -279,7 +294,10 @@
             const saveData = async () => {
                 if (isSaving) return;
                 isSaving = true;
-                showStatus('Salvando...', 60000);
+                // Não mostra "Salvando..." para curtidas, para ser mais rápido
+                if (!event.target.closest('#like-button')) {
+                    showStatus('Salvando...', 60000);
+                }
                 try {
                     const response = await fetch(JSONBIN_URL, {
                         method: 'PUT',
@@ -287,7 +305,9 @@
                         body: JSON.stringify(currentData)
                     });
                     if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
-                    showStatus('Salvo com sucesso!');
+                    if (!event.target.closest('#like-button')) {
+                        showStatus('Salvo com sucesso!');
+                    }
                 } catch (error) {
                     console.error('Falha ao salvar dados:', error);
                     showStatus('Erro ao salvar!', 3000);
@@ -296,8 +316,8 @@
                 }
             };
 
-            // ★ ATUALIZADO: Lógica de Curtir/Descurtir
-            likeButton.addEventListener('click', () => {
+            likeButton.addEventListener('click', (e) => {
+                e.stopPropagation(); // Impede que o clique no botão de like conte para abrir o modo admin
                 const hasLiked = localStorage.getItem(LIKE_STORAGE_KEY) === 'true';
                 if (hasLiked) {
                     currentData['like-count'] = Math.max(0, (currentData['like-count'] || 0) - 1);
@@ -311,9 +331,9 @@
                 saveData();
             });
 
-            // ★ NOVO: Listeners para os botões de tema
             themeButtons.forEach(button => {
-                button.addEventListener('click', () => {
+                button.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Impede que o clique no tema conte para abrir o modo admin
                     setTheme(button.dataset.theme);
                 });
             });
@@ -325,18 +345,91 @@
                     navigator.clipboard.writeText(discordUsername).then(() => {
                         showStatus('Username copiado!');
                     }).catch(err => {
-                        console.error('Falha ao copiar:', err);
                         showStatus('Erro ao copiar!', 3000);
                     });
                 }
             });
             
-            // ... (código do modo admin, pin, etc. sem alterações significativas) ...
+            // Lógica do Modo Admin (PIN, etc.)
+            const showPinModal = () => {
+                pinModalOverlay.style.display = 'flex';
+                setTimeout(() => pinModalOverlay.classList.remove('hidden'), 10);
+                document.getElementById('pin-input').focus();
+            };
+            // O restante do código do modo admin permanece o mesmo, mas o listener de clique é atualizado
+            let clickCount = 0;
+            let clickTimer = null;
+            mainFooter.addEventListener('click', (e) => {
+                // Se o clique foi em um botão dentro do rodapé, não faz nada
+                if (e.target.closest('button')) return;
+
+                if (pageBody.classList.contains('admin-mode')) return;
+                clickCount++;
+                if (clickTimer) clearTimeout(clickTimer);
+                clickTimer = setTimeout(() => { clickCount = 0; }, 2000);
+                if (clickCount === 5) {
+                    clickCount = 0; clearTimeout(clickTimer); showPinModal();
+                }
+            });
             
             // Inicialização da Página
             const savedTheme = localStorage.getItem(THEME_STORAGE_KEY) || 'dark';
             setTheme(savedTheme);
             loadData();
+            
+            // ... (O resto do JS do PIN e do modo admin)
+            // (Coloquei aqui o restante do código que não precisou de alteração para economizar espaço visual, mas ele está completo no bloco de código)
+            const pinInput = document.getElementById('pin-input');
+            const pinSubmit = document.getElementById('pin-submit');
+            const pinCancel = document.getElementById('pin-cancel');
+            
+            const enterAdminMode = () => { pageBody.classList.add('admin-mode'); localStorage.setItem('isAdmin', 'true'); };
+            const exitAdminMode = () => { pageBody.classList.remove('admin-mode'); localStorage.removeItem('isAdmin'); };
+            const hidePinModal = () => {
+                pinModalOverlay.classList.add('hidden');
+                setTimeout(() => pinModalOverlay.style.display = 'none', 300);
+            };
+            const checkPin = () => {
+                if (pinInput.value === AUTHOR_PIN) { enterAdminMode(); hidePinModal(); }
+                else {
+                    document.getElementById('pin-error').textContent = 'PIN Incorreto';
+                    pinModalBox.classList.add('shake');
+                    pinInput.value = '';
+                    setTimeout(() => pinModalBox.classList.remove('shake'), 500);
+                }
+            };
+            pinSubmit.addEventListener('click', checkPin);
+            pinInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') checkPin(); });
+            pinCancel.addEventListener('click', hidePinModal);
+            document.getElementById('exit-admin-button').addEventListener('click', exitAdminMode);
+            document.querySelectorAll('.edit-icon').forEach(icon => {
+                icon.addEventListener('click', (e) => {
+                    e.preventDefault(); e.stopPropagation();
+                    const targetKey = icon.dataset.edit;
+                    const linkId = icon.dataset.editLink;
+                    const editValue = (key, promptMessage) => {
+                        const currentValue = currentData[key];
+                        const newValue = prompt(promptMessage, currentValue);
+                        if (newValue !== null && newValue.trim() !== '' && newValue !== currentValue) {
+                            currentData[key] = newValue;
+                            updateDOM(currentData);
+                            saveData();
+                        }
+                    };
+                    if (targetKey) { editValue(targetKey, `Editar ${targetKey}:`); } 
+                    else if (linkId) {
+                        if (linkId === '3' || linkId === '8') {
+                            editValue(`link${linkId}-text1`, `Editar Título do Link ${linkId}:`);
+                            editValue(`link${linkId}-text2`, `Editar Subtexto do Link ${linkId}:`);
+                            if (linkId === '3') editValue('link3-href', 'Editar Link do E-mail (mailto:):');
+                        } else {
+                            editValue(`link${linkId}-text`, `Editar Texto do Link ${linkId}:`);
+                            editValue(`link${linkId}-href`, `Editar URL do Link ${linkId}:`);
+                        }
+                    }
+                });
+            });
+            if (localStorage.getItem('isAdmin') === 'true') { enterAdminMode(); }
         });
     </script>
 </body>
