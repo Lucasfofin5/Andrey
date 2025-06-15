@@ -35,8 +35,7 @@
             --accent-shadow-color: rgba(52, 152, 219, 0.3);
             --font-family: 'Poppins', sans-serif;
             --border-radius: 12px;
-
-            /* ★ NOVO: Curva de aceleração centralizada para transições consistentes */
+            /* Curva de aceleração mantida para consistência */
             --ease-out-cubic: cubic-bezier(0.215, 0.610, 0.355, 1);
         }
 
@@ -65,93 +64,28 @@
             box-shadow: 0 10px 40px var(--shadow-color);
             text-align: center;
             opacity: 0;
-            
-            /* ★ ATUALIZADO: Usando a nova animação de entrada */
             animation: entrance-pop-in 0.8s var(--ease-out-cubic) 0.2s forwards;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .profile { margin-bottom: 30px; }
 
-        .profile-picture-container {
-            position: relative;
+        /* ★ REVERTIDO: Estilo simplificado para uma foto de perfil estática */
+        .profile-picture {
             width: 140px;
             height: 140px;
-            margin: 0 auto 20px auto;
-        }
-        
-        #reset-photo-button {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 32px;
-            height: 32px;
-            background-color: var(--accent-color);
-            color: white;
-            border-radius: 50%;
-            border: 2px solid var(--card-color);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 10;
-            transition: transform 0.2s var(--ease-out-cubic), background-color 0.2s var(--ease-out-cubic);
-        }
-        #reset-photo-button:hover {
-            background-color: var(--accent-color-hover);
-            transform: scale(1.1) rotate(6deg);
-        }
-
-        #profile-image {
-            width: 100%;
-            height: 100%;
             object-fit: cover;
             border-radius: 50%;
             border: 4px solid var(--accent-color);
+            margin: 0 auto 20px auto;
             box-shadow: 0 0 30px var(--accent-shadow-color);
-            display: none;
+            transition: transform 0.3s var(--ease-out-cubic);
         }
-        
-        /* ★ NOVO: Animação para quando a foto aparece */
-        #profile-image.is-appearing {
-            animation: photo-appear 0.5s var(--ease-out-cubic);
-        }
-        
-        #add-photo-placeholder {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 4px dashed var(--border-color);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: border-color 0.3s var(--ease-out-cubic), background-color 0.3s var(--ease-out-cubic);
-        }
-        #add-photo-placeholder:hover {
-            border-color: var(--accent-color);
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-        #add-photo-placeholder i,
-        #add-photo-placeholder span {
-            transition: color 0.3s var(--ease-out-cubic), transform 0.3s var(--ease-out-cubic);
-        }
-        #add-photo-placeholder:hover i {
-            color: var(--accent-color);
-            transform: scale(1.1);
-        }
-        #add-photo-placeholder i { font-size: 2.5em; color: var(--secondary-text-color); margin-bottom: 8px; }
-        #add-photo-placeholder span { font-size: 0.9em; font-weight: 600; color: var(--secondary-text-color); }
 
-        .profile-picture-container.has-photo #profile-image,
-        .profile-picture-container.has-photo #reset-photo-button {
-            display: flex;
+        .profile-picture:hover {
+            transform: scale(1.05) rotate(3deg);
         }
-        .profile-picture-container.has-photo #add-photo-placeholder {
-            display: none;
-        }
-        
+
         .profile h1 { font-size: 2.2em; font-weight: 700; margin-bottom: 8px; line-height: 1.2; }
         .profile p { color: var(--secondary-text-color); font-size: 1.1em; font-weight: 300; }
         
@@ -194,9 +128,6 @@
         .footer { margin-top: 40px; font-size: 0.9em; color: var(--secondary-text-color); }
         .footer .fa-heart { color: var(--accent-color); animation: pulse 1.5s infinite; }
         
-        /* ------------------- */
-        /* ANIMAÇÕES GLOBAIS   */
-        /* ------------------- */
         @keyframes entrance-pop-in {
             from {
                 opacity: 0;
@@ -210,17 +141,6 @@
             }
         }
         
-        @keyframes photo-appear {
-            from {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-        
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.15); }
@@ -229,21 +149,12 @@
 </head>
 
 <body>
-    <input type="file" id="file-input" accept="image/*" style="display: none;">
 
     <main class="card-container">
         
         <header class="profile">
-            <div class="profile-picture-container" id="profile-container">
-                <div id="reset-photo-button" title="Remover foto">
-                    <i class="fa-solid fa-trash-can"></i>
-                </div>
-                <img src="" alt="Foto de perfil de Andrex" id="profile-image">
-                <div id="add-photo-placeholder">
-                    <i class="fa-solid fa-camera"></i>
-                    <span>Adicionar Foto</span>
-                </div>
-            </div>
+            <!-- ★ REVERTIDO: A foto de perfil agora é uma imagem estática e simples. -->
+            <img src="https://drive.google.com/uc?export=view&id=1-RJVNodMqlHTCcrMxStTjnBFpix-hFYb" alt="Ilustração de perfil de Andrex" class="profile-picture">
             
             <h1>Andrex</h1>
             <p>Sua Tagline | Edite como preferir</p>
@@ -251,7 +162,6 @@
 
         <section class="links">
             <ul>
-                <!-- ★ ATUALIZADO: Adicionada a variável --delay-order para o staggered animation -->
                 <li style="--delay-order: 1;">
                     <a href="https://www.facebook.com/Andr3xLuis" target="_blank" rel="noopener noreferrer">
                         <i class="fa-brands fa-facebook icon"></i>
@@ -288,54 +198,8 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
-            const profileContainer = document.getElementById('profile-container');
-            const profileImage = document.getElementById('profile-image');
-            const addPhotoPlaceholder = document.getElementById('add-photo-placeholder');
-            const fileInput = document.getElementById('file-input');
-            const resetPhotoButton = document.getElementById('reset-photo-button');
-
-            const initializeProfilePicture = () => {
-                const savedImage = localStorage.getItem('userProfileImage');
-                if (savedImage) {
-                    profileImage.src = savedImage;
-                    profileContainer.classList.add('has-photo');
-                } else {
-                    profileContainer.classList.remove('has-photo');
-                }
-            };
-
-            addPhotoPlaceholder.addEventListener('click', () => {
-                fileInput.click();
-            });
-
-            fileInput.addEventListener('change', (event) => {
-                const file = event.target.files[0];
-                if (!file) return;
-
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const imageDataUrl = e.target.result;
-                    localStorage.setItem('userProfileImage', imageDataUrl);
-                    
-                    // ★ ATUALIZADO: Lógica para acionar a nova animação da foto
-                    profileImage.src = imageDataUrl;
-                    profileContainer.classList.add('has-photo');
-                    profileImage.classList.add('is-appearing');
-                    profileImage.addEventListener('animationend', () => {
-                        profileImage.classList.remove('is-appearing');
-                    }, { once: true });
-                };
-                reader.readAsDataURL(file);
-            });
-            
-            resetPhotoButton.addEventListener('click', () => {
-                if (confirm('Tem certeza que deseja remover sua foto de perfil?')) {
-                    localStorage.removeItem('userProfileImage');
-                    initializeProfilePicture();
-                }
-            });
-
-            initializeProfilePicture();
+            // ★ REVERTIDO: Todo o JavaScript para upload de fotos foi removido.
+            // Apenas o efeito 3D do card, que é uma funcionalidade separada, foi mantido.
 
             const card = document.querySelector('.card-container');
             if (window.matchMedia('(pointer: fine)').matches) {
