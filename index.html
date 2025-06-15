@@ -40,10 +40,28 @@
         }
         .card-container {
             background-color: var(--card-color); width: 100%; max-width: 420px; padding: 40px;
-            border-radius: calc(var(--border-radius) * 1.5); border: 1px solid var(--border-color);
+            border-radius: calc(var(--border-radius) * 1.5); 
+            /* A borda agora é controlada pela animação, mas mantemos uma transparente para espaçamento */
+            border: 1px solid transparent; 
             box-shadow: 0 10px 40px var(--shadow-color); text-align: center; opacity: 0;
             animation: entrance-pop-in 0.8s cubic-bezier(0.215, 0.610, 0.355, 1) 0.2s forwards;
             transition: all 0.3s ease; position: relative;
+        }
+
+        /* ★ NOVO: Animação de borda roxa/neon ★ */
+        .card-container::before {
+            content: '';
+            position: absolute;
+            z-index: -1;
+            inset: -2px; /* Controla a espessura da borda (2px) */
+            border-radius: inherit; /* Garante que a borda tenha os mesmos cantos arredondados */
+            background: conic-gradient(
+                from 180deg,
+                transparent 25%,
+                var(--accent-color), /* Usa a cor de destaque do tema atual! */
+                transparent
+            );
+            animation: border-trace 4s linear infinite;
         }
         
         .theme-switcher { position: absolute; top: 15px; right: 15px; display: flex; gap: 8px; background-color: rgba(0,0,0,0.1); padding: 5px; border-radius: 50px; z-index: 10; }
@@ -101,7 +119,6 @@
         .player-controls-wrapper {
              display: flex; align-items: center; gap: 15px; justify-content: space-between;
         }
-        /* ★ ATUALIZADO: Estilo para os controles da playlist */
         .player-controls {
             display: flex; align-items: center; gap: 18px;
         }
@@ -109,7 +126,7 @@
             background: none; border: none; color: var(--secondary-text-color);
             font-size: 1.4em; cursor: pointer; transition: all 0.2s ease; padding: 0;
         }
-        #play-pause-btn { font-size: 1.6em; /* Botão de play um pouco maior */ }
+        #play-pause-btn { font-size: 1.6em; }
         .player-controls button:hover { color: var(--accent-color); transform: scale(1.15); }
 
         .audio-visualizer {
@@ -160,6 +177,13 @@
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
         @keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); } 20%, 40%, 60%, 80% { transform: translateX(10px); } }
         @keyframes pulse-glow { 0% { box-shadow: 0 0 5px rgba(234, 29, 44, 0.5), inset 0 0 2px rgba(255,255,255,0.1); } 50% { box-shadow: 0 0 12px rgba(255, 45, 60, 0.8), inset 0 0 2px rgba(255,255,255,0.1); } 100% { box-shadow: 0 0 5px rgba(234, 29, 44, 0.5), inset 0 0 2px rgba(255,255,255,0.1); } }
+
+        /* ★ NOVO: Animação da borda ★ */
+        @keyframes border-trace {
+            to {
+                transform: rotate(1turn); /* 1turn = 360 graus */
+            }
+        }
     </style>
 </head>
 
@@ -210,7 +234,6 @@
                         <div class="progress-bar" id="progress-bar"></div>
                     </div>
                     <div class="player-controls-wrapper">
-                         <!-- ★ ATUALIZADO: Adicionados botões de anterior e próximo -->
                          <div class="player-controls">
                             <button id="prev-btn" title="Anterior"><i class="fa-solid fa-backward-step"></i></button>
                             <button id="play-pause-btn" title="Play/Pause"><i class="fa-solid fa-play"></i></button>
@@ -237,14 +260,13 @@
     </div>
 
     <script>
+        // O JavaScript permanece exatamente o mesmo da versão anterior, com a playlist.
+        // Nenhuma alteração foi necessária aqui para a borda animada.
         document.addEventListener('DOMContentLoaded', () => {
             const JSONBIN_ID = '684f2cda8a456b7966aeb5d3';
             const JSONBIN_API_KEY = '$2a$10$NICad74I0SXWBZMw15PCleRSa5t8pTeErKGD9xAocMj3fZoWp0TVq';
             const AUTHOR_PIN = '5381';
             
-            // ★★★ ATUALIZAÇÃO DA BOOMBOX ★★★
-
-            // Elementos do DOM
             const audioPlayer = document.getElementById('audio-player');
             const playPauseBtn = document.getElementById('play-pause-btn');
             const nextBtn = document.getElementById('next-btn');
@@ -255,14 +277,10 @@
             const progressBar = document.getElementById('progress-bar');
             const visualizerContainer = document.getElementById('audio-visualizer');
 
-            // Playlist de Músicas
             const playlist = [
                 {
                     title: "Good Night Lofi",
                     artist: "Chill Beats",
-                    // IMPORTANTE: Coloque o caminho para o seu arquivo de áudio.
-                    // Se o arquivo estiver na mesma pasta que o HTML, use apenas o nome.
-                    // Se estiver numa pasta "audio", use "audio/nome_do_arquivo.mp3".
                     src: "good-night-lofi-cozy-chill-music-160166.mp3" 
                 },
                 {
@@ -282,14 +300,12 @@
             let isAudioInitialized = false;
             const NUM_VISUALIZER_BARS = 12;
             
-            // Funções de controle do player
             function loadTrack(trackIndex) {
                 const track = playlist[trackIndex];
                 songTitleEl.textContent = track.title;
                 songArtistEl.textContent = track.artist;
                 audioPlayer.src = track.src;
-                audioPlayer.load(); // Recarrega o áudio
-                // Reseta a barra de progresso ao carregar nova faixa
+                audioPlayer.load();
                 progressBar.style.width = '0%';
             }
 
@@ -319,7 +335,6 @@
                 playTrack();
             }
 
-            // Funções do visualizador
             function initAudioSystem() {
                 if (isAudioInitialized) return;
                 try {
@@ -362,35 +377,21 @@
                     }
                 }
             }
-
-            // Event Listeners
-            playPauseBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                if (audioPlayer.paused) playTrack();
-                else pauseTrack();
-            });
-
+            
+            playPauseBtn.addEventListener('click', (e) => { e.stopPropagation(); if (audioPlayer.paused) playTrack(); else pauseTrack(); });
             nextBtn.addEventListener('click', (e) => { e.stopPropagation(); playNextTrack(); });
             prevBtn.addEventListener('click', (e) => { e.stopPropagation(); playPrevTrack(); });
-            audioPlayer.addEventListener('ended', playNextTrack); // Auto-play da próxima
-
+            audioPlayer.addEventListener('ended', playNextTrack);
             audioPlayer.addEventListener('play', () => playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>');
             audioPlayer.addEventListener('pause', () => playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>');
-            
-            audioPlayer.addEventListener('timeupdate', () => {
-                if (audioPlayer.duration) progressBar.style.width = `${(audioPlayer.currentTime / audioPlayer.duration) * 100}%`;
-            });
-
+            audioPlayer.addEventListener('timeupdate', () => { if (audioPlayer.duration) progressBar.style.width = `${(audioPlayer.currentTime / audioPlayer.duration) * 100}%`; });
             progressContainer.addEventListener('click', (e) => {
                 if (!audioPlayer.duration) return;
                 const rect = progressContainer.getBoundingClientRect();
                 audioPlayer.currentTime = ((e.clientX - rect.left) / rect.width) * audioPlayer.duration;
             });
-            
-            // Carrega a primeira música ao iniciar
             loadTrack(currentTrackIndex);
             
-            // --- O RESTANTE DO CÓDIGO JS (JSONBIN, ADMIN, ETC) PERMANECE O MESMO ---
             const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
             const LIKE_STORAGE_KEY = 'userHasLikedProfile_v2'; 
             const THEME_STORAGE_KEY = 'selectedTheme_v1';
