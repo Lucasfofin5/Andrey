@@ -48,7 +48,6 @@
             --header-text-shadow: none;
         }
 
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body {
@@ -117,6 +116,7 @@
         #ifood-link:hover .icon { transform: scale(1.2) rotate(-8deg); }
         
         #boombox-section { margin-top: 25px; padding: 20px; border-top: 1px solid var(--border-color); background-color: rgba(0,0,0,0.1); border-radius: var(--border-radius); display: flex; align-items: center; gap: 15px; transition: all 0.3s ease; }
+        #boombox-section.volume-dragging #volume-icon-btn { animation: pulse 1s infinite ease-in-out; }
         .boombox-art { flex-shrink: 0; width: 60px; height: 60px; background-color: var(--border-color); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 2em; color: var(--secondary-text-color); transition: all 0.3s ease; }
         .boombox-info-wrapper { flex-grow: 1; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
         #song-info { text-align: left; cursor: default; } #song-title { font-weight: 600; font-size: 0.95em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--primary-text-color); } #song-artist { font-weight: 400; font-size: 0.8em; color: var(--secondary-text-color); }
@@ -126,7 +126,6 @@
         .player-controls { display: flex; align-items: center; gap: 18px; }
         .player-controls button { background: none; border: none; color: var(--secondary-text-color); font-size: 1.4em; cursor: pointer; transition: all 0.2s ease; padding: 0; will-change: transform; }
         .player-controls button:hover { color: var(--accent-color); transform: scale(1.15); }
-        /* ★ ATUALIZADO: Animação de clique nos botões do player */
         .player-controls button:active { transform: scale(0.9); transition-duration: 0.1s; }
         #play-pause-btn { font-size: 1.6em; }
         .audio-visualizer { display: flex; align-items: flex-end; justify-content: center; gap: 2px; height: 24px; flex-grow: 1; min-width: 30px; }
@@ -135,26 +134,29 @@
         #volume-icon-btn { font-size: 1.2em; padding: 0; color: var(--secondary-text-color); background: none; border: none; cursor: pointer; transition: color 0.2s ease, transform 0.2s ease; will-change: transform; }
         #volume-icon-btn i { transition: opacity 0.2s ease; }
         #volume-icon-btn:hover { color: var(--accent-color); transform: scale(1.15); }
-        /* ★ ATUALIZADO: Animação de pulso ao arrastar o volume */
-        #boombox-section.volume-dragging #volume-icon-btn { animation: pulse 1s infinite ease-in-out; }
         .volume-bar { width: 60px; height: 5px; background-color: var(--border-color); border-radius: 5px; cursor: pointer; }
         .volume-level { height: 100%; background-color: var(--accent-color); border-radius: 5px; }
 
-        .footer { margin-top: 20px; font-size: 0.9em; color: var(--secondary-text-color); width: 100%; transition: color 0.3s ease; cursor: pointer; } .footer .fa-heart { color: var(--accent-color); animation: pulse 1.5s infinite; }
+        .footer { margin-top: 20px; font-size: 0.9em; color: var(--secondary-text-color); width: 100%; transition: color 0.3s ease; cursor: pointer; } .footer .fa-heart { color: var(--accent-color); animation: pulse-heart 1.5s infinite; }
         #like-section { margin-top: 25px; padding-top: 25px; border-top: 1px solid var(--border-color); transition: border-color 0.3s ease; }
-        #like-button { background-color: rgba(255, 255, 255, 0.05); color: var(--primary-text-color); border: 1px solid var(--border-color); padding: 10px 20px; border-radius: 50px; cursor: pointer; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 1em; transition: all 0.2s ease; }
+        #like-button { background-color: rgba(255, 255, 255, 0.05); color: var(--primary-text-color); border: 1px solid var(--border-color); padding: 10px 20px; border-radius: 50px; cursor: pointer; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 1em; transition: all 0.2s ease; position: relative; overflow: visible; }
         #like-button:hover { background-color: var(--border-color); transform: translateY(-2px); }
         #like-button.liked { background-color: var(--accent-color); border-color: var(--accent-color); color: white; }
         #like-button .fa-thumbs-up { margin-right: 8px; }
-        .edit-icon { display: none; margin-left: 10px; color: var(--secondary-text-color); cursor: pointer; font-size: 0.7em; transition: all 0.2s ease; vertical-align: middle; }
-        .profile-picture-container .edit-icon { position: absolute; bottom: 5px; right: 5px; background-color: var(--card-color); border: 2px solid var(--accent-color); border-radius: 50%; width: 35px; height: 35px; display: none; align-items: center; justify-content: center; font-size: 1em; margin-left: 0; }
-        .profile-picture-container .edit-icon i { margin: 0; }
-        body.admin-mode .profile-picture-container .edit-icon { display: flex; }
-        #admin-controls { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border-color); transition: border-color 0.3s ease; }
+        .like-particle { position: absolute; left: 50%; top: 50%; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; opacity: 0; animation: like-burst 0.7s cubic-bezier(0.17, 0.84, 0.44, 1) forwards; }
+        
+        .edit-icon { display: inline-block; opacity: 0; transform: scale(0); pointer-events: none; margin-left: 10px; color: var(--secondary-text-color); cursor: pointer; font-size: 0.7em; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); vertical-align: middle; }
+        body.admin-mode .edit-icon { opacity: 1; transform: scale(1); pointer-events: auto; }
+        body.admin-mode [data-edit="profile-name"] { transition-delay: 0.1s; }
+        body.admin-mode [data-edit="profile-tagline"] { transition-delay: 0.2s; }
+        body.admin-mode .links .edit-icon { transition-delay: calc(var(--delay-order) * 50ms + 0.3s); }
+        .profile-picture-container .edit-icon { position: absolute; bottom: 5px; right: 5px; background-color: var(--card-color); border: 2px solid var(--accent-color); border-radius: 50%; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; font-size: 1em; margin-left: 0; opacity: 0; transform: scale(0); pointer-events: none; transition-delay: 0.3s; }
+        body.admin-mode .profile-picture-container .edit-icon { opacity: 1; transform: scale(1); pointer-events: auto; }
+        #admin-controls { display: block; transform: translateY(100%); opacity: 0; transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1); }
+        body.admin-mode #admin-controls { transform: translateY(0); opacity: 1; }
         #exit-admin-button { background: none; border: 1px solid var(--accent-color-hover); color: var(--accent-color-hover); padding: 8px 15px; border-radius: var(--border-radius); cursor: pointer; font-weight: 600; transition: all 0.2s ease; }
-        #exit-admin-button:hover { background: var(--accent-color-hover); color: var(--card-color); }
-        body.admin-mode .edit-icon { display: inline-block; }
-        body.admin-mode #admin-controls { display: block; }
+        #exit-admin-button:hover { background: var(--accent-color-hover); color: var(--card-color); transform: translateY(-2px); }
+        
         .pin-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
         .pin-modal-overlay:not(.hidden) { opacity: 1; pointer-events: auto; }
         .pin-modal { background: var(--card-color); padding: 30px; border-radius: var(--border-radius); width: 90%; max-width: 320px; text-align: center; border: 1px solid var(--border-color); transform: scale(0.9); transition: transform 0.3s ease; }
@@ -169,10 +171,13 @@
         #pin-cancel { background-color: var(--border-color); color: var(--secondary-text-color); } #pin-cancel:hover { background-color: #4a4b4d; }
         #save-status { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: var(--accent-color); color: white; padding: 10px 20px; border-radius: var(--border-radius); font-weight: 600; box-shadow: 0 4px 15px var(--accent-shadow-color); opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease; z-index: 2000; pointer-events: none; }
         #save-status.show { opacity: 1; transform: translateX(-50%) translateY(-10px); }
+        
         @keyframes entrance-pop-in { from { opacity: 0; transform: translateY(20px) scale(0.95); filter: blur(3px); } to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } }
         @keyframes pulse { 0%, 100% { transform: scale(1.15); } 50% { transform: scale(1.25); } }
+        @keyframes pulse-heart { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
         @keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); } 20%, 40%, 60%, 80% { transform: translateX(10px); } }
         @keyframes pulse-glow { 0% { box-shadow: 0 0 5px rgba(234, 29, 44, 0.5), inset 0 0 2px rgba(255,255,255,0.1); } 50% { box-shadow: 0 0 12px rgba(255, 45, 60, 0.8), inset 0 0 2px rgba(255,255,255,0.1); } 100% { box-shadow: 0 0 5px rgba(234, 29, 44, 0.5), inset 0 0 2px rgba(255,255,255,0.1); } }
+        @keyframes like-burst { 0% { transform: translate(-50%, -50%) scale(1); opacity: 1; } 100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; } }
     </style>
 </head>
 
@@ -181,6 +186,7 @@
     <audio id="audio-player" style="display: none;" crossorigin="anonymous"></audio>
 
     <main class="card-container">
+        <!-- O HTML permanece o mesmo da versão anterior -->
         <div class="theme-switcher">
             <button class="theme-button" data-theme="light" title="Modo Claro"><i class="fa-solid fa-sun"></i></button>
             <button class="theme-button" data-theme="dark" title="Modo Escuro"><i class="fa-solid fa-moon"></i></button>
@@ -255,121 +261,132 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
+            // --- Constantes e Variáveis ---
             const JSONBIN_ID = '684f2cda8a456b7966aeb5d3';
             const JSONBIN_API_KEY = '$2a$10$NICad74I0SXWBZMw15PCleRSa5t8pTeErKGD9xAocMj3fZoWp0TVq';
             const AUTHOR_PIN = '5381';
+            const VOLUME_STORAGE_KEY = 'userBoomboxVolume_v1';
+            const LIKE_STORAGE_KEY = 'userHasLikedProfile_v2';
+            const THEME_STORAGE_KEY = 'selectedTheme_v1';
             
-            const boomboxSection = document.getElementById('boombox-section'); // ★ ATUALIZADO: Referência para a seção da boombox
+            // --- Elementos do DOM ---
+            const pageBody = document.body;
+            const boomboxSection = document.getElementById('boombox-section');
             const audioPlayer = document.getElementById('audio-player');
             const playPauseBtn = document.getElementById('play-pause-btn');
             const nextBtn = document.getElementById('next-btn');
             const prevBtn = document.getElementById('prev-btn');
-            const songTitleEl = document.getElementById('song-title');
-            const songArtistEl = document.getElementById('song-artist');
-            const progressContainer = document.getElementById('progress-container');
-            const progressBar = document.getElementById('progress-bar');
-            const visualizerContainer = document.getElementById('audio-visualizer');
             const volumeIconBtn = document.getElementById('volume-icon-btn');
             const volumeBar = document.getElementById('volume-bar');
-            const volumeLevel = document.getElementById('volume-level');
-            
-            const VOLUME_STORAGE_KEY = 'userBoomboxVolume_v1';
-            let isDraggingVolume = false;
-            
-            const playlist = [ { title: "Good Night Lofi", artist: "Chill Beats", src: "good-night-lofi-cozy-chill-music-160166.mp3" }, { title: "Ambient Lofi", artist: "Chill Beats", src: "ambient-lofi-lofi-music-344112.mp3" }, { title: "Rainy Lofi City", artist: "Chill Beats", src: "rainy-lofi-city-lofi-music-332746.mp3" } ];
-            let currentTrackIndex = 0; let isAudioInitialized = false; let audioContext, analyser, source, dataArray; const NUM_VISUALIZER_BARS = 12;
-
-            function updateVolumeUI() { if (!audioPlayer) return; const icon = volumeIconBtn.querySelector('i'); const volume = audioPlayer.volume; const muted = audioPlayer.muted; volumeLevel.style.width = muted ? '0%' : `${volume * 100}%`; if (muted || volume === 0) { icon.className = 'fa-solid fa-volume-xmark'; } else if (volume < 0.5) { icon.className = 'fa-solid fa-volume-low'; } else { icon.className = 'fa-solid fa-volume-high'; } }
-            
-            function setVolume(newVolume) { const clampedVolume = Math.max(0, Math.min(1, newVolume)); audioPlayer.volume = clampedVolume; audioPlayer.muted = clampedVolume === 0; localStorage.setItem(VOLUME_STORAGE_KEY, clampedVolume.toString()); updateVolumeUI(); }
-
-            volumeIconBtn.addEventListener('click', (e) => { e.stopPropagation(); audioPlayer.muted = !audioPlayer.muted; updateVolumeUI(); });
-            
-            const handleVolumeChange = (e) => { const rect = volumeBar.getBoundingClientRect(); const newVolume = (e.clientX - rect.left) / rect.width; setVolume(newVolume); };
-            
-            // ★ ATUALIZADO: Lógica para adicionar/remover a classe de animação ao arrastar
-            volumeBar.addEventListener('mousedown', (e) => { isDraggingVolume = true; boomboxSection.classList.add('volume-dragging'); handleVolumeChange(e); });
-            document.addEventListener('mousemove', (e) => { if (isDraggingVolume) { handleVolumeChange(e); } });
-            document.addEventListener('mouseup', () => { if (isDraggingVolume) { isDraggingVolume = false; boomboxSection.classList.remove('volume-dragging'); } });
-            
-            function loadTrack(trackIndex) { const track = playlist[trackIndex]; songTitleEl.textContent = track.title; songArtistEl.textContent = track.artist; audioPlayer.src = track.src; audioPlayer.load(); progressBar.style.width = '0%'; }
-            
-            function playTrack() {
-                if (!isAudioInitialized) initAudioSystem();
-                if (audioContext && audioContext.state === 'suspended') { audioContext.resume(); }
-                const playPromise = audioPlayer.play();
-                if (playPromise !== undefined) { playPromise.catch(error => { if (error.name !== 'NotAllowedError') { console.error("Erro ao tocar áudio:", error); } }); }
-            }
-
-            function pauseTrack() { audioPlayer.pause(); }
-            function playNextTrack() { currentTrackIndex = (currentTrackIndex + 1) % playlist.length; loadTrack(currentTrackIndex); playTrack(); }
-            function playPrevTrack() { currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length; loadTrack(currentTrackIndex); playTrack(); }
-            function initAudioSystem() { if (isAudioInitialized) return; try { audioContext = new (window.AudioContext || window.webkitAudioContext)(); source = audioContext.createMediaElementSource(audioPlayer); analyser = audioContext.createAnalyser(); source.connect(analyser); analyser.connect(audioContext.destination); analyser.fftSize = 64; const bufferLength = analyser.frequencyBinCount; dataArray = new Uint8Array(bufferLength); for (let i = 0; i < NUM_VISUALIZER_BARS; i++) { const bar = document.createElement('div'); bar.classList.add('visualizer-bar'); visualizerContainer.appendChild(bar); } isAudioInitialized = true; animateVisualizer(); } catch (e) { console.error("Erro ao inicializar o sistema de áudio. O visualizer pode não funcionar.", e); visualizerContainer.style.display = 'none'; } }
-            function animateVisualizer() { if (!isAudioInitialized || !analyser) return; requestAnimationFrame(animateVisualizer); if (audioPlayer.paused) { visualizerContainer.childNodes.forEach(bar => bar.style.height = '5%'); return; } analyser.getByteFrequencyData(dataArray); const bars = visualizerContainer.childNodes; const barStep = Math.floor(dataArray.length / NUM_VISUALIZER_BARS); for(let i = 0; i < NUM_VISUALIZER_BARS; i++) { const bar = bars[i]; if (bar) { const height = Math.max(5, (dataArray[i * barStep] / 255) * 100); bar.style.height = `${height}%`; } } }
-            
-            playPauseBtn.addEventListener('click', (e) => { e.stopPropagation(); if (audioPlayer.paused) playTrack(); else pauseTrack(); });
-            nextBtn.addEventListener('click', (e) => { e.stopPropagation(); playNextTrack(); });
-            prevBtn.addEventListener('click', (e) => { e.stopPropagation(); playPrevTrack(); });
-            audioPlayer.addEventListener('ended', playNextTrack);
-            audioPlayer.addEventListener('play', () => playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>');
-            audioPlayer.addEventListener('pause', () => playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>');
-            audioPlayer.addEventListener('timeupdate', () => { if (audioPlayer.duration) progressBar.style.width = `${(audioPlayer.currentTime / audioPlayer.duration) * 100}%`; });
-            progressContainer.addEventListener('click', (e) => { if (!audioPlayer.duration) return; const rect = progressContainer.getBoundingClientRect(); audioPlayer.currentTime = ((e.clientX - rect.left) / rect.width) * audioPlayer.duration; });
-            const DISCORD_USER_ID = 'SEU_ID_AQUI'; 
-            const statusContainer = document.getElementById('discord-status-container');
-            const statusIndicator = document.getElementById('discord-status-indicator');
-            const statusText = document.getElementById('discord-status-text');
-            async function fetchDiscordStatus() { if (!DISCORD_USER_ID || DISCORD_USER_ID === 'SEU_ID_AQUI') { statusContainer.style.display = 'none'; return; } try { const response = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`); if (!response.ok) { statusText.innerHTML = 'Status indisponível'; statusIndicator.className = 'offline'; statusContainer.style.display = 'flex'; return; } const { data } = await response.json(); if (!data) { statusText.innerHTML = 'Erro ao carregar'; statusContainer.style.display = 'flex'; return; } statusIndicator.className = ''; statusIndicator.classList.add(data.discord_status || 'offline'); const activity = data.activities.find(a => [0, 2, 4].includes(a.type)); let activityText = 'Online'; if (data.discord_status === 'offline') { activityText = 'Offline'; } else if (activity) { if (activity.type === 0) { activityText = `<i class="fa-solid fa-gamepad"></i> Jogando <strong>${activity.name}</strong>`; } else if (activity.type === 2 && activity.name === 'Spotify') { activityText = `<i class="fa-brands fa-spotify"></i> Ouvindo <strong>${activity.details}</strong>`; } else if (activity.type === 4 && activity.state) { activityText = `${activity.emoji ? activity.emoji.name : ''} ${activity.state}`; } } statusText.innerHTML = activityText; statusContainer.style.display = 'flex'; } catch (error) { console.error("Erro de conexão ao buscar status do Discord:", error); statusText.innerHTML = 'Erro de conexão'; statusContainer.style.display = 'flex'; } }
-            const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
-            const LIKE_STORAGE_KEY = 'userHasLikedProfile_v2';
-            const THEME_STORAGE_KEY = 'selectedTheme_v1';
-            const pageBody = document.body;
             const saveStatus = document.getElementById('save-status');
             const mainFooter = document.getElementById('main-footer');
             const likeButton = document.getElementById('like-button');
-            const likeCountSpan = document.getElementById('like-count');
             const themeButtons = document.querySelectorAll('.theme-button');
-            let currentData = {};
-            let isSaving = false;
-            const showStatus = (message, duration = 2000) => { saveStatus.textContent = message; saveStatus.classList.add('show'); setTimeout(() => saveStatus.classList.remove('show'), duration); };
-            const setTheme = (theme) => { pageBody.setAttribute('data-theme', theme); localStorage.setItem(THEME_STORAGE_KEY, theme); themeButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.theme === theme)); };
-            const updateDOM = (data) => {
-                document.getElementById('profile-name').textContent = data['profile-name']; document.getElementById('profile-tagline').textContent = data['profile-tagline']; document.getElementById('profile-picture-img').src = data['profile-picture']; document.getElementById('ifood-text').textContent = data['ifood-text']; document.getElementById('ifood-link').href = data['ifood-href'];
-                for (let i = 1; i <= 8; i++) { const linkEl = document.getElementById(`link-${i}`); if (!linkEl) continue; if(i === 3 || i === 8) { document.getElementById(`link-text-${i}.1`).textContent = data[`link${i}-text1`]; document.getElementById(`link-text-${i}.2`).textContent = data[`link${i}-text2`]; if(i === 3) linkEl.href = data[`link${i}-href`]; } else { document.getElementById(`link-text-${i}`).textContent = data[`link${i}-text`]; linkEl.href = data[`link${i}-href`]; } }
-                likeCountSpan.textContent = data['like-count'] || 0;
-            };
-            const initializeLikeButton = () => { likeButton.classList.toggle('liked', localStorage.getItem(LIKE_STORAGE_KEY) === 'true'); };
-            const loadData = async () => { try { const response = await fetch(`${JSONBIN_URL}/latest`, { headers: { 'X-Master-Key': JSONBIN_API_KEY } }); if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`); const result = await response.json(); currentData = result.record; updateDOM(currentData); initializeLikeButton(); } catch (error) { console.error('Falha ao carregar dados:', error); document.getElementById('profile-name').textContent = 'Erro ao carregar'; document.getElementById('profile-tagline').textContent = 'Verifique a conexão e o console.'; } };
-            const saveData = async (isLikeAction = false) => { if (isSaving) return; isSaving = true; if (!isLikeAction) showStatus('Salvando...', 60000); try { const response = await fetch(JSONBIN_URL, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_API_KEY }, body: JSON.stringify(currentData) }); if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`); if (!isLikeAction) showStatus('Salvo com sucesso!'); } catch (error) { console.error('Falha ao salvar dados:', error); showStatus('Erro ao salvar!', 3000); } finally { isSaving = false; } };
-            likeButton.addEventListener('click', (e) => { e.stopPropagation(); const hasLiked = localStorage.getItem(LIKE_STORAGE_KEY) === 'true'; if (hasLiked) { currentData['like-count'] = Math.max(0, (currentData['like-count'] || 0) - 1); localStorage.setItem(LIKE_STORAGE_KEY, 'false'); } else { currentData['like-count'] = (currentData['like-count'] || 0) + 1; localStorage.setItem(LIKE_STORAGE_KEY, 'true'); } updateDOM(currentData); initializeLikeButton(); saveData(true); });
-            themeButtons.forEach(button => { button.addEventListener('click', (e) => { e.stopPropagation(); setTheme(button.dataset.theme); }); });
-            document.getElementById('link-8').addEventListener('click', (e) => { e.preventDefault(); navigator.clipboard.writeText(currentData['link8-text2']).then(() => showStatus('Username copiado!')); });
             const pinModalOverlay = document.getElementById('pin-modal-overlay');
             const pinModalBox = document.getElementById('pin-modal-box');
             const pinInput = document.getElementById('pin-input');
-            const showPinModal = () => { pinModalOverlay.classList.remove('hidden'); pinInput.focus(); };
-            const hidePinModal = () => { pinModalOverlay.classList.add('hidden'); };
-            let clickCount = 0; let clickTimer = null;
-            mainFooter.addEventListener('click', (e) => { if (e.target.closest('button') || e.target.closest('#boombox-section')) return; if (document.body.classList.contains('admin-mode')) return; clickCount++; if (clickTimer) clearTimeout(clickTimer); clickTimer = setTimeout(() => { clickCount = 0; }, 2000); if (clickCount === 5) { clickCount = 0; clearTimeout(clickTimer); showPinModal(); } });
-            document.querySelectorAll('.edit-icon').forEach(icon => { icon.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); const linkId = icon.dataset.editLink; const specialKey = icon.dataset.editSpecial; const textKey = icon.dataset.edit; const editValue = (key, promptMessage) => { const currentValue = currentData[key]; const newValue = prompt(promptMessage, currentValue); if (newValue !== null && newValue !== currentValue) { currentData[key] = newValue; updateDOM(currentData); saveData(); } }; if (textKey) { editValue(textKey, `Editar ${textKey}:`); } else if (specialKey === 'ifood') { editValue('ifood-text', 'Editar Texto do Botão iFood:'); editValue('ifood-href', 'Editar URL do iFood:'); } else if (linkId) { if (linkId === '3' || linkId === '8') { editValue(`link${linkId}-text1`, `Editar Título:`); editValue(`link${linkId}-text2`, `Editar Subtexto:`); if (linkId === '3') editValue('link3-href', 'Editar Link (mailto:):'); } else { editValue(`link${linkId}-text`, `Editar Texto:`); editValue(`link${linkId}-href`, `Editar URL:`); } } }); });
-            const enterAdminMode = () => { document.body.classList.add('admin-mode'); localStorage.setItem('isAdmin', 'true'); };
-            const exitAdminMode = () => { document.body.classList.remove('admin-mode'); localStorage.removeItem('isAdmin'); };
-            const checkPin = () => { if (pinInput.value === AUTHOR_PIN) { enterAdminMode(); hidePinModal(); } else { document.getElementById('pin-error').textContent = 'PIN Incorreto'; pinModalBox.classList.add('shake'); pinInput.value = ''; setTimeout(() => pinModalBox.classList.remove('shake'), 500); } };
-            document.getElementById('pin-submit').addEventListener('click', checkPin);
-            document.getElementById('pin-cancel').addEventListener('click', hidePinModal); 
-            document.getElementById('exit-admin-button').addEventListener('click', exitAdminMode);
-            pinInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') checkPin(); });
+
+            // --- Estado da Aplicação ---
+            let currentData = {};
+            let isDraggingVolume = false;
+            const playlist = [ { title: "Good Night Lofi", artist: "Chill Beats", src: "good-night-lofi-cozy-chill-music-160166.mp3" }, { title: "Ambient Lofi", artist: "Chill Beats", src: "ambient-lofi-lofi-music-344112.mp3" }, { title: "Rainy Lofi City", artist: "Chill Beats", src: "rainy-lofi-city-lofi-music-332746.mp3" } ];
+            let currentTrackIndex = 0;
+            const defaultData = { "profile-name": "Andrex", "profile-tagline": "Bem-vindo(a)!", "profile-picture": "https://i.imgur.com/8BqYJ7k.jpeg", "like-count": 0, "ifood-text": "Peça no iFood", "ifood-href": "#", "link1-text": "Facebook", "link1-href": "#", "link2-text": "Portfólio", "link2-href": "#", "link3-text1": "E-mail", "link3-text2": "seu-email@exemplo.com", "link3-href": "#", "link4-text": "IGN Playlist", "link4-href": "#", "link5-text": "WhatsApp", "link5-href": "#", "link6-text": "Steam", "link6-href": "#", "link7-text": "MyAnimeList", "link7-href": "#", "link8-text1": "Discord", "link8-text2": "seu.discord" };
+
+            // --- Funções Principais ---
+
+            // Animação de "Like"
+            const createLikeParticles = () => {
+                const particleCount = 10;
+                const colors = ['#ff8e71', '#64ffda', '#ff00ff', '#3498db', '#52de97'];
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('span');
+                    particle.classList.add('like-particle');
+                    const angle = Math.random() * 360;
+                    const distance = Math.random() * 40 + 40;
+                    particle.style.setProperty('--x', `${Math.cos(angle * Math.PI / 180) * distance}px`);
+                    particle.style.setProperty('--y', `${Math.sin(angle * Math.PI / 180) * distance}px`);
+                    particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    likeButton.appendChild(particle);
+                    setTimeout(() => particle.remove(), 700);
+                }
+            };
+
+            // Player de Música
+            const setupAudioPlayer = () => {
+                let isAudioInitialized = false, audioContext, analyser, source, dataArray;
+                const NUM_VISUALIZER_BARS = 12;
+
+                const updateVolumeUI = () => { const icon = volumeIconBtn.querySelector('i'); const volume = audioPlayer.volume; const muted = audioPlayer.muted; document.getElementById('volume-level').style.width = muted ? '0%' : `${volume * 100}%`; if (muted || volume === 0) { icon.className = 'fa-solid fa-volume-xmark'; } else if (volume < 0.5) { icon.className = 'fa-solid fa-volume-low'; } else { icon.className = 'fa-solid fa-volume-high'; } };
+                const setVolume = (newVolume) => { const clampedVolume = Math.max(0, Math.min(1, newVolume)); audioPlayer.volume = clampedVolume; audioPlayer.muted = clampedVolume === 0; localStorage.setItem(VOLUME_STORAGE_KEY, clampedVolume.toString()); updateVolumeUI(); };
+                const loadTrack = (trackIndex) => { const track = playlist[trackIndex]; document.getElementById('song-title').textContent = track.title; document.getElementById('song-artist').textContent = track.artist; audioPlayer.src = track.src; audioPlayer.load(); document.getElementById('progress-bar').style.width = '0%'; };
+                const playTrack = () => { if (!isAudioInitialized) initAudioSystem(); if (audioContext && audioContext.state === 'suspended') audioContext.resume(); const playPromise = audioPlayer.play(); if (playPromise) playPromise.catch(e => { if (e.name !== "NotAllowedError") console.error("Erro ao tocar áudio:", e) }); };
+                const initAudioSystem = () => { if (isAudioInitialized) return; try { audioContext = new (window.AudioContext || window.webkitAudioContext)(); source = audioContext.createMediaElementSource(audioPlayer); analyser = audioContext.createAnalyser(); source.connect(analyser); analyser.connect(audioContext.destination); analyser.fftSize = 64; dataArray = new Uint8Array(analyser.frequencyBinCount); for (let i = 0; i < NUM_VISUALIZER_BARS; i++) { const bar = document.createElement('div'); bar.classList.add('visualizer-bar'); document.getElementById('audio-visualizer').appendChild(bar); } isAudioInitialized = true; animateVisualizer(); } catch (e) { console.error("Erro ao inicializar o sistema de áudio.", e); document.getElementById('audio-visualizer').style.display = 'none'; } };
+                const animateVisualizer = () => { if (!isAudioInitialized || !analyser) return; requestAnimationFrame(animateVisualizer); const bars = document.getElementById('audio-visualizer').childNodes; if (audioPlayer.paused) { bars.forEach(bar => bar.style.height = '5%'); return; } analyser.getByteFrequencyData(dataArray); const barStep = Math.floor(dataArray.length / NUM_VISUALIZER_BARS); for(let i = 0; i < NUM_VISUALIZER_BARS; i++) { if (bars[i]) { bars[i].style.height = `${Math.max(5, (dataArray[i * barStep] / 255) * 100)}%`; } } };
+                
+                playPauseBtn.addEventListener('click', (e) => { e.stopPropagation(); audioPlayer.paused ? playTrack() : audioPlayer.pause(); });
+                nextBtn.addEventListener('click', (e) => { e.stopPropagation(); currentTrackIndex = (currentTrackIndex + 1) % playlist.length; loadTrack(currentTrackIndex); playTrack(); });
+                prevBtn.addEventListener('click', (e) => { e.stopPropagation(); currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length; loadTrack(currentTrackIndex); playTrack(); });
+                audioPlayer.addEventListener('ended', () => { currentTrackIndex = (currentTrackIndex + 1) % playlist.length; loadTrack(currentTrackIndex); playTrack(); });
+                audioPlayer.addEventListener('play', () => playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>');
+                audioPlayer.addEventListener('pause', () => playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>');
+                audioPlayer.addEventListener('timeupdate', () => { if (audioPlayer.duration) document.getElementById('progress-bar').style.width = `${(audioPlayer.currentTime / audioPlayer.duration) * 100}%`; });
+                document.getElementById('progress-container').addEventListener('click', (e) => { if (!audioPlayer.duration) return; const rect = e.currentTarget.getBoundingClientRect(); audioPlayer.currentTime = ((e.clientX - rect.left) / rect.width) * audioPlayer.duration; });
+                volumeIconBtn.addEventListener('click', (e) => { e.stopPropagation(); audioPlayer.muted = !audioPlayer.muted; updateVolumeUI(); });
+                const handleVolumeChange = (e) => { const rect = volumeBar.getBoundingClientRect(); setVolume((e.clientX - rect.left) / rect.width); };
+                volumeBar.addEventListener('mousedown', (e) => { isDraggingVolume = true; boomboxSection.classList.add('volume-dragging'); handleVolumeChange(e); });
+                document.addEventListener('mousemove', (e) => { if (isDraggingVolume) handleVolumeChange(e); });
+                document.addEventListener('mouseup', () => { if(isDraggingVolume) { isDraggingVolume = false; boomboxSection.classList.remove('volume-dragging'); } });
+
+                const savedVolume = localStorage.getItem(VOLUME_STORAGE_KEY);
+                setVolume(savedVolume !== null ? parseFloat(savedVolume) : 0.10);
+                loadTrack(currentTrackIndex);
+                playTrack();
+            };
             
-            const savedTheme = localStorage.getItem(THEME_STORAGE_KEY) || 'dark';
-            setTheme(savedTheme);
-            await loadData(); 
-            const savedVolume = localStorage.getItem(VOLUME_STORAGE_KEY);
-            setVolume(savedVolume !== null ? parseFloat(savedVolume) : 0.10);
-            loadTrack(currentTrackIndex);
-            playTrack();
-            fetchDiscordStatus();
-            setInterval(fetchDiscordStatus, 30000);
-            if (localStorage.getItem('isAdmin') === 'true') { enterAdminMode(); }
+            // Dados e UI
+            const setupUI = async () => {
+                const showStatus = (message, duration = 2000) => { saveStatus.textContent = message; saveStatus.classList.add('show'); setTimeout(() => saveStatus.classList.remove('show'), duration); };
+                const setTheme = (theme) => { pageBody.setAttribute('data-theme', theme); localStorage.setItem(THEME_STORAGE_KEY, theme); themeButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.theme === theme)); };
+                const updateDOM = (data) => {
+                    document.getElementById('profile-name').textContent = data['profile-name']; document.getElementById('profile-tagline').textContent = data['profile-tagline']; document.getElementById('profile-picture-img').src = data['profile-picture']; document.getElementById('ifood-text').textContent = data['ifood-text']; document.getElementById('ifood-link').href = data['ifood-href'];
+                    for (let i = 1; i <= 8; i++) { const linkEl = document.getElementById(`link-${i}`); if (!linkEl) continue; if(i === 3 || i === 8) { document.getElementById(`link-text-${i}.1`).textContent = data[`link${i}-text1`]; document.getElementById(`link-text-${i}.2`).textContent = data[`link${i}-text2`]; if(i === 3) linkEl.href = data[`link${i}-href`]; } else { document.getElementById(`link-text-${i}`).textContent = data[`link${i}-text`]; linkEl.href = data[`link${i}-href`]; } }
+                    document.getElementById('like-count').textContent = data['like-count'] || 0;
+                };
+                const initializeLikeButton = () => { likeButton.classList.toggle('liked', localStorage.getItem(LIKE_STORAGE_KEY) === 'true'); };
+                const saveData = async (isLikeAction = false) => { let isSaving = false; if (isSaving) return; isSaving = true; if (!isLikeAction) showStatus('Salvando...', 60000); try { const response = await fetch(`${JSONBIN_URL}`, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_API_KEY }, body: JSON.stringify(currentData) }); if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`); if (!isLikeAction) showStatus('Salvo com sucesso!'); } catch (error) { console.error('Falha ao salvar dados:', error); showStatus('Erro ao salvar!', 3000); } finally { isSaving = false; } };
+                const loadData = async () => { try { const response = await fetch(`${JSONBIN_URL}/latest`, { headers: { 'X-Master-Key': JSONBIN_API_KEY } }); if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`); const result = await response.json(); currentData = result.record; } catch (error) { console.error('Falha ao carregar dados:', error); document.getElementById('profile-name').textContent = 'Erro ao carregar'; document.getElementById('profile-tagline').textContent = 'Verifique a conexão.'; currentData = defaultData; } finally { updateDOM(currentData); initializeLikeButton(); } };
+
+                likeButton.addEventListener('click', (e) => { e.stopPropagation(); const hasLiked = localStorage.getItem(LIKE_STORAGE_KEY) === 'true'; if (hasLiked) { currentData['like-count'] = Math.max(0, (currentData['like-count'] || 0) - 1); localStorage.setItem(LIKE_STORAGE_KEY, 'false'); } else { currentData['like-count'] = (currentData['like-count'] || 0) + 1; localStorage.setItem(LIKE_STORAGE_KEY, 'true'); createLikeParticles(); } updateDOM(currentData); initializeLikeButton(); saveData(true); });
+                themeButtons.forEach(button => button.addEventListener('click', (e) => { e.stopPropagation(); setTheme(button.dataset.theme); }));
+                document.getElementById('link-8').addEventListener('click', (e) => { e.preventDefault(); navigator.clipboard.writeText(currentData['link8-text2']).then(() => showStatus('Username copiado!')); });
+                setTheme(localStorage.getItem(THEME_STORAGE_KEY) || 'dark');
+                await loadData();
+            };
+
+            // Admin
+            const setupAdmin = () => {
+                const enterAdminMode = () => { pageBody.classList.add('admin-mode'); localStorage.setItem('isAdmin', 'true'); };
+                const exitAdminMode = () => { pageBody.classList.remove('admin-mode'); localStorage.removeItem('isAdmin'); };
+                const showPinModal = () => { pinModalOverlay.classList.remove('hidden'); pinInput.focus(); };
+                const hidePinModal = () => { pinModalOverlay.classList.add('hidden'); };
+                const checkPin = () => { if (pinInput.value === AUTHOR_PIN) { enterAdminMode(); hidePinModal(); } else { document.getElementById('pin-error').textContent = 'PIN Incorreto'; pinModalBox.classList.add('shake'); pinInput.value = ''; setTimeout(() => pinModalBox.classList.remove('shake'), 500); } };
+
+                let clickCount = 0, clickTimer = null;
+                mainFooter.addEventListener('click', (e) => { if (e.target.closest('button') || e.target.closest('#boombox-section')) return; if (pageBody.classList.contains('admin-mode')) return; clickCount++; if (clickTimer) clearTimeout(clickTimer); clickTimer = setTimeout(() => { clickCount = 0; }, 2000); if (clickCount === 5) { clickCount = 0; clearTimeout(clickTimer); showPinModal(); } });
+                document.querySelectorAll('.edit-icon').forEach(icon => { icon.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); const linkId = icon.dataset.editLink; const specialKey = icon.dataset.editSpecial; const textKey = icon.dataset.edit; const editValue = (key, promptMessage) => { const currentValue = currentData[key]; const newValue = prompt(promptMessage, currentValue); if (newValue !== null && newValue !== currentValue) { currentData[key] = newValue; document.dispatchEvent(new CustomEvent('updateDOM', {detail: currentData})); document.dispatchEvent(new CustomEvent('saveData')); } }; if (textKey) { editValue(textKey, `Editar ${textKey}:`); } else if (specialKey === 'ifood') { editValue('ifood-text', 'Editar Texto do Botão iFood:'); editValue('ifood-href', 'Editar URL do iFood:'); } else if (linkId) { if (linkId === '3' || linkId === '8') { editValue(`link${linkId}-text1`, `Editar Título:`); editValue(`link${linkId}-text2`, `Editar Subtexto:`); if (linkId === '3') editValue('link3-href', 'Editar Link (mailto:):'); } else { editValue(`link${linkId}-text`, `Editar Texto:`); editValue(`link${linkId}-href`, `Editar URL:`); } } }); });
+                document.getElementById('pin-submit').addEventListener('click', checkPin);
+                document.getElementById('pin-cancel').addEventListener('click', hidePinModal);
+                document.getElementById('exit-admin-button').addEventListener('click', exitAdminMode);
+                pinInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') checkPin(); });
+
+                if (localStorage.getItem('isAdmin') === 'true') { enterAdminMode(); }
+            };
+
+            // --- Inicialização ---
+            await setupUI();
+            setupAudioPlayer();
+            setupAdmin();
         });
     </script>
 </body>
