@@ -29,6 +29,26 @@
             --border-color: #3a2a5c; --shadow-color: rgba(0, 0, 0, 0.6); --accent-shadow-color: rgba(255, 0, 255, 0.4);
             --header-text-shadow: 0 0 5px var(--accent-color), 0 0 10px var(--accent-color);
         }
+        /* ★ ATUALIZADO: Novas paletas de cores */
+        body[data-theme="ocean"] {
+            --bg-color: #0a192f; --card-color: #112240; --primary-text-color: #ccd6f6;
+            --secondary-text-color: #8892b0; --accent-color: #64ffda; --accent-color-hover: #52d9bc;
+            --border-color: #1d3b5f; --shadow-color: rgba(0, 0, 0, 0.5); --accent-shadow-color: rgba(100, 255, 218, 0.2);
+            --header-text-shadow: none;
+        }
+        body[data-theme="sunset"] {
+            --bg-color: #2c2a4a; --card-color: #4f4a6e; --primary-text-color: #f5e6e8;
+            --secondary-text-color: #cab9cd; --accent-color: #ff8e71; --accent-color-hover: #f9704c;
+            --border-color: #3d3a5e; --shadow-color: rgba(0, 0, 0, 0.4); --accent-shadow-color: rgba(255, 142, 113, 0.3);
+            --header-text-shadow: none;
+        }
+        body[data-theme="forest"] {
+            --bg-color: #1a2e24; --card-color: #294038; --primary-text-color: #e0e6e3;
+            --secondary-text-color: #9cae9b; --accent-color: #52de97; --accent-color-hover: #43b87b;
+            --border-color: #35524a; --shadow-color: rgba(0, 0, 0, 0.5); --accent-shadow-color: rgba(82, 222, 151, 0.25);
+            --header-text-shadow: none;
+        }
+
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
@@ -46,7 +66,7 @@
             transition: all 0.3s ease; position: relative;
         }
         
-        .theme-switcher { position: absolute; top: 15px; right: 15px; display: flex; gap: 8px; background-color: rgba(0,0,0,0.1); padding: 5px; border-radius: 50px; z-index: 10; }
+        .theme-switcher { position: absolute; top: 15px; right: 15px; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; background-color: rgba(0,0,0,0.1); padding: 5px; border-radius: var(--border-radius); z-index: 10; max-width: 150px; }
         .theme-button { background: none; border: none; color: var(--secondary-text-color); cursor: pointer; font-size: 1em; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
         .theme-button:hover { color: var(--primary-text-color); }
         .theme-button.active { color: var(--accent-color); background-color: rgba(255,255,255,0.1); }
@@ -64,9 +84,9 @@
         #discord-status-indicator.online { background-color: #23a55a; } #discord-status-indicator.idle { background-color: #f0b232; } #discord-status-indicator.dnd { background-color: #f23f43; }
         #discord-status-text { font-size: 0.9em; font-weight: 400; color: var(--secondary-text-color); margin: 0; line-height: 1.4; }
         #discord-status-text .fa-brands, #discord-status-text .fa-solid { margin-right: 6px; }
-        body[data-theme="neon"] #discord-status-indicator.online { box-shadow: 0 0 8px #23a55a; }
-        body[data-theme="neon"] #discord-status-indicator.idle { box-shadow: 0 0 8px #f0b232; }
-        body[data-theme="neon"] #discord-status-indicator.dnd { box-shadow: 0 0 8px #f23f43; }
+        body[data-theme="neon"] #discord-status-indicator.online, body[data-theme="ocean"] #discord-status-indicator.online, body[data-theme="sunset"] #discord-status-indicator.online, body[data-theme="forest"] #discord-status-indicator.online { box-shadow: 0 0 8px #23a55a; }
+        body[data-theme="neon"] #discord-status-indicator.idle, body[data-theme="ocean"] #discord-status-indicator.idle, body[data-theme="sunset"] #discord-status-indicator.idle, body[data-theme="forest"] #discord-status-indicator.idle { box-shadow: 0 0 8px #f0b232; }
+        body[data-theme="neon"] #discord-status-indicator.dnd, body[data-theme="ocean"] #discord-status-indicator.dnd, body[data-theme="sunset"] #discord-status-indicator.dnd, body[data-theme="forest"] #discord-status-indicator.dnd { box-shadow: 0 0 8px #f23f43; }
 
         .links ul { list-style-type: none; display: flex; flex-direction: column; gap: 16px; margin-top: 24px; }
         .links a { display: flex; align-items: center; background-color: rgba(255, 255, 255, 0.05); color: var(--primary-text-color); padding: 16px 20px; border-radius: var(--border-radius); text-decoration: none; font-weight: 600; transition: all 0.2s cubic-bezier(0.215, 0.610, 0.355, 1); }
@@ -83,11 +103,16 @@
         body:not([data-theme="neon"]) #link-5 { background-color: #25D366; } body:not([data-theme="neon"]) #link-6 { background-color: #1b2838; }
         body:not([data-theme="neon"]) #link-7 { background-color: #2e51a2; } body:not([data-theme="neon"]) #link-8 { background-color: #5865F2; }
         body:not([data-theme="neon"]) .links a:hover { filter: brightness(90%); }
-        body[data-theme="neon"] #link-1 .icon { color: #1877F2; } body[data-theme="neon"] #link-2 .icon { color: #2ecc71; }
-        body[data-theme="neon"] #link-3 .icon { color: #bdc3c7; } body[data-theme="neon"] #link-4 .icon { color: #e74c3c; }
-        body[data-theme="neon"] #link-5 .icon { color: #25D366; } body[data-theme="neon"] #link-6 .icon { color: #66c0f4; }
-        body[data-theme="neon"] #link-7 .icon { color: #2e51a2; } body[data-theme="neon"] #link-8 .icon { color: #5865F2; }
-        body[data-theme="neon"] .links a:hover { background-color: var(--accent-color); color: #ffffff; }
+        body[data-theme="neon"] #link-1 .icon, body[data-theme="ocean"] #link-1 .icon, body[data-theme="sunset"] #link-1 .icon, body[data-theme="forest"] #link-1 .icon { color: #1877F2; }
+        body[data-theme="neon"] #link-2 .icon, body[data-theme="ocean"] #link-2 .icon, body[data-theme="sunset"] #link-2 .icon, body[data-theme="forest"] #link-2 .icon { color: #2ecc71; }
+        body[data-theme="neon"] #link-3 .icon, body[data-theme="ocean"] #link-3 .icon, body[data-theme="sunset"] #link-3 .icon, body[data-theme="forest"] #link-3 .icon { color: #bdc3c7; }
+        body[data-theme="neon"] #link-4 .icon, body[data-theme="ocean"] #link-4 .icon, body[data-theme="sunset"] #link-4 .icon, body[data-theme="forest"] #link-4 .icon { color: #e74c3c; }
+        body[data-theme="neon"] #link-5 .icon, body[data-theme="ocean"] #link-5 .icon, body[data-theme="sunset"] #link-5 .icon, body[data-theme="forest"] #link-5 .icon { color: #25D366; }
+        body[data-theme="neon"] #link-6 .icon, body[data-theme="ocean"] #link-6 .icon, body[data-theme="sunset"] #link-6 .icon, body[data-theme="forest"] #link-6 .icon { color: #66c0f4; }
+        body[data-theme="neon"] #link-7 .icon, body[data-theme="ocean"] #link-7 .icon, body[data-theme="sunset"] #link-7 .icon, body[data-theme="forest"] #link-7 .icon { color: #2e51a2; }
+        body[data-theme="neon"] #link-8 .icon, body[data-theme="ocean"] #link-8 .icon, body[data-theme="sunset"] #link-8 .icon, body[data-theme="forest"] #link-8 .icon { color: #5865F2; }
+        body[data-theme="neon"] .links a:hover, body[data-theme="ocean"] .links a:hover, body[data-theme="sunset"] .links a:hover, body[data-theme="forest"] .links a:hover { background-color: var(--accent-color); color: var(--card-color); }
+        body[data-theme="neon"] .links a:hover .icon, body[data-theme="ocean"] .links a:hover .icon, body[data-theme="sunset"] .links a:hover .icon, body[data-theme="forest"] .links a:hover .icon { color: var(--card-color); }
         #ifood-link { background: linear-gradient(175deg, #fa1d2d, #d01825); color: #ffffff; font-weight: 700; border: none; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15); animation: pulse-glow 2.5s infinite; }
         #ifood-link:hover { background: linear-gradient(175deg, #ff3c4a, #e0202f); animation: none; box-shadow: 0 10px 25px rgba(234, 29, 44, 0.5); transform: translateY(-5px) scale(1.03); filter: brightness(100%); }
         #ifood-link:hover .icon { transform: scale(1.2) rotate(-8deg); }
@@ -110,6 +135,7 @@
         .volume-bar { width: 60px; height: 5px; background-color: var(--border-color); border-radius: 5px; cursor: pointer; }
         .volume-level { height: 100%; background-color: var(--accent-color); border-radius: 5px; }
 
+        /* O restante do CSS permanece o mesmo... */
         .footer { margin-top: 20px; font-size: 0.9em; color: var(--secondary-text-color); width: 100%; transition: color 0.3s ease; cursor: pointer; } .footer .fa-heart { color: var(--accent-color); animation: pulse 1.5s infinite; }
         #like-section { margin-top: 25px; padding-top: 25px; border-top: 1px solid var(--border-color); transition: border-color 0.3s ease; }
         #like-button { background-color: rgba(255, 255, 255, 0.05); color: var(--primary-text-color); border: 1px solid var(--border-color); padding: 10px 20px; border-radius: 50px; cursor: pointer; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 1em; transition: all 0.2s ease; }
@@ -151,11 +177,14 @@
     <audio id="audio-player" style="display: none;" crossorigin="anonymous"></audio>
 
     <main class="card-container">
-        <!-- O HTML do main permanece inalterado -->
+        <!-- ★ ATUALIZADO: Adicionados botões para os novos temas -->
         <div class="theme-switcher">
             <button class="theme-button" data-theme="light" title="Modo Claro"><i class="fa-solid fa-sun"></i></button>
             <button class="theme-button" data-theme="dark" title="Modo Escuro"><i class="fa-solid fa-moon"></i></button>
             <button class="theme-button" data-theme="neon" title="Modo Neon"><i class="fa-solid fa-bolt"></i></button>
+            <button class="theme-button" data-theme="ocean" title="Modo Oceano"><i class="fa-solid fa-droplet"></i></button>
+            <button class="theme-button" data-theme="sunset" title="Modo Pôr do Sol"><i class="fa-solid fa-cloud-sun"></i></button>
+            <button class="theme-button" data-theme="forest" title="Modo Floresta"><i class="fa-solid fa-leaf"></i></button>
         </div>
         <header class="profile">
             <div class="profile-picture-container">
@@ -222,12 +251,12 @@
         </div>
     </div>
     <script>
+        // O JavaScript permanece o mesmo da versão anterior, pois já está preparado para as novas paletas.
         document.addEventListener('DOMContentLoaded', async () => {
             const JSONBIN_ID = '684f2cda8a456b7966aeb5d3';
             const JSONBIN_API_KEY = '$2a$10$NICad74I0SXWBZMw15PCleRSa5t8pTeErKGD9xAocMj3fZoWp0TVq';
             const AUTHOR_PIN = '5381';
             
-            // Boombox Elements
             const audioPlayer = document.getElementById('audio-player');
             const playPauseBtn = document.getElementById('play-pause-btn');
             const nextBtn = document.getElementById('next-btn');
@@ -241,7 +270,6 @@
             const volumeBar = document.getElementById('volume-bar');
             const volumeLevel = document.getElementById('volume-level');
             
-            // ★ ATUALIZADO: Adicionada chave de armazenamento para o volume e flag de arrasto.
             const VOLUME_STORAGE_KEY = 'userBoomboxVolume_v1';
             let isDraggingVolume = false;
             
@@ -250,7 +278,6 @@
 
             function updateVolumeUI() { if (!audioPlayer) return; const icon = volumeIconBtn.querySelector('i'); const volume = audioPlayer.volume; const muted = audioPlayer.muted; volumeLevel.style.width = muted ? '0%' : `${volume * 100}%`; if (muted || volume === 0) { icon.className = 'fa-solid fa-volume-xmark'; } else if (volume < 0.5) { icon.className = 'fa-solid fa-volume-low'; } else { icon.className = 'fa-solid fa-volume-high'; } }
             
-            // ★ ATUALIZADO: Função setVolume agora salva a preferência no localStorage.
             function setVolume(newVolume) {
                 const clampedVolume = Math.max(0, Math.min(1, newVolume));
                 audioPlayer.volume = clampedVolume;
@@ -261,7 +288,6 @@
 
             volumeIconBtn.addEventListener('click', (e) => { e.stopPropagation(); audioPlayer.muted = !audioPlayer.muted; updateVolumeUI(); });
             
-            // ★ ATUALIZADO: Implementação da lógica de arrastar para ajustar o volume.
             const handleVolumeChange = (e) => {
                 const rect = volumeBar.getBoundingClientRect();
                 const newVolume = (e.clientX - rect.left) / rect.width;
@@ -313,8 +339,6 @@
             audioPlayer.addEventListener('pause', () => playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>');
             audioPlayer.addEventListener('timeupdate', () => { if (audioPlayer.duration) progressBar.style.width = `${(audioPlayer.currentTime / audioPlayer.duration) * 100}%`; });
             progressContainer.addEventListener('click', (e) => { if (!audioPlayer.duration) return; const rect = progressContainer.getBoundingClientRect(); audioPlayer.currentTime = ((e.clientX - rect.left) / rect.width) * audioPlayer.duration; });
-
-            // --- O restante do código de dados, tema, admin, etc., permanece o mesmo ---
             const DISCORD_USER_ID = 'SEU_ID_AQUI'; 
             const statusContainer = document.getElementById('discord-status-container');
             const statusIndicator = document.getElementById('discord-status-indicator');
@@ -402,18 +426,16 @@
             document.getElementById('exit-admin-button').addEventListener('click', exitAdminMode);
             pinInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') checkPin(); });
             
-            // --- Sequência de Inicialização da Página ---
             const savedTheme = localStorage.getItem(THEME_STORAGE_KEY) || 'dark';
             setTheme(savedTheme);
             
             await loadData(); 
             
-            // ★ ATUALIZADO: Define o volume inicial baseado no localStorage ou 10% para a primeira visita.
             const savedVolume = localStorage.getItem(VOLUME_STORAGE_KEY);
             if (savedVolume !== null) {
                 setVolume(parseFloat(savedVolume));
             } else {
-                setVolume(0.10); // Volume inicial de 10% na primeira visita.
+                setVolume(0.10);
             }
 
             loadTrack(currentTrackIndex);
