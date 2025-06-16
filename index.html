@@ -50,6 +50,13 @@
             --border-color: #35524a; --shadow-color: rgba(0, 0, 0, 0.5); --accent-shadow-color: rgba(82, 222, 151, 0.25);
             --header-text-shadow: none; --achievement-unlocked-color: #f1c40f; --achievement-hard-color: #ff6b6b;
         }
+        /* ★ NOVO: Tema secreto "Matrix" */
+        body[data-theme="matrix"] {
+            --bg-color: #001a00; --card-color: #023020; --primary-text-color: #00ff00;
+            --secondary-text-color: #008000; --accent-color: #00ff00; --accent-color-hover: #39ff14;
+            --border-color: #004d00; --shadow-color: rgba(0, 255, 0, 0.2); --accent-shadow-color: rgba(0, 255, 0, 0.3);
+            --header-text-shadow: 0 0 5px var(--accent-color); --achievement-unlocked-color: #f1c40f; --achievement-hard-color: #e74c3c;
+        }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
@@ -72,6 +79,9 @@
         .theme-button { background: none; border: none; color: var(--secondary-text-color); cursor: pointer; font-size: 1em; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
         .theme-button:hover { color: var(--primary-text-color); }
         .theme-button.active { color: var(--accent-color); background-color: rgba(255,255,255,0.1); }
+        
+        /* ★ NOVO: Botão do tema secreto é oculto por padrão */
+        .theme-button[data-theme="matrix"] { display: none; }
         
         #achievements-button {
             background-color: rgba(0,0,0,0.1); border: none; color: var(--secondary-text-color); cursor: pointer;
@@ -117,16 +127,16 @@
         body:not([data-theme="neon"]) #link-5 { background-color: #25D366; } body:not([data-theme="neon"]) #link-6 { background-color: #1b2838; }
         body:not([data-theme="neon"]) #link-7 { background-color: #2e51a2; } body:not([data-theme="neon"]) #link-8 { background-color: #5865F2; }
         body:not([data-theme="neon"]) .links a:hover { filter: brightness(90%); }
-        body[data-theme="neon"] #link-1 .icon, body[data-theme="ocean"] #link-1 .icon, body[data-theme="sunset"] #link-1 .icon, body[data-theme="forest"] #link-1 .icon { color: #1877F2; }
-        body[data-theme="neon"] #link-2 .icon, body[data-theme="ocean"] #link-2 .icon, body[data-theme="sunset"] #link-2 .icon, body[data-theme="forest"] #link-2 .icon { color: #2ecc71; }
-        body[data-theme="neon"] #link-3 .icon, body[data-theme="ocean"] #link-3 .icon, body[data-theme="sunset"] #link-3 .icon, body[data-theme="forest"] #link-3 .icon { color: #bdc3c7; }
-        body[data-theme="neon"] #link-4 .icon, body[data-theme="ocean"] #link-4 .icon, body[data-theme="sunset"] #link-4 .icon, body[data-theme="forest"] #link-4 .icon { color: #e74c3c; }
-        body[data-theme="neon"] #link-5 .icon, body[data-theme="ocean"] #link-5 .icon, body[data-theme="sunset"] #link-5 .icon, body[data-theme="forest"] #link-5 .icon { color: #25D366; }
-        body[data-theme="neon"] #link-6 .icon, body[data-theme="ocean"] #link-6 .icon, body[data-theme="sunset"] #link-6 .icon, body[data-theme="forest"] #link-6 .icon { color: #66c0f4; }
-        body[data-theme="neon"] #link-7 .icon, body[data-theme="ocean"] #link-7 .icon, body[data-theme="sunset"] #link-7 .icon, body[data-theme="forest"] #link-7 .icon { color: #2e51a2; }
-        body[data-theme="neon"] #link-8 .icon, body[data-theme="ocean"] #link-8 .icon, body[data-theme="sunset"] #link-8 .icon, body[data-theme="forest"] #link-8 .icon { color: #5865F2; }
-        body[data-theme="neon"] .links a:hover, body[data-theme="ocean"] .links a:hover, body[data-theme="sunset"] .links a:hover, body[data-theme="forest"] .links a:hover { background-color: var(--accent-color); color: var(--card-color); }
-        body[data-theme="neon"] .links a:hover .icon, body[data-theme="ocean"] .links a:hover .icon, body[data-theme="sunset"] .links a:hover .icon, body[data-theme="forest"] .links a:hover .icon { color: var(--card-color); }
+        body[data-theme="neon"] #link-1 .icon, body[data-theme="ocean"] #link-1 .icon, body[data-theme="sunset"] #link-1 .icon, body[data-theme="forest"] #link-1 .icon, body[data-theme="matrix"] #link-1 .icon { color: #1877F2; }
+        body[data-theme="neon"] #link-2 .icon, body[data-theme="ocean"] #link-2 .icon, body[data-theme="sunset"] #link-2 .icon, body[data-theme="forest"] #link-2 .icon, body[data-theme="matrix"] #link-2 .icon { color: #2ecc71; }
+        body[data-theme="neon"] #link-3 .icon, body[data-theme="ocean"] #link-3 .icon, body[data-theme="sunset"] #link-3 .icon, body[data-theme="forest"] #link-3 .icon, body[data-theme="matrix"] #link-3 .icon { color: #bdc3c7; }
+        body[data-theme="neon"] #link-4 .icon, body[data-theme="ocean"] #link-4 .icon, body[data-theme="sunset"] #link-4 .icon, body[data-theme="forest"] #link-4 .icon, body[data-theme="matrix"] #link-4 .icon { color: #e74c3c; }
+        body[data-theme="neon"] #link-5 .icon, body[data-theme="ocean"] #link-5 .icon, body[data-theme="sunset"] #link-5 .icon, body[data-theme="forest"] #link-5 .icon, body[data-theme="matrix"] #link-5 .icon { color: #25D366; }
+        body[data-theme="neon"] #link-6 .icon, body[data-theme="ocean"] #link-6 .icon, body[data-theme="sunset"] #link-6 .icon, body[data-theme="forest"] #link-6 .icon, body[data-theme="matrix"] #link-6 .icon { color: #66c0f4; }
+        body[data-theme="neon"] #link-7 .icon, body[data-theme="ocean"] #link-7 .icon, body[data-theme="sunset"] #link-7 .icon, body[data-theme="forest"] #link-7 .icon, body[data-theme="matrix"] #link-7 .icon { color: #2e51a2; }
+        body[data-theme="neon"] #link-8 .icon, body[data-theme="ocean"] #link-8 .icon, body[data-theme="sunset"] #link-8 .icon, body[data-theme="forest"] #link-8 .icon, body[data-theme="matrix"] #link-8 .icon { color: #5865F2; }
+        body[data-theme="neon"] .links a:hover, body[data-theme="ocean"] .links a:hover, body[data-theme="sunset"] .links a:hover, body[data-theme="forest"] .links a:hover, body[data-theme="matrix"] .links a:hover { background-color: var(--accent-color); color: var(--card-color); }
+        body[data-theme="neon"] .links a:hover .icon, body[data-theme="ocean"] .links a:hover .icon, body[data-theme="sunset"] .links a:hover .icon, body[data-theme="forest"] .links a:hover .icon, body[data-theme="matrix"] .links a:hover .icon { color: var(--card-color); }
         #ifood-link { background: linear-gradient(175deg, #fa1d2d, #d01825); color: #ffffff; font-weight: 700; border: none; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15); animation: pulse-glow 2.5s infinite; }
         #ifood-link:hover { background: linear-gradient(175deg, #ff3c4a, #e0202f); animation: none; box-shadow: 0 10px 25px rgba(234, 29, 44, 0.5); transform: translateY(-5px) scale(1.03); filter: brightness(100%); }
         #ifood-link:hover .icon { transform: scale(1.2) rotate(-8deg); }
@@ -193,7 +203,6 @@
         .achievement-tag { font-size: 0.6em; font-weight: 700; padding: 2px 6px; border-radius: 4px; color: var(--card-color); }
         .achievement-tag.hard { background-color: var(--achievement-hard-color); }
         .achievement-tag.platinum { background: linear-gradient(45deg, #d4af37, #f1c40f, #ffd700); color: #333; text-shadow: 1px 1px 1px rgba(0,0,0,0.1);}
-        /* ★ NOVO: Estilo de interação para admin no modal de conquistas */
         body.admin-mode .achievement-item { cursor: pointer; }
         body.admin-mode .achievement-item:hover { background-color: var(--border-color); }
 
@@ -224,6 +233,8 @@
                 <button class="theme-button" data-theme="ocean" title="Modo Oceano"><i class="fa-solid fa-droplet"></i></button>
                 <button class="theme-button" data-theme="sunset" title="Modo Pôr do Sol"><i class="fa-solid fa-cloud-sun"></i></button>
                 <button class="theme-button" data-theme="forest" title="Modo Floresta"><i class="fa-solid fa-leaf"></i></button>
+                <!-- ★ NOVO: Botão do tema secreto -->
+                <button class="theme-button" data-theme="matrix" title="Modo Matrix"><i class="fa-solid fa-terminal"></i></button>
             </div>
         </div>
         <header class="profile">
@@ -319,7 +330,12 @@
             const volumeLevel = document.getElementById('volume-level');
             const VOLUME_STORAGE_KEY = 'userBoomboxVolume_v1';
             let isDraggingVolume = false;
-            const playlist = [ { title: "Good Night Lofi", artist: "Chill Beats", src: "good-night-lofi-cozy-chill-music-160166.mp3" }, { title: "Ambient Lofi", artist: "Chill Beats", src: "ambient-lofi-lofi-music-344112.mp3" }, { title: "Rainy Lofi City", artist: "Chill Beats", src: "rainy-lofi-city-lofi-music-332746.mp3" } ];
+
+            // ★ ATUALIZADO: Playlist agora é dinâmica
+            const basePlaylist = [ { title: "Good Night Lofi", artist: "Chill Beats", src: "good-night-lofi-cozy-chill-music-160166.mp3" }, { title: "Ambient Lofi", artist: "Chill Beats", src: "ambient-lofi-lofi-music-344112.mp3" }, { title: "Rainy Lofi City", artist: "Chill Beats", src: "rainy-lofi-city-lofi-music-332746.mp3" } ];
+            const bonusTrack = { title: "Warm Breeze", artist: "Lofi Chill", src: "warm-breeze-lofi-music-chill-lofi-344259.mp3" };
+            let playlist = []; // Será preenchida na inicialização
+
             let currentTrackIndex = 0; let isAudioInitialized = false; let audioContext, analyser, source, dataArray; const NUM_VISUALIZER_BARS = 12;
             function updateVolumeUI() { if (!audioPlayer) return; const icon = volumeIconBtn.querySelector('i'); const volume = audioPlayer.volume; const muted = audioPlayer.muted; volumeLevel.style.width = muted ? '0%' : `${volume * 100}%`; if (muted || volume === 0) { icon.className = 'fa-solid fa-volume-xmark'; } else if (volume < 0.5) { icon.className = 'fa-solid fa-volume-low'; } else { icon.className = 'fa-solid fa-volume-high'; } }
             function setVolume(newVolume) { const clampedVolume = Math.max(0, Math.min(1, newVolume)); audioPlayer.volume = clampedVolume; audioPlayer.muted = clampedVolume === 0; localStorage.setItem(VOLUME_STORAGE_KEY, clampedVolume.toString()); updateVolumeUI(); }
@@ -405,14 +421,15 @@
             const unlockAchievement = (id) => {
                 const unlocked = getUnlockedAchievements();
                 if (unlocked.has(id)) return;
-
                 const achievement = allAchievements.find(a => a.id === id);
                 if (!achievement) return;
-
                 unlocked.add(id);
                 localStorage.setItem(ACHIEVEMENTS_STORAGE_KEY, JSON.stringify([...unlocked]));
                 showAchievementToast(achievement.title);
                 
+                if (id === 'lofi_master') initializePlaylist(); // Re-inicializa a playlist para adicionar a nova música
+                if (id === 'found_admin_mode') updateSecretThemeButtonVisibility(); // Mostra o botão do tema secreto
+
                 const platinumAchievement = allAchievements.find(a => a.id === 'platinum');
                 if (platinumAchievement && !unlocked.has('platinum') && unlocked.size === allAchievements.length - 1) {
                     unlocked.add('platinum');
@@ -422,19 +439,19 @@
                 renderAchievements();
             };
             
-            // ★ NOVO: Função para trancar uma conquista (apenas para admin)
             const lockAchievement = (id) => {
                 const unlocked = getUnlockedAchievements();
                 const achievement = allAchievements.find(a => a.id === id);
                 if (!unlocked.has(id) || !achievement) return;
-
                 unlocked.delete(id);
-                // Se a conquista de platina estava ganha, ela também é perdida.
                 if (unlocked.has('platinum')) {
                     unlocked.delete('platinum');
                 }
-
                 localStorage.setItem(ACHIEVEMENTS_STORAGE_KEY, JSON.stringify([...unlocked]));
+                
+                if (id === 'lofi_master') initializePlaylist(); // Re-inicializa para remover a música bônus
+                if (id === 'found_admin_mode') updateSecretThemeButtonVisibility(); // Esconde o botão do tema
+                
                 showStatus(`Conquista trancada: ${achievement.title}`);
                 renderAchievements();
             };
@@ -443,21 +460,18 @@
                 const unlocked = getUnlockedAchievements();
                 achievementsList.innerHTML = '';
                 const sortedAchievements = [...allAchievements].sort((a, b) => (a.id === 'platinum') - (b.id === 'platinum'));
-
                 sortedAchievements.forEach(ach => {
                     const isUnlocked = unlocked.has(ach.id);
                     const li = document.createElement('li');
                     li.className = 'achievement-item';
-                    li.dataset.id = ach.id; // ★ Adicionado ID para referência no clique
+                    li.dataset.id = ach.id;
                     if (isUnlocked) li.classList.add('unlocked');
-                    
                     let tagHtml = '';
                     if (ach.difficulty === 'hard') {
                         tagHtml = '<span class="achievement-tag hard">Difícil</span>';
                     } else if (ach.difficulty === 'platinum') {
                         tagHtml = '<span class="achievement-tag platinum">Platina</span>';
                     }
-
                     li.innerHTML = `
                         <div class="achievement-icon">
                             <i class="${isUnlocked ? ach.icon : 'fa-solid fa-lock'}"></i>
@@ -480,16 +494,12 @@
                 if(e.target === achievementsModalOverlay) achievementsModalOverlay.classList.add('hidden');
             });
             
-            // ★ NOVO: Event listener para gerenciar conquistas no modo admin
             achievementsList.addEventListener('click', (e) => {
                 if (!document.body.classList.contains('admin-mode')) return;
-
                 const li = e.target.closest('.achievement-item');
                 if (!li) return;
-                
                 const achievementId = li.dataset.id;
                 if (!achievementId) return;
-
                 const unlocked = getUnlockedAchievements();
                 if(unlocked.has(achievementId)) {
                     lockAchievement(achievementId);
@@ -500,15 +510,23 @@
             
             const showStatus = (message, duration = 2000) => { saveStatus.textContent = message; saveStatus.classList.add('show'); setTimeout(() => saveStatus.classList.remove('show'), duration); };
             
+            // ★ NOVO: Função para mostrar/esconder o botão do tema secreto
+            const updateSecretThemeButtonVisibility = () => {
+                const secretThemeButton = document.querySelector('.theme-button[data-theme="matrix"]');
+                if (!secretThemeButton) return;
+                const unlocked = getUnlockedAchievements();
+                secretThemeButton.style.display = unlocked.has('found_admin_mode') ? 'flex' : 'none';
+            };
+            
             const setTheme = (theme) => {
                 pageBody.setAttribute('data-theme', theme);
                 localStorage.setItem(THEME_STORAGE_KEY, theme);
                 themeButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.theme === theme));
-                
                 const themesSeen = new Set(JSON.parse(localStorage.getItem(THEMES_SEEN_KEY) || '[]'));
                 themesSeen.add(theme);
                 localStorage.setItem(THEMES_SEEN_KEY, JSON.stringify([...themesSeen]));
-                if (themesSeen.size === themeButtons.length) {
+                // A checagem inclui o botão secreto, que agora conta para a conquista.
+                if (themesSeen.size >= document.querySelectorAll('.theme-switcher .theme-button').length - 1) { // -1 para o botão secreto se ainda não visível
                     unlockAchievement('theme_explorer');
                 }
             };
@@ -601,8 +619,8 @@
                 const songsListened = new Set(JSON.parse(localStorage.getItem(SONGS_LISTENED_KEY) || '[]'));
                 songsListened.add(currentTrackIndex);
                 localStorage.setItem(SONGS_LISTENED_KEY, JSON.stringify([...songsListened]));
-
-                if (songsListened.size === playlist.length) {
+                // ★ ATUALIZADO: Checagem usa o tamanho da playlist base
+                if (songsListened.size === basePlaylist.length) {
                     unlockAchievement('lofi_master');
                 }
                 playNextTrack();
@@ -613,11 +631,10 @@
             const pinModalBox = document.getElementById('pin-modal-box');
             const pinInput = document.getElementById('pin-input');
             
-            // ★ ATUALIZADO: Gatilho da conquista movido para cá
             const showPinModal = () => {
                 pinModalOverlay.classList.remove('hidden');
                 pinInput.focus();
-                unlockAchievement('found_admin_mode'); // Desbloqueia ao ACHAR o modal.
+                unlockAchievement('found_admin_mode');
             };
 
             const hidePinModal = () => { pinModalOverlay.classList.add('hidden'); };
@@ -650,6 +667,14 @@
             document.getElementById('exit-admin-button').addEventListener('click', exitAdminMode);
             pinInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') checkPin(); });
             
+            // ★ NOVO: Função para inicializar a playlist com base nas conquistas
+            const initializePlaylist = () => {
+                const unlocked = getUnlockedAchievements();
+                playlist = unlocked.has('lofi_master') ? [...basePlaylist, bonusTrack] : [...basePlaylist];
+            };
+
+            // === INÍCIO DA EXECUÇÃO PRINCIPAL ===
+            
             const savedTheme = localStorage.getItem(THEME_STORAGE_KEY) || 'dark';
             setTheme(savedTheme);
             
@@ -658,13 +683,16 @@
             const savedVolume = localStorage.getItem(VOLUME_STORAGE_KEY);
             if (savedVolume !== null) { setVolume(parseFloat(savedVolume)); } else { setVolume(0.10); }
 
-            loadTrack(currentTrackIndex);
-            playTrack();
+            initializePlaylist(); // Prepara a playlist
+            loadTrack(currentTrackIndex); // Carrega a primeira música
+            playTrack(); // Tenta tocar (depende da interação do usuário)
             
             fetchDiscordStatus();
             setInterval(fetchDiscordStatus, 30000);
             
             if (localStorage.getItem('isAdmin') === 'true') { enterAdminMode(); }
+            
+            updateSecretThemeButtonVisibility(); // Checa se o botão secreto deve aparecer
         });
     </script>
 </body>
