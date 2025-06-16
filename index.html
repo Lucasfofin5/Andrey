@@ -190,11 +190,12 @@
         .achievement-details h4 { font-weight: 600; color: var(--primary-text-color); display: flex; align-items: center; gap: 8px; }
         .achievement-details p { font-size: 0.9em; font-weight: 300; color: var(--secondary-text-color); line-height: 1.3; margin-top: 2px; }
         .achievement-item:not(.unlocked) .achievement-details h4 { color: var(--secondary-text-color); }
-        /* ★ NOVO: Estilo para a tag "Difícil" */
         .achievement-tag { font-size: 0.6em; font-weight: 700; padding: 2px 6px; border-radius: 4px; color: var(--card-color); }
         .achievement-tag.hard { background-color: var(--achievement-hard-color); }
         .achievement-tag.platinum { background: linear-gradient(45deg, #d4af37, #f1c40f, #ffd700); color: #333; text-shadow: 1px 1px 1px rgba(0,0,0,0.1);}
-
+        /* ★ NOVO: Estilo de interação para admin no modal de conquistas */
+        body.admin-mode .achievement-item { cursor: pointer; }
+        body.admin-mode .achievement-item:hover { background-color: var(--border-color); }
 
         #save-status, #achievement-toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); color: white; padding: 12px 22px; border-radius: var(--border-radius); font-weight: 600; box-shadow: 0 4px 15px var(--accent-shadow-color); opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease; z-index: 2000; pointer-events: none; }
         #save-status { background-color: var(--accent-color); }
@@ -368,7 +369,6 @@
             const SONGS_LISTENED_KEY = 'userSongsListened_v1';
             const THEMES_SEEN_KEY = 'userThemesSeen_v1';
 
-            // ★ ATUALIZADO: Lista completa de conquistas
             const allAchievements = [
                 { id: 'ifood_click', title: 'De Bucho Cheio!', description: 'Aperte o Botão do Ifood.', icon: 'fa-solid fa-utensils' },
                 { id: 'facebook_click', title: 'Eu Não Fiz Nada!', description: 'Aperte o Botão do Facebook.', icon: 'fa-brands fa-facebook' },
@@ -402,7 +402,6 @@
                 setTimeout(() => achievementToast.classList.remove('show'), 4000);
             };
 
-            // ★ ATUALIZADO: Lógica de desbloqueio com checagem para platina
             const unlockAchievement = (id) => {
                 const unlocked = getUnlockedAchievements();
                 if (unlocked.has(id)) return;
@@ -414,29 +413,42 @@
                 localStorage.setItem(ACHIEVEMENTS_STORAGE_KEY, JSON.stringify([...unlocked]));
                 showAchievementToast(achievement.title);
                 
-                // Checa se é hora de platinar
                 const platinumAchievement = allAchievements.find(a => a.id === 'platinum');
-                // A condição é: todas as conquistas (menos a de platina) foram desbloqueadas.
                 if (platinumAchievement && !unlocked.has('platinum') && unlocked.size === allAchievements.length - 1) {
                     unlocked.add('platinum');
                     localStorage.setItem(ACHIEVEMENTS_STORAGE_KEY, JSON.stringify([...unlocked]));
-                    setTimeout(() => showAchievementToast(platinumAchievement.title), 1000); // Mostra o toast da platina um pouco depois
+                    setTimeout(() => showAchievementToast(platinumAchievement.title), 1000);
                 }
-
-                renderAchievements(); // Re-renderiza a lista para atualizar a UI
+                renderAchievements();
             };
             
-            // ★ ATUALIZADO: Renderização com a tag de dificuldade
+            // ★ NOVO: Função para trancar uma conquista (apenas para admin)
+            const lockAchievement = (id) => {
+                const unlocked = getUnlockedAchievements();
+                const achievement = allAchievements.find(a => a.id === id);
+                if (!unlocked.has(id) || !achievement) return;
+
+                unlocked.delete(id);
+                // Se a conquista de platina estava ganha, ela também é perdida.
+                if (unlocked.has('platinum')) {
+                    unlocked.delete('platinum');
+                }
+
+                localStorage.setItem(ACHIEVEMENTS_STORAGE_KEY, JSON.stringify([...unlocked]));
+                showStatus(`Conquista trancada: ${achievement.title}`);
+                renderAchievements();
+            };
+
             const renderAchievements = () => {
                 const unlocked = getUnlockedAchievements();
-                achievementsList.innerHTML = ''; // Limpa a lista antes de popular
-                // Ordena para que a platina sempre apareça por último
+                achievementsList.innerHTML = '';
                 const sortedAchievements = [...allAchievements].sort((a, b) => (a.id === 'platinum') - (b.id === 'platinum'));
 
                 sortedAchievements.forEach(ach => {
                     const isUnlocked = unlocked.has(ach.id);
                     const li = document.createElement('li');
                     li.className = 'achievement-item';
+                    li.dataset.id = ach.id; // ★ Adicionado ID para referência no clique
                     if (isUnlocked) li.classList.add('unlocked');
                     
                     let tagHtml = '';
@@ -468,15 +480,31 @@
                 if(e.target === achievementsModalOverlay) achievementsModalOverlay.classList.add('hidden');
             });
             
+            // ★ NOVO: Event listener para gerenciar conquistas no modo admin
+            achievementsList.addEventListener('click', (e) => {
+                if (!document.body.classList.contains('admin-mode')) return;
+
+                const li = e.target.closest('.achievement-item');
+                if (!li) return;
+                
+                const achievementId = li.dataset.id;
+                if (!achievementId) return;
+
+                const unlocked = getUnlockedAchievements();
+                if(unlocked.has(achievementId)) {
+                    lockAchievement(achievementId);
+                } else {
+                    unlockAchievement(achievementId);
+                }
+            });
+            
             const showStatus = (message, duration = 2000) => { saveStatus.textContent = message; saveStatus.classList.add('show'); setTimeout(() => saveStatus.classList.remove('show'), duration); };
             
-            // ★ ATUALIZADO: Lógica de conquista para os temas
             const setTheme = (theme) => {
                 pageBody.setAttribute('data-theme', theme);
                 localStorage.setItem(THEME_STORAGE_KEY, theme);
                 themeButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.theme === theme));
                 
-                // Checagem da conquista de temas
                 const themesSeen = new Set(JSON.parse(localStorage.getItem(THEMES_SEEN_KEY) || '[]'));
                 themesSeen.add(theme);
                 localStorage.setItem(THEMES_SEEN_KEY, JSON.stringify([...themesSeen]));
@@ -547,7 +575,6 @@
             document.getElementById('link-7').addEventListener('click', () => unlockAchievement('mal_click'));
             document.getElementById('link-8').addEventListener('click', (e) => { 
                 unlockAchievement('discord_click');
-                // A ação de copiar para o clipboard ainda funciona
                 e.preventDefault(); 
                 navigator.clipboard.writeText(currentData['link8-text2']).then(() => showStatus('Username copiado!'));
             });
@@ -561,7 +588,7 @@
                 } else {
                     currentData['like-count'] = (currentData['like-count'] || 0) + 1;
                     localStorage.setItem(LIKE_STORAGE_KEY, 'true');
-                    unlockAchievement('liked_profile'); // ★ Conquista do like é desbloqueada aqui
+                    unlockAchievement('liked_profile');
                 }
                 updateDOM(currentData);
                 initializeLikeButton();
@@ -570,7 +597,6 @@
 
             themeButtons.forEach(button => { button.addEventListener('click', (e) => { e.stopPropagation(); setTheme(button.dataset.theme); }); });
 
-            // ★ ATUALIZADO: Lógica de conquista para as músicas
             const onSongEnd = () => {
                 const songsListened = new Set(JSON.parse(localStorage.getItem(SONGS_LISTENED_KEY) || '[]'));
                 songsListened.add(currentTrackIndex);
@@ -586,7 +612,14 @@
             const pinModalOverlay = document.getElementById('pin-modal-overlay');
             const pinModalBox = document.getElementById('pin-modal-box');
             const pinInput = document.getElementById('pin-input');
-            const showPinModal = () => { pinModalOverlay.classList.remove('hidden'); pinInput.focus(); };
+            
+            // ★ ATUALIZADO: Gatilho da conquista movido para cá
+            const showPinModal = () => {
+                pinModalOverlay.classList.remove('hidden');
+                pinInput.focus();
+                unlockAchievement('found_admin_mode'); // Desbloqueia ao ACHAR o modal.
+            };
+
             const hidePinModal = () => { pinModalOverlay.classList.add('hidden'); };
             let clickCount = 0; let clickTimer = null;
             mainFooter.addEventListener('click', (e) => { if (e.target.closest('button') || e.target.closest('#boombox-section')) return; if (document.body.classList.contains('admin-mode')) return; clickCount++; if (clickTimer) clearTimeout(clickTimer); clickTimer = setTimeout(() => { clickCount = 0; }, 2000); if (clickCount === 5) { clickCount = 0; clearTimeout(clickTimer); showPinModal(); } });
@@ -603,12 +636,10 @@
             const enterAdminMode = () => { document.body.classList.add('admin-mode'); localStorage.setItem('isAdmin', 'true'); };
             const exitAdminMode = () => { document.body.classList.remove('admin-mode'); localStorage.removeItem('isAdmin'); };
             
-            // ★ ATUALIZADO: Conquista do Modo Autor
             const checkPin = () => {
                 if (pinInput.value === AUTHOR_PIN) {
                     enterAdminMode();
                     hidePinModal();
-                    unlockAchievement('found_admin_mode');
                 } else {
                     document.getElementById('pin-error').textContent = 'PIN Incorreto'; pinModalBox.classList.add('shake'); pinInput.value = '';
                     setTimeout(() => pinModalBox.classList.remove('shake'), 500);
