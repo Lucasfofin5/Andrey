@@ -17,37 +17,38 @@
             --border-color: #3a3b3c; --shadow-color: rgba(0, 0, 0, 0.4); --accent-shadow-color: rgba(52, 152, 219, 0.3);
             --header-text-shadow: none; --border-radius: 12px;
             --achievement-unlocked-color: #f1c40f;
+            --achievement-hard-color: #e74c3c;
         }
         body[data-theme="light"] {
             --bg-color: #f0f2f5; --card-color: #ffffff; --primary-text-color: #1c1e21;
             --secondary-text-color: #65676b; --accent-color: #1877f2; --accent-color-hover: #166fe5;
             --border-color: #dadde1; --shadow-color: rgba(0, 0, 0, 0.1); --accent-shadow-color: rgba(24, 119, 242, 0.2);
-            --header-text-shadow: none; --achievement-unlocked-color: #f39c12;
+            --header-text-shadow: none; --achievement-unlocked-color: #f39c12; --achievement-hard-color: #c0392b;
         }
         body[data-theme="neon"] {
             --bg-color: #0d0221; --card-color: #1d1135; --primary-text-color: #f0f0f0;
             --secondary-text-color: #a0a0b0; --accent-color: #ff00ff; --accent-color-hover: #e600e6;
             --border-color: #3a2a5c; --shadow-color: rgba(0, 0, 0, 0.6); --accent-shadow-color: rgba(255, 0, 255, 0.4);
             --header-text-shadow: 0 0 5px var(--accent-color), 0 0 10px var(--accent-color);
-            --achievement-unlocked-color: #f1c40f;
+            --achievement-unlocked-color: #f1c40f; --achievement-hard-color: #ff3333;
         }
         body[data-theme="ocean"] {
             --bg-color: #0a192f; --card-color: #112240; --primary-text-color: #ccd6f6;
             --secondary-text-color: #8892b0; --accent-color: #64ffda; --accent-color-hover: #52d9bc;
             --border-color: #1d3b5f; --shadow-color: rgba(0, 0, 0, 0.5); --accent-shadow-color: rgba(100, 255, 218, 0.2);
-            --header-text-shadow: none; --achievement-unlocked-color: #f1c40f;
+            --header-text-shadow: none; --achievement-unlocked-color: #f1c40f; --achievement-hard-color: #ff7b72;
         }
         body[data-theme="sunset"] {
             --bg-color: #2c2a4a; --card-color: #4f4a6e; --primary-text-color: #f5e6e8;
             --secondary-text-color: #cab9cd; --accent-color: #ff8e71; --accent-color-hover: #f9704c;
             --border-color: #3d3a5e; --shadow-color: rgba(0, 0, 0, 0.4); --accent-shadow-color: rgba(255, 142, 113, 0.3);
-            --header-text-shadow: none; --achievement-unlocked-color: #f1c40f;
+            --header-text-shadow: none; --achievement-unlocked-color: #f1c40f; --achievement-hard-color: #e94560;
         }
         body[data-theme="forest"] {
             --bg-color: #1a2e24; --card-color: #294038; --primary-text-color: #e0e6e3;
             --secondary-text-color: #9cae9b; --accent-color: #52de97; --accent-color-hover: #43b87b;
             --border-color: #35524a; --shadow-color: rgba(0, 0, 0, 0.5); --accent-shadow-color: rgba(82, 222, 151, 0.25);
-            --header-text-shadow: none; --achievement-unlocked-color: #f1c40f;
+            --header-text-shadow: none; --achievement-unlocked-color: #f1c40f; --achievement-hard-color: #ff6b6b;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -183,11 +184,17 @@
         #achievements-list { list-style: none; margin-top: 20px; display: flex; flex-direction: column; gap: 15px; max-height: 60vh; overflow-y: auto; padding-right: 10px; }
         .achievement-item { background-color: rgba(0,0,0,0.15); padding: 15px; border-radius: var(--border-radius); display: flex; align-items: center; gap: 15px; text-align: left; opacity: 0.6; transition: all 0.3s ease; }
         .achievement-item.unlocked { opacity: 1; background-color: rgba(0,0,0,0.1); border-left: 4px solid var(--achievement-unlocked-color); }
-        .achievement-icon { font-size: 2em; width: 40px; text-align: center; color: var(--secondary-text-color); transition: color 0.3s ease; }
+        .achievement-icon { font-size: 2em; width: 40px; text-align: center; color: var(--secondary-text-color); transition: color 0.3s ease; flex-shrink: 0; }
         .achievement-item.unlocked .achievement-icon { color: var(--achievement-unlocked-color); }
-        .achievement-details h4 { font-weight: 600; color: var(--primary-text-color); }
-        .achievement-details p { font-size: 0.9em; font-weight: 300; color: var(--secondary-text-color); line-height: 1.3; }
+        .achievement-details { flex-grow: 1; display: flex; flex-direction: column; }
+        .achievement-details h4 { font-weight: 600; color: var(--primary-text-color); display: flex; align-items: center; gap: 8px; }
+        .achievement-details p { font-size: 0.9em; font-weight: 300; color: var(--secondary-text-color); line-height: 1.3; margin-top: 2px; }
         .achievement-item:not(.unlocked) .achievement-details h4 { color: var(--secondary-text-color); }
+        /* ★ NOVO: Estilo para a tag "Difícil" */
+        .achievement-tag { font-size: 0.6em; font-weight: 700; padding: 2px 6px; border-radius: 4px; color: var(--card-color); }
+        .achievement-tag.hard { background-color: var(--achievement-hard-color); }
+        .achievement-tag.platinum { background: linear-gradient(45deg, #d4af37, #f1c40f, #ffd700); color: #333; text-shadow: 1px 1px 1px rgba(0,0,0,0.1);}
+
 
         #save-status, #achievement-toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); color: white; padding: 12px 22px; border-radius: var(--border-radius); font-weight: 600; box-shadow: 0 4px 15px var(--accent-shadow-color); opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease; z-index: 2000; pointer-events: none; }
         #save-status { background-color: var(--accent-color); }
@@ -330,7 +337,6 @@
             playPauseBtn.addEventListener('click', (e) => { e.stopPropagation(); if (audioPlayer.paused) playTrack(); else pauseTrack(); });
             nextBtn.addEventListener('click', (e) => { e.stopPropagation(); playNextTrack(); });
             prevBtn.addEventListener('click', (e) => { e.stopPropagation(); playPrevTrack(); });
-            audioPlayer.addEventListener('ended', playNextTrack);
             audioPlayer.addEventListener('play', () => playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>');
             audioPlayer.addEventListener('pause', () => playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>');
             audioPlayer.addEventListener('timeupdate', () => { if (audioPlayer.duration) progressBar.style.width = `${(audioPlayer.currentTime / audioPlayer.duration) * 100}%`; });
@@ -359,8 +365,10 @@
             const achievementsCloseBtn = document.getElementById('achievements-close-btn');
             const achievementsList = document.getElementById('achievements-list');
             const ACHIEVEMENTS_STORAGE_KEY = 'userUnlockedAchievements_v1';
+            const SONGS_LISTENED_KEY = 'userSongsListened_v1';
+            const THEMES_SEEN_KEY = 'userThemesSeen_v1';
 
-            // ★ ATUALIZADO: Novas conquistas adicionadas
+            // ★ ATUALIZADO: Lista completa de conquistas
             const allAchievements = [
                 { id: 'ifood_click', title: 'De Bucho Cheio!', description: 'Aperte o Botão do Ifood.', icon: 'fa-solid fa-utensils' },
                 { id: 'facebook_click', title: 'Eu Não Fiz Nada!', description: 'Aperte o Botão do Facebook.', icon: 'fa-brands fa-facebook' },
@@ -371,6 +379,11 @@
                 { id: 'steam_click', title: 'Não Dá Pra Platinaaaa!', description: 'Aperte o Botão da Steam.', icon: 'fa-brands fa-steam' },
                 { id: 'mal_click', title: 'Animer.', description: 'Aperte o Botão do MyAnimeList.', icon: 'fa-solid fa-tv' },
                 { id: 'discord_click', title: 'Coisas.', description: 'Aperte o Botão do Discord.', icon: 'fa-brands fa-discord' },
+                { id: 'liked_profile', title: 'Obrigado!', description: 'Aperte o botão de like.', icon: 'fa-solid fa-heart' },
+                { id: 'theme_explorer', title: 'Indeciso.', description: 'Veja todos os temas.', icon: 'fa-solid fa-palette' },
+                { id: 'lofi_master', title: 'Lofi na veia.', description: 'Ouça todas as três músicas inteiras da Boombox.', icon: 'fa-solid fa-headphones', difficulty: 'hard' },
+                { id: 'found_admin_mode', title: 'Easter Egg ou Não?', description: 'Ache o Modo Autor.', icon: 'fa-solid fa-user-secret', difficulty: 'hard' },
+                { id: 'platinum', title: 'Platinado!', description: 'Receba todas as conquistas.', icon: 'fa-solid fa-trophy', difficulty: 'platinum' }
             ];
 
             const getUnlockedAchievements = () => {
@@ -389,31 +402,56 @@
                 setTimeout(() => achievementToast.classList.remove('show'), 4000);
             };
 
+            // ★ ATUALIZADO: Lógica de desbloqueio com checagem para platina
             const unlockAchievement = (id) => {
                 const unlocked = getUnlockedAchievements();
-                if (unlocked.has(id)) return; 
+                if (unlocked.has(id)) return;
+
                 const achievement = allAchievements.find(a => a.id === id);
                 if (!achievement) return;
+
                 unlocked.add(id);
                 localStorage.setItem(ACHIEVEMENTS_STORAGE_KEY, JSON.stringify([...unlocked]));
                 showAchievementToast(achievement.title);
-                renderAchievements();
-            };
+                
+                // Checa se é hora de platinar
+                const platinumAchievement = allAchievements.find(a => a.id === 'platinum');
+                // A condição é: todas as conquistas (menos a de platina) foram desbloqueadas.
+                if (platinumAchievement && !unlocked.has('platinum') && unlocked.size === allAchievements.length - 1) {
+                    unlocked.add('platinum');
+                    localStorage.setItem(ACHIEVEMENTS_STORAGE_KEY, JSON.stringify([...unlocked]));
+                    setTimeout(() => showAchievementToast(platinumAchievement.title), 1000); // Mostra o toast da platina um pouco depois
+                }
 
+                renderAchievements(); // Re-renderiza a lista para atualizar a UI
+            };
+            
+            // ★ ATUALIZADO: Renderização com a tag de dificuldade
             const renderAchievements = () => {
                 const unlocked = getUnlockedAchievements();
-                achievementsList.innerHTML = '';
-                allAchievements.forEach(ach => {
+                achievementsList.innerHTML = ''; // Limpa a lista antes de popular
+                // Ordena para que a platina sempre apareça por último
+                const sortedAchievements = [...allAchievements].sort((a, b) => (a.id === 'platinum') - (b.id === 'platinum'));
+
+                sortedAchievements.forEach(ach => {
                     const isUnlocked = unlocked.has(ach.id);
                     const li = document.createElement('li');
                     li.className = 'achievement-item';
                     if (isUnlocked) li.classList.add('unlocked');
+                    
+                    let tagHtml = '';
+                    if (ach.difficulty === 'hard') {
+                        tagHtml = '<span class="achievement-tag hard">Difícil</span>';
+                    } else if (ach.difficulty === 'platinum') {
+                        tagHtml = '<span class="achievement-tag platinum">Platina</span>';
+                    }
+
                     li.innerHTML = `
                         <div class="achievement-icon">
                             <i class="${isUnlocked ? ach.icon : 'fa-solid fa-lock'}"></i>
                         </div>
                         <div class="achievement-details">
-                            <h4>${ach.title}</h4>
+                            <h4>${ach.title} ${tagHtml}</h4>
                             <p>${ach.description}</p>
                         </div>
                     `;
@@ -431,7 +469,22 @@
             });
             
             const showStatus = (message, duration = 2000) => { saveStatus.textContent = message; saveStatus.classList.add('show'); setTimeout(() => saveStatus.classList.remove('show'), duration); };
-            const setTheme = (theme) => { pageBody.setAttribute('data-theme', theme); localStorage.setItem(THEME_STORAGE_KEY, theme); themeButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.theme === theme)); };
+            
+            // ★ ATUALIZADO: Lógica de conquista para os temas
+            const setTheme = (theme) => {
+                pageBody.setAttribute('data-theme', theme);
+                localStorage.setItem(THEME_STORAGE_KEY, theme);
+                themeButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.theme === theme));
+                
+                // Checagem da conquista de temas
+                const themesSeen = new Set(JSON.parse(localStorage.getItem(THEMES_SEEN_KEY) || '[]'));
+                themesSeen.add(theme);
+                localStorage.setItem(THEMES_SEEN_KEY, JSON.stringify([...themesSeen]));
+                if (themesSeen.size === themeButtons.length) {
+                    unlockAchievement('theme_explorer');
+                }
+            };
+            
             const updateDOM = (data) => {
                 document.getElementById('profile-name').textContent = data['profile-name'];
                 document.getElementById('profile-tagline').textContent = data['profile-tagline'];
@@ -489,16 +542,47 @@
             document.getElementById('link-2').addEventListener('click', () => unlockAchievement('portfolio_click'));
             document.getElementById('link-3').addEventListener('click', () => unlockAchievement('email_click'));
             document.getElementById('link-4').addEventListener('click', () => unlockAchievement('ign_click'));
-            // ★ ATUALIZADO: Novos gatilhos adicionados
             document.getElementById('link-5').addEventListener('click', () => unlockAchievement('whatsapp_click'));
             document.getElementById('link-6').addEventListener('click', () => unlockAchievement('steam_click'));
             document.getElementById('link-7').addEventListener('click', () => unlockAchievement('mal_click'));
-            document.getElementById('link-8').addEventListener('click', () => unlockAchievement('discord_click'));
+            document.getElementById('link-8').addEventListener('click', (e) => { 
+                unlockAchievement('discord_click');
+                // A ação de copiar para o clipboard ainda funciona
+                e.preventDefault(); 
+                navigator.clipboard.writeText(currentData['link8-text2']).then(() => showStatus('Username copiado!'));
+            });
 
+            likeButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const hasLiked = localStorage.getItem(LIKE_STORAGE_KEY) === 'true';
+                if (hasLiked) {
+                    currentData['like-count'] = Math.max(0, (currentData['like-count'] || 0) - 1);
+                    localStorage.setItem(LIKE_STORAGE_KEY, 'false');
+                } else {
+                    currentData['like-count'] = (currentData['like-count'] || 0) + 1;
+                    localStorage.setItem(LIKE_STORAGE_KEY, 'true');
+                    unlockAchievement('liked_profile'); // ★ Conquista do like é desbloqueada aqui
+                }
+                updateDOM(currentData);
+                initializeLikeButton();
+                saveData(true);
+            });
 
-            likeButton.addEventListener('click', (e) => { e.stopPropagation(); const hasLiked = localStorage.getItem(LIKE_STORAGE_KEY) === 'true'; if (hasLiked) { currentData['like-count'] = Math.max(0, (currentData['like-count'] || 0) - 1); localStorage.setItem(LIKE_STORAGE_KEY, 'false'); } else { currentData['like-count'] = (currentData['like-count'] || 0) + 1; localStorage.setItem(LIKE_STORAGE_KEY, 'true'); } updateDOM(currentData); initializeLikeButton(); saveData(true); });
             themeButtons.forEach(button => { button.addEventListener('click', (e) => { e.stopPropagation(); setTheme(button.dataset.theme); }); });
-            document.getElementById('link-8').addEventListener('click', (e) => { e.preventDefault(); navigator.clipboard.writeText(currentData['link8-text2']).then(() => showStatus('Username copiado!')); });
+
+            // ★ ATUALIZADO: Lógica de conquista para as músicas
+            const onSongEnd = () => {
+                const songsListened = new Set(JSON.parse(localStorage.getItem(SONGS_LISTENED_KEY) || '[]'));
+                songsListened.add(currentTrackIndex);
+                localStorage.setItem(SONGS_LISTENED_KEY, JSON.stringify([...songsListened]));
+
+                if (songsListened.size === playlist.length) {
+                    unlockAchievement('lofi_master');
+                }
+                playNextTrack();
+            };
+            audioPlayer.addEventListener('ended', onSongEnd);
+
             const pinModalOverlay = document.getElementById('pin-modal-overlay');
             const pinModalBox = document.getElementById('pin-modal-box');
             const pinInput = document.getElementById('pin-input');
@@ -509,41 +593,27 @@
             
             document.querySelectorAll('.edit-icon').forEach(icon => {
                 icon.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    const linkId = icon.dataset.editLink;
-                    const specialKey = icon.dataset.editSpecial;
-                    const textKey = icon.dataset.edit;
-                    const editValue = (key, promptMessage) => {
-                        const currentValue = currentData[key];
-                        const newValue = prompt(promptMessage, currentValue);
-                        if (newValue !== null && newValue !== currentValue) {
-                            currentData[key] = newValue;
-                            updateDOM(currentData);
-                            saveData();
-                        }
-                    };
-                    if (textKey) {
-                        editValue(textKey, `Editar ${textKey}:`);
-                    } else if (specialKey === 'ifood') {
-                        editValue('ifood-text', 'Editar Texto do Botão iFood:');
-                        editValue('ifood-href', 'Editar URL do iFood:');
-                    } else if (linkId) {
-                        if (linkId === '3' || linkId === '8') {
-                            editValue(`link${linkId}-text1`, `Editar Título:`);
-                            editValue(`link${linkId}-text2`, `Editar Subtexto:`);
-                            if (linkId === '3') editValue('link3-href', 'Editar Link (mailto:):');
-                        } else {
-                            editValue(`link${linkId}-text`, `Editar Texto:`);
-                            editValue(`link${linkId}-href`, `Editar URL:`);
-                        }
-                    }
+                    e.preventDefault(); e.stopPropagation();
+                    const linkId = icon.dataset.editLink; const specialKey = icon.dataset.editSpecial; const textKey = icon.dataset.edit;
+                    const editValue = (key, promptMessage) => { const currentValue = currentData[key]; const newValue = prompt(promptMessage, currentValue); if (newValue !== null && newValue !== currentValue) { currentData[key] = newValue; updateDOM(currentData); saveData(); } };
+                    if (textKey) { editValue(textKey, `Editar ${textKey}:`); } else if (specialKey === 'ifood') { editValue('ifood-text', 'Editar Texto do Botão iFood:'); editValue('ifood-href', 'Editar URL do iFood:'); } else if (linkId) { if (linkId === '3' || linkId === '8') { editValue(`link${linkId}-text1`, `Editar Título:`); editValue(`link${linkId}-text2`, `Editar Subtexto:`); if (linkId === '3') editValue('link3-href', 'Editar Link (mailto:):'); } else { editValue(`link${linkId}-text`, `Editar Texto:`); editValue(`link${linkId}-href`, `Editar URL:`); } }
                 });
             });
 
             const enterAdminMode = () => { document.body.classList.add('admin-mode'); localStorage.setItem('isAdmin', 'true'); };
             const exitAdminMode = () => { document.body.classList.remove('admin-mode'); localStorage.removeItem('isAdmin'); };
-            const checkPin = () => { if (pinInput.value === AUTHOR_PIN) { enterAdminMode(); hidePinModal(); } else { document.getElementById('pin-error').textContent = 'PIN Incorreto'; pinModalBox.classList.add('shake'); pinInput.value = ''; setTimeout(() => pinModalBox.classList.remove('shake'), 500); } };
+            
+            // ★ ATUALIZADO: Conquista do Modo Autor
+            const checkPin = () => {
+                if (pinInput.value === AUTHOR_PIN) {
+                    enterAdminMode();
+                    hidePinModal();
+                    unlockAchievement('found_admin_mode');
+                } else {
+                    document.getElementById('pin-error').textContent = 'PIN Incorreto'; pinModalBox.classList.add('shake'); pinInput.value = '';
+                    setTimeout(() => pinModalBox.classList.remove('shake'), 500);
+                }
+            };
             document.getElementById('pin-submit').addEventListener('click', checkPin);
             document.getElementById('pin-cancel').addEventListener('click', hidePinModal); 
             document.getElementById('exit-admin-button').addEventListener('click', exitAdminMode);
