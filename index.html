@@ -387,11 +387,11 @@
             document.addEventListener('mousemove', (e) => { if (isDraggingVolume) { handleVolumeChange(e); } });
             document.addEventListener('mouseup', () => { isDraggingVolume = false; });
             function loadTrack(trackIndex) { const track = playlist[trackIndex]; songTitleEl.textContent = track.title; songArtistEl.textContent = track.artist; audioPlayer.src = track.src; audioPlayer.load(); progressBar.style.width = '0%'; }
-            function playTrack() { if (!isAudioInitialized) initAudioSystem(); if (audioContext && audioContext.state === 'suspended') { audioContext.resume(); } const playPromise = audioPlayer.play(); if (playPromise !== undefined) { playPromise.catch(error => { if (error.name === 'NotAllowedError') { console.log('Autoplay foi bloqueado pelo navegador. O usuário precisa interagir com a página primeiro.'); } else { console.error("Erro ao tocar áudio:", error); } }); } }
+            function playTrack() { if (!isAudioInitialized) initAudioSystem(); if (audioContext && audioContext.state === 'suspended') { audioContext.resume(); } const playPromise = audioPlayer.play(); if (playPromise !== undefined) { playPromise.catch(error => { if (error.name === 'NotAllowedError') { console.log('Autoplay foi bloqueado pelo navegador.'); } else { console.error("Erro ao tocar áudio:", error); } }); } }
             function pauseTrack() { audioPlayer.pause(); }
             function playNextTrack() { currentTrackIndex = (currentTrackIndex + 1) % playlist.length; loadTrack(currentTrackIndex); playTrack(); }
             function playPrevTrack() { currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length; loadTrack(currentTrackIndex); playTrack(); }
-            function initAudioSystem() { if (isAudioInitialized) return; try { audioContext = new (window.AudioContext || window.webkitAudioContext)(); source = audioContext.createMediaElementSource(audioPlayer); analyser = audioContext.createAnalyser(); source.connect(analyser); analyser.connect(audioContext.destination); analyser.fftSize = 64; const bufferLength = analyser.frequencyBinCount; dataArray = new Uint8Array(bufferLength); for (let i = 0; i < NUM_VISUALIZER_BARS; i++) { const bar = document.createElement('div'); bar.classList.add('visualizer-bar'); visualizerContainer.appendChild(bar); } isAudioInitialized = true; animateVisualizer(); } catch (e) { console.error("Erro ao inicializar o sistema de áudio. O visualizer pode não funcionar.", e); visualizerContainer.style.display = 'none'; } }
+            function initAudioSystem() { if (isAudioInitialized) return; try { audioContext = new (window.AudioContext || window.webkitAudioContext)(); source = audioContext.createMediaElementSource(audioPlayer); analyser = audioContext.createAnalyser(); source.connect(analyser); analyser.connect(audioContext.destination); analyser.fftSize = 64; const bufferLength = analyser.frequencyBinCount; dataArray = new Uint8Array(bufferLength); for (let i = 0; i < NUM_VISUALIZER_BARS; i++) { const bar = document.createElement('div'); bar.classList.add('visualizer-bar'); visualizerContainer.appendChild(bar); } isAudioInitialized = true; animateVisualizer(); } catch (e) { console.error("Erro ao inicializar o sistema de áudio.", e); visualizerContainer.style.display = 'none'; } }
             function animateVisualizer() { if (!isAudioInitialized || !analyser) return; requestAnimationFrame(animateVisualizer); if (audioPlayer.paused) { visualizerContainer.childNodes.forEach(bar => bar.style.height = '5%'); return; } analyser.getByteFrequencyData(dataArray); const bars = visualizerContainer.childNodes; const barStep = Math.floor(dataArray.length / NUM_VISUALIZER_BARS); for(let i = 0; i < NUM_VISUALIZER_BARS; i++) { const bar = bars[i]; if (bar) { const height = Math.max(5, (dataArray[i * barStep] / 255) * 100); bar.style.height = `${height}%`; } } }
             playPauseBtn.addEventListener('click', (e) => { e.stopPropagation(); if (audioPlayer.paused) playTrack(); else pauseTrack(); });
             nextBtn.addEventListener('click', (e) => { e.stopPropagation(); playNextTrack(); });
@@ -404,7 +404,7 @@
             const statusContainer = document.getElementById('discord-status-container');
             const statusIndicator = document.getElementById('discord-status-indicator');
             const statusText = document.getElementById('discord-status-text');
-            async function fetchDiscordStatus() { if (!DISCORD_USER_ID || DISCORD_USER_ID === 'SEU_ID_AQUI') { statusContainer.style.display = 'none'; return; } try { const response = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`); if (!response.ok) { statusText.innerHTML = 'Status indisponível'; statusIndicator.className = 'offline'; statusContainer.style.display = 'flex'; return; } const { data } = await response.json(); if (!data) { statusText.innerHTML = 'Erro ao carregar'; statusContainer.style.display = 'flex'; return; } statusIndicator.className = ''; statusIndicator.classList.add(data.discord_status || 'offline'); const activity = data.activities.find(a => [0, 2, 4].includes(a.type)); let activityText = 'Online'; if (data.discord_status === 'offline') { activityText = 'Offline'; } else if (activity) { if (activity.type === 0) { activityText = `<i class="fa-solid fa-gamepad"></i> Jogando <strong>${activity.name}</strong>`; } else if (activity.type === 2 && activity.name === 'Spotify') { activityText = `<i class="fa-brands fa-spotify"></i> Ouvindo <strong>${activity.details}</strong>`; } else if (activity.type === 4 && activity.state) { activityText = `${activity.emoji ? activity.emoji.name : ''} ${activity.state}`; } } statusText.innerHTML = activityText; statusContainer.style.display = 'flex'; } catch (error) { console.error("Erro de conexão ao buscar status do Discord:", error); statusText.innerHTML = 'Erro de conexão'; statusContainer.style.display = 'flex'; } }
+            async function fetchDiscordStatus() { if (!DISCORD_USER_ID || DISCORD_USER_ID === 'SEU_ID_AQUI') { statusContainer.style.display = 'none'; return; } try { const response = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`); if (!response.ok) { statusText.innerHTML = 'Status indisponível'; statusIndicator.className = 'offline'; statusContainer.style.display = 'flex'; return; } const { data } = await response.json(); if (!data) { statusText.innerHTML = 'Erro ao carregar'; statusContainer.style.display = 'flex'; return; } statusIndicator.className = ''; statusIndicator.classList.add(data.discord_status || 'offline'); const activity = data.activities.find(a => [0, 2, 4].includes(a.type)); let activityText = 'Online'; if (data.discord_status === 'offline') { activityText = 'Offline'; } else if (activity) { if (activity.type === 0) { activityText = `<i class="fa-solid fa-gamepad"></i> Jogando <strong>${activity.name}</strong>`; } else if (activity.type === 2 && activity.name === 'Spotify') { activityText = `<i class="fa-brands fa-spotify"></i> Ouvindo <strong>${activity.details}</strong>`; } else if (activity.type === 4 && activity.state) { activityText = `${activity.emoji ? activity.emoji.name : ''} ${activity.state}`; } } statusText.innerHTML = activityText; statusContainer.style.display = 'flex'; } catch (error) { console.error("Erro de conexão com o Discord:", error); statusText.innerHTML = 'Erro de conexão'; statusContainer.style.display = 'flex'; } }
 
             const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
             const LIKE_STORAGE_KEY = 'userHasLikedProfile_v2';
@@ -719,7 +719,7 @@
 
                 try {
                     const readResponse = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_MESSAGES_ID}/latest`, { headers: { 'X-Master-Key': JSONBIN_API_KEY } });
-                    if (!readResponse.ok) throw new Error('Não foi possível carregar o histórico de mensagens.');
+                    if (!readResponse.ok) throw new Error('Não foi possível carregar o histórico.');
                     const data = await readResponse.json();
                     const currentMessages = data.record.messages || [];
 
@@ -770,13 +770,15 @@
                         li.className = 'message-entry';
                         const date = new Date(msg.timestamp);
                         const formattedDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+                        const cleanName = msg.name.replace(/</g, "<").replace(/>/g, ">");
+                        const cleanMessage = msg.message.replace(/</g, "<").replace(/>/g, ">").replace(/\n/g, '<br>');
 
                         li.innerHTML = `
                             <div class="message-header">
-                                <span class="message-author">${msg.name}</span>
+                                <span class="message-author">${cleanName}</span>
                                 <span class="message-timestamp">${formattedDate}</span>
                             </div>
-                            <p class="message-content">${msg.message.replace(/\n/g, '<br>')}</p>
+                            <p class="message-content">${cleanMessage}</p>
                         `;
                         messagesList.appendChild(li);
                     });
