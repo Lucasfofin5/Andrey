@@ -267,7 +267,7 @@
             audioPlayer.addEventListener('timeupdate', () => { if (audioPlayer.duration) progressBar.style.width = `${(audioPlayer.currentTime / audioPlayer.duration) * 100}%`; });
             progressContainer.addEventListener('click', (e) => { if (!audioPlayer.duration) return; const rect = progressContainer.getBoundingClientRect(); audioPlayer.currentTime = ((e.clientX - rect.left) / rect.width) * audioPlayer.duration; });
 
-            const DISCORD_USER_ID = 'SEU_ID_AQUI'; 
+            const DISCORD_USER_ID = '268768786998493184'; 
             const statusContainer = document.getElementById('discord-status-container');
             const statusIndicator = document.getElementById('discord-status-indicator');
             const statusText = document.getElementById('discord-status-text');
