@@ -360,12 +360,17 @@
             const achievementsList = document.getElementById('achievements-list');
             const ACHIEVEMENTS_STORAGE_KEY = 'userUnlockedAchievements_v1';
 
+            // ★ ATUALIZADO: Novas conquistas adicionadas
             const allAchievements = [
                 { id: 'ifood_click', title: 'De Bucho Cheio!', description: 'Aperte o Botão do Ifood.', icon: 'fa-solid fa-utensils' },
                 { id: 'facebook_click', title: 'Eu Não Fiz Nada!', description: 'Aperte o Botão do Facebook.', icon: 'fa-brands fa-facebook' },
                 { id: 'portfolio_click', title: 'Looping?', description: 'Aperte o Botão do Portfólio.', icon: 'fa-solid fa-repeat' },
                 { id: 'email_click', title: 'Só Por Negócios!', description: 'Aperte o Botão do E-Mail.', icon: 'fa-solid fa-envelope' },
                 { id: 'ign_click', title: 'Press Start to Play!', description: 'Aperte o Botão do IGN.', icon: 'fa-solid fa-gamepad' },
+                { id: 'whatsapp_click', title: 'Boa Noite Bruno.', description: 'Aperte o Botão do Whatsapp.', icon: 'fa-brands fa-whatsapp' },
+                { id: 'steam_click', title: 'Não Dá Pra Platinaaaa!', description: 'Aperte o Botão da Steam.', icon: 'fa-brands fa-steam' },
+                { id: 'mal_click', title: 'Animer.', description: 'Aperte o Botão do MyAnimeList.', icon: 'fa-solid fa-tv' },
+                { id: 'discord_click', title: 'Coisas.', description: 'Aperte o Botão do Discord.', icon: 'fa-brands fa-discord' },
             ];
 
             const getUnlockedAchievements = () => {
@@ -478,11 +483,18 @@
                 }
             };
             
+            // Gatilhos de conquistas
             document.getElementById('ifood-link').addEventListener('click', () => unlockAchievement('ifood_click'));
             document.getElementById('link-1').addEventListener('click', () => unlockAchievement('facebook_click'));
             document.getElementById('link-2').addEventListener('click', () => unlockAchievement('portfolio_click'));
             document.getElementById('link-3').addEventListener('click', () => unlockAchievement('email_click'));
             document.getElementById('link-4').addEventListener('click', () => unlockAchievement('ign_click'));
+            // ★ ATUALIZADO: Novos gatilhos adicionados
+            document.getElementById('link-5').addEventListener('click', () => unlockAchievement('whatsapp_click'));
+            document.getElementById('link-6').addEventListener('click', () => unlockAchievement('steam_click'));
+            document.getElementById('link-7').addEventListener('click', () => unlockAchievement('mal_click'));
+            document.getElementById('link-8').addEventListener('click', () => unlockAchievement('discord_click'));
+
 
             likeButton.addEventListener('click', (e) => { e.stopPropagation(); const hasLiked = localStorage.getItem(LIKE_STORAGE_KEY) === 'true'; if (hasLiked) { currentData['like-count'] = Math.max(0, (currentData['like-count'] || 0) - 1); localStorage.setItem(LIKE_STORAGE_KEY, 'false'); } else { currentData['like-count'] = (currentData['like-count'] || 0) + 1; localStorage.setItem(LIKE_STORAGE_KEY, 'true'); } updateDOM(currentData); initializeLikeButton(); saveData(true); });
             themeButtons.forEach(button => { button.addEventListener('click', (e) => { e.stopPropagation(); setTheme(button.dataset.theme); }); });
@@ -495,7 +507,6 @@
             let clickCount = 0; let clickTimer = null;
             mainFooter.addEventListener('click', (e) => { if (e.target.closest('button') || e.target.closest('#boombox-section')) return; if (document.body.classList.contains('admin-mode')) return; clickCount++; if (clickTimer) clearTimeout(clickTimer); clickTimer = setTimeout(() => { clickCount = 0; }, 2000); if (clickCount === 5) { clickCount = 0; clearTimeout(clickTimer); showPinModal(); } });
             
-            // ★★★ CORREÇÃO APLICADA AQUI ★★★
             document.querySelectorAll('.edit-icon').forEach(icon => {
                 icon.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -520,7 +531,7 @@
                     } else if (linkId) {
                         if (linkId === '3' || linkId === '8') {
                             editValue(`link${linkId}-text1`, `Editar Título:`);
-                            editValue(`link${linkId}-text2`, `Editar Subtexto:`); // Esta linha foi corrigida.
+                            editValue(`link${linkId}-text2`, `Editar Subtexto:`);
                             if (linkId === '3') editValue('link3-href', 'Editar Link (mailto:):');
                         } else {
                             editValue(`link${linkId}-text`, `Editar Texto:`);
