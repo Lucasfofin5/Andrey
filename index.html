@@ -360,7 +360,6 @@
             const achievementsList = document.getElementById('achievements-list');
             const ACHIEVEMENTS_STORAGE_KEY = 'userUnlockedAchievements_v1';
 
-            // ★ ATUALIZADO: Novas conquistas adicionadas ao array
             const allAchievements = [
                 { id: 'ifood_click', title: 'De Bucho Cheio!', description: 'Aperte o Botão do Ifood.', icon: 'fa-solid fa-utensils' },
                 { id: 'facebook_click', title: 'Eu Não Fiz Nada!', description: 'Aperte o Botão do Facebook.', icon: 'fa-brands fa-facebook' },
@@ -479,7 +478,6 @@
                 }
             };
             
-            // ★ ATUALIZADO: Adicionados gatilhos para as novas conquistas
             document.getElementById('ifood-link').addEventListener('click', () => unlockAchievement('ifood_click'));
             document.getElementById('link-1').addEventListener('click', () => unlockAchievement('facebook_click'));
             document.getElementById('link-2').addEventListener('click', () => unlockAchievement('portfolio_click'));
@@ -496,7 +494,42 @@
             const hidePinModal = () => { pinModalOverlay.classList.add('hidden'); };
             let clickCount = 0; let clickTimer = null;
             mainFooter.addEventListener('click', (e) => { if (e.target.closest('button') || e.target.closest('#boombox-section')) return; if (document.body.classList.contains('admin-mode')) return; clickCount++; if (clickTimer) clearTimeout(clickTimer); clickTimer = setTimeout(() => { clickCount = 0; }, 2000); if (clickCount === 5) { clickCount = 0; clearTimeout(clickTimer); showPinModal(); } });
-            document.querySelectorAll('.edit-icon').forEach(icon => { icon.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); const linkId = icon.dataset.editLink; const specialKey = icon.dataset.editSpecial; const textKey = icon.dataset.edit; const editValue = (key, promptMessage) => { const currentValue = currentData[key]; const newValue = prompt(promptMessage, currentValue); if (newValue !== null && newValue !== currentValue) { currentData[key] = newValue; updateDOM(currentData); saveData(); } }; if (textKey) { editValue(textKey, `Editar ${textKey}:`); } else if (specialKey === 'ifood') { editValue('ifood-text', 'Editar Texto do Botão iFood:'); editValue('ifood-href', 'Editar URL do iFood:'); } else if (linkId) { if (linkId === '3' || linkId === '8') { editValue(`link${linkId}-text1`, `Editar Título:`); editValue(`link${link-text-3.1"text2`, `Editar Subtexto:`); if (linkId === '3') editValue('link3-href', 'Editar Link (mailto:):'); } else { editValue(`link${linkId}-text`, `Editar Texto:`); editValue(`link${linkId}-href`, `Editar URL:`); } } }); });
+            
+            // ★★★ CORREÇÃO APLICADA AQUI ★★★
+            document.querySelectorAll('.edit-icon').forEach(icon => {
+                icon.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const linkId = icon.dataset.editLink;
+                    const specialKey = icon.dataset.editSpecial;
+                    const textKey = icon.dataset.edit;
+                    const editValue = (key, promptMessage) => {
+                        const currentValue = currentData[key];
+                        const newValue = prompt(promptMessage, currentValue);
+                        if (newValue !== null && newValue !== currentValue) {
+                            currentData[key] = newValue;
+                            updateDOM(currentData);
+                            saveData();
+                        }
+                    };
+                    if (textKey) {
+                        editValue(textKey, `Editar ${textKey}:`);
+                    } else if (specialKey === 'ifood') {
+                        editValue('ifood-text', 'Editar Texto do Botão iFood:');
+                        editValue('ifood-href', 'Editar URL do iFood:');
+                    } else if (linkId) {
+                        if (linkId === '3' || linkId === '8') {
+                            editValue(`link${linkId}-text1`, `Editar Título:`);
+                            editValue(`link${linkId}-text2`, `Editar Subtexto:`); // Esta linha foi corrigida.
+                            if (linkId === '3') editValue('link3-href', 'Editar Link (mailto:):');
+                        } else {
+                            editValue(`link${linkId}-text`, `Editar Texto:`);
+                            editValue(`link${linkId}-href`, `Editar URL:`);
+                        }
+                    }
+                });
+            });
+
             const enterAdminMode = () => { document.body.classList.add('admin-mode'); localStorage.setItem('isAdmin', 'true'); };
             const exitAdminMode = () => { document.body.classList.remove('admin-mode'); localStorage.removeItem('isAdmin'); };
             const checkPin = () => { if (pinInput.value === AUTHOR_PIN) { enterAdminMode(); hidePinModal(); } else { document.getElementById('pin-error').textContent = 'PIN Incorreto'; pinModalBox.classList.add('shake'); pinInput.value = ''; setTimeout(() => pinModalBox.classList.remove('shake'), 500); } };
