@@ -16,7 +16,6 @@
             --secondary-text-color: #b0b3b8; --accent-color: #3498db; --accent-color-hover: #2980b9;
             --border-color: #3a3b3c; --shadow-color: rgba(0, 0, 0, 0.4); --accent-shadow-color: rgba(52, 152, 219, 0.3);
             --header-text-shadow: none; --border-radius: 12px;
-            /* ★ NOVO: Cor para conquistas */
             --achievement-unlocked-color: #f1c40f;
         }
         body[data-theme="light"] {
@@ -73,7 +72,6 @@
         .theme-button:hover { color: var(--primary-text-color); }
         .theme-button.active { color: var(--accent-color); background-color: rgba(255,255,255,0.1); }
         
-        /* ★ NOVO: Estilo para o botão de Conquistas */
         #achievements-button {
             background-color: rgba(0,0,0,0.1); border: none; color: var(--secondary-text-color); cursor: pointer;
             width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
@@ -86,7 +84,7 @@
         #achievements-button.notify .fa-trophy { color: var(--achievement-unlocked-color); animation: pulse 1.5s infinite; }
 
 
-        .profile { margin-bottom: 30px; margin-top: 50px; position: relative; } /* Aumentei o margin-top para dar espaço aos novos botões */
+        .profile { margin-bottom: 30px; margin-top: 50px; position: relative; }
         .profile-picture-container { position: relative; display: inline-block; margin-bottom: 20px; }
         .profile-picture { width: 140px; height: 140px; object-fit: cover; border-radius: 50%; border: 4px solid var(--accent-color); margin: 0 auto; box-shadow: 0 0 30px var(--accent-shadow-color); transition: transform 0.3s cubic-bezier(0.215, 0.610, 0.355, 1), border-color 0.3s ease; }
         .profile-picture:hover { transform: scale(1.05) rotate(3deg); }
@@ -166,7 +164,6 @@
         body.admin-mode .edit-icon { display: inline-block; }
         body.admin-mode #admin-controls { display: block; }
         
-        /* ★ NOVO: Estilo para Modal de Conquistas e PIN */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
         .modal-overlay:not(.hidden) { opacity: 1; pointer-events: auto; }
         .modal-box { background: var(--card-color); padding: 30px; border-radius: var(--border-radius); width: 90%; max-width: 380px; text-align: center; border: 1px solid var(--border-color); transform: scale(0.9); transition: transform 0.3s ease; position: relative; }
@@ -183,7 +180,6 @@
         #pin-submit { background-color: var(--accent-color); color: white; } #pin-submit:hover { background-color: var(--accent-color-hover); }
         #pin-cancel { background-color: var(--border-color); color: var(--secondary-text-color); } #pin-cancel:hover { background-color: #4a4b4d; }
         
-        /* ★ NOVO: Estilo para a lista de conquistas */
         #achievements-list { list-style: none; margin-top: 20px; display: flex; flex-direction: column; gap: 15px; max-height: 60vh; overflow-y: auto; padding-right: 10px; }
         .achievement-item { background-color: rgba(0,0,0,0.15); padding: 15px; border-radius: var(--border-radius); display: flex; align-items: center; gap: 15px; text-align: left; opacity: 0.6; transition: all 0.3s ease; }
         .achievement-item.unlocked { opacity: 1; background-color: rgba(0,0,0,0.1); border-left: 4px solid var(--achievement-unlocked-color); }
@@ -193,7 +189,6 @@
         .achievement-details p { font-size: 0.9em; font-weight: 300; color: var(--secondary-text-color); line-height: 1.3; }
         .achievement-item:not(.unlocked) .achievement-details h4 { color: var(--secondary-text-color); }
 
-        /* ★ NOVO: Estilo para notificações "toast" */
         #save-status, #achievement-toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); color: white; padding: 12px 22px; border-radius: var(--border-radius); font-weight: 600; box-shadow: 0 4px 15px var(--accent-shadow-color); opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease; z-index: 2000; pointer-events: none; }
         #save-status { background-color: var(--accent-color); }
         #achievement-toast { background: linear-gradient(135deg, var(--achievement-unlocked-color), #e67e22); }
@@ -208,13 +203,11 @@
 
 <body>
     <div id="save-status"></div>
-    <!-- ★ NOVO: Toast para Conquistas -->
     <div id="achievement-toast"></div>
     <audio id="audio-player" style="display: none;" crossorigin="anonymous"></audio>
 
     <main class="card-container">
         <div class="top-controls">
-             <!-- ★ NOVO: Botão para abrir modal de conquistas -->
             <button id="achievements-button" title="Ver Conquistas"><i class="fa-solid fa-trophy"></i></button>
             <div class="theme-switcher">
                 <button class="theme-button" data-theme="light" title="Modo Claro"><i class="fa-solid fa-sun"></i></button>
@@ -282,18 +275,15 @@
             <div id="admin-controls"><button id="exit-admin-button"><i class="fa-solid fa-lock"></i> Trancar Site</button></div>
         </footer>
     </main>
-    <!-- ★ NOVO: Modal de Conquistas -->
     <div id="achievements-modal-overlay" class="modal-overlay hidden">
         <div id="achievements-modal-box" class="modal-box">
              <button class="modal-close-btn" id="achievements-close-btn" title="Fechar"><i class="fa-solid fa-times"></i></button>
             <h3><i class="fa-solid fa-trophy"></i> Conquistas</h3>
             <ul id="achievements-list">
-                <!-- Conquistas serão populadas via JS -->
             </ul>
         </div>
     </div>
     
-    <!-- ★ ATUALIZADO: Mudança para classe genérica de modal -->
     <div id="pin-modal-overlay" class="modal-overlay hidden">
         <div id="pin-modal-box" class="modal-box">
             <h3><i class="fa-solid fa-shield-halved"></i> Modo Autor</h3> <p id="pin-error"> </p>
@@ -303,7 +293,6 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
-            // ... (Todo o JS da seção do player e Discord permanece o mesmo)
             const JSONBIN_ID = '684f2cda8a456b7966aeb5d3';
             const JSONBIN_API_KEY = '$2a$10$NICad74I0SXWBZMw15PCleRSa5t8pTeErKGD9xAocMj3fZoWp0TVq';
             const AUTHOR_PIN = '5381';
@@ -364,7 +353,6 @@
             let currentData = {};
             let isSaving = false;
             
-            // ★ NOVO: Definições e lógica de conquistas
             const achievementToast = document.getElementById('achievement-toast');
             const achievementsButton = document.getElementById('achievements-button');
             const achievementsModalOverlay = document.getElementById('achievements-modal-overlay');
@@ -372,15 +360,13 @@
             const achievementsList = document.getElementById('achievements-list');
             const ACHIEVEMENTS_STORAGE_KEY = 'userUnlockedAchievements_v1';
 
+            // ★ ATUALIZADO: Novas conquistas adicionadas ao array
             const allAchievements = [
-                {
-                    id: 'ifood_click',
-                    title: 'De Bucho Cheio!',
-                    description: 'Aperte o Botão do Ifood.',
-                    icon: 'fa-solid fa-utensils'
-                },
-                // Adicione futuras conquistas aqui...
-                // { id: 'liked_profile', title: 'Apoiador!', description: 'Curta este perfil.', icon: 'fa-solid fa-heart' },
+                { id: 'ifood_click', title: 'De Bucho Cheio!', description: 'Aperte o Botão do Ifood.', icon: 'fa-solid fa-utensils' },
+                { id: 'facebook_click', title: 'Eu Não Fiz Nada!', description: 'Aperte o Botão do Facebook.', icon: 'fa-brands fa-facebook' },
+                { id: 'portfolio_click', title: 'Looping?', description: 'Aperte o Botão do Portfólio.', icon: 'fa-solid fa-repeat' },
+                { id: 'email_click', title: 'Só Por Negócios!', description: 'Aperte o Botão do E-Mail.', icon: 'fa-solid fa-envelope' },
+                { id: 'ign_click', title: 'Press Start to Play!', description: 'Aperte o Botão do IGN.', icon: 'fa-solid fa-gamepad' },
             ];
 
             const getUnlockedAchievements = () => {
@@ -401,16 +387,13 @@
 
             const unlockAchievement = (id) => {
                 const unlocked = getUnlockedAchievements();
-                if (unlocked.has(id)) return; // Já desbloqueada
-
+                if (unlocked.has(id)) return; 
                 const achievement = allAchievements.find(a => a.id === id);
-                if (!achievement) return; // Conquista não existe
-
+                if (!achievement) return;
                 unlocked.add(id);
                 localStorage.setItem(ACHIEVEMENTS_STORAGE_KEY, JSON.stringify([...unlocked]));
-                
                 showAchievementToast(achievement.title);
-                renderAchievements(); // Re-renderiza a lista no modal para refletir o desbloqueio
+                renderAchievements();
             };
 
             const renderAchievements = () => {
@@ -421,7 +404,6 @@
                     const li = document.createElement('li');
                     li.className = 'achievement-item';
                     if (isUnlocked) li.classList.add('unlocked');
-                    
                     li.innerHTML = `
                         <div class="achievement-icon">
                             <i class="${isUnlocked ? ach.icon : 'fa-solid fa-lock'}"></i>
@@ -436,15 +418,14 @@
             };
 
             achievementsButton.addEventListener('click', () => {
-                renderAchievements(); // Garante que a lista está atualizada ao abrir
+                renderAchievements();
                 achievementsModalOverlay.classList.remove('hidden');
             });
             achievementsCloseBtn.addEventListener('click', () => achievementsModalOverlay.classList.add('hidden'));
             achievementsModalOverlay.addEventListener('click', (e) => {
                 if(e.target === achievementsModalOverlay) achievementsModalOverlay.classList.add('hidden');
             });
-            // Fim da lógica de conquistas
-
+            
             const showStatus = (message, duration = 2000) => { saveStatus.textContent = message; saveStatus.classList.add('show'); setTimeout(() => saveStatus.classList.remove('show'), duration); };
             const setTheme = (theme) => { pageBody.setAttribute('data-theme', theme); localStorage.setItem(THEME_STORAGE_KEY, theme); themeButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.theme === theme)); };
             const updateDOM = (data) => {
@@ -498,11 +479,13 @@
                 }
             };
             
-            // ★ ATUALIZADO: Adicionada lógica de conquista no clique
-            document.getElementById('ifood-link').addEventListener('click', () => {
-                unlockAchievement('ifood_click');
-            });
-            
+            // ★ ATUALIZADO: Adicionados gatilhos para as novas conquistas
+            document.getElementById('ifood-link').addEventListener('click', () => unlockAchievement('ifood_click'));
+            document.getElementById('link-1').addEventListener('click', () => unlockAchievement('facebook_click'));
+            document.getElementById('link-2').addEventListener('click', () => unlockAchievement('portfolio_click'));
+            document.getElementById('link-3').addEventListener('click', () => unlockAchievement('email_click'));
+            document.getElementById('link-4').addEventListener('click', () => unlockAchievement('ign_click'));
+
             likeButton.addEventListener('click', (e) => { e.stopPropagation(); const hasLiked = localStorage.getItem(LIKE_STORAGE_KEY) === 'true'; if (hasLiked) { currentData['like-count'] = Math.max(0, (currentData['like-count'] || 0) - 1); localStorage.setItem(LIKE_STORAGE_KEY, 'false'); } else { currentData['like-count'] = (currentData['like-count'] || 0) + 1; localStorage.setItem(LIKE_STORAGE_KEY, 'true'); } updateDOM(currentData); initializeLikeButton(); saveData(true); });
             themeButtons.forEach(button => { button.addEventListener('click', (e) => { e.stopPropagation(); setTheme(button.dataset.theme); }); });
             document.getElementById('link-8').addEventListener('click', (e) => { e.preventDefault(); navigator.clipboard.writeText(currentData['link8-text2']).then(() => showStatus('Username copiado!')); });
@@ -513,7 +496,7 @@
             const hidePinModal = () => { pinModalOverlay.classList.add('hidden'); };
             let clickCount = 0; let clickTimer = null;
             mainFooter.addEventListener('click', (e) => { if (e.target.closest('button') || e.target.closest('#boombox-section')) return; if (document.body.classList.contains('admin-mode')) return; clickCount++; if (clickTimer) clearTimeout(clickTimer); clickTimer = setTimeout(() => { clickCount = 0; }, 2000); if (clickCount === 5) { clickCount = 0; clearTimeout(clickTimer); showPinModal(); } });
-            document.querySelectorAll('.edit-icon').forEach(icon => { icon.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); const linkId = icon.dataset.editLink; const specialKey = icon.dataset.editSpecial; const textKey = icon.dataset.edit; const editValue = (key, promptMessage) => { const currentValue = currentData[key]; const newValue = prompt(promptMessage, currentValue); if (newValue !== null && newValue !== currentValue) { currentData[key] = newValue; updateDOM(currentData); saveData(); } }; if (textKey) { editValue(textKey, `Editar ${textKey}:`); } else if (specialKey === 'ifood') { editValue('ifood-text', 'Editar Texto do Botão iFood:'); editValue('ifood-href', 'Editar URL do iFood:'); } else if (linkId) { if (linkId === '3' || linkId === '8') { editValue(`link${linkId}-text1`, `Editar Título:`); editValue(`link${linkId}-text2`, `Editar Subtexto:`); if (linkId === '3') editValue('link3-href', 'Editar Link (mailto:):'); } else { editValue(`link${linkId}-text`, `Editar Texto:`); editValue(`link${linkId}-href`, `Editar URL:`); } } }); });
+            document.querySelectorAll('.edit-icon').forEach(icon => { icon.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); const linkId = icon.dataset.editLink; const specialKey = icon.dataset.editSpecial; const textKey = icon.dataset.edit; const editValue = (key, promptMessage) => { const currentValue = currentData[key]; const newValue = prompt(promptMessage, currentValue); if (newValue !== null && newValue !== currentValue) { currentData[key] = newValue; updateDOM(currentData); saveData(); } }; if (textKey) { editValue(textKey, `Editar ${textKey}:`); } else if (specialKey === 'ifood') { editValue('ifood-text', 'Editar Texto do Botão iFood:'); editValue('ifood-href', 'Editar URL do iFood:'); } else if (linkId) { if (linkId === '3' || linkId === '8') { editValue(`link${linkId}-text1`, `Editar Título:`); editValue(`link${link-text-3.1"text2`, `Editar Subtexto:`); if (linkId === '3') editValue('link3-href', 'Editar Link (mailto:):'); } else { editValue(`link${linkId}-text`, `Editar Texto:`); editValue(`link${linkId}-href`, `Editar URL:`); } } }); });
             const enterAdminMode = () => { document.body.classList.add('admin-mode'); localStorage.setItem('isAdmin', 'true'); };
             const exitAdminMode = () => { document.body.classList.remove('admin-mode'); localStorage.removeItem('isAdmin'); };
             const checkPin = () => { if (pinInput.value === AUTHOR_PIN) { enterAdminMode(); hidePinModal(); } else { document.getElementById('pin-error').textContent = 'PIN Incorreto'; pinModalBox.classList.add('shake'); pinInput.value = ''; setTimeout(() => pinModalBox.classList.remove('shake'), 500); } };
