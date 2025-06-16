@@ -29,7 +29,6 @@
             --border-color: #3a2a5c; --shadow-color: rgba(0, 0, 0, 0.6); --accent-shadow-color: rgba(255, 0, 255, 0.4);
             --header-text-shadow: 0 0 5px var(--accent-color), 0 0 10px var(--accent-color);
         }
-        /* ★ ATUALIZADO: Novas paletas de cores */
         body[data-theme="ocean"] {
             --bg-color: #0a192f; --card-color: #112240; --primary-text-color: #ccd6f6;
             --secondary-text-color: #8892b0; --accent-color: #64ffda; --accent-color-hover: #52d9bc;
@@ -68,7 +67,7 @@
         
         .theme-switcher { position: absolute; top: 15px; right: 15px; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; background-color: rgba(0,0,0,0.1); padding: 5px; border-radius: var(--border-radius); z-index: 10; max-width: 150px; }
         .theme-button { background: none; border: none; color: var(--secondary-text-color); cursor: pointer; font-size: 1em; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
-        .theme-button:hover { color: var(--primary-text-color); }
+        .theme-button:hover { color: var(--primary-text-color); transform: scale(1.1); }
         .theme-button.active { color: var(--accent-color); background-color: rgba(255,255,255,0.1); }
 
         .profile { margin-bottom: 30px; margin-top: 30px; position: relative; }
@@ -84,9 +83,9 @@
         #discord-status-indicator.online { background-color: #23a55a; } #discord-status-indicator.idle { background-color: #f0b232; } #discord-status-indicator.dnd { background-color: #f23f43; }
         #discord-status-text { font-size: 0.9em; font-weight: 400; color: var(--secondary-text-color); margin: 0; line-height: 1.4; }
         #discord-status-text .fa-brands, #discord-status-text .fa-solid { margin-right: 6px; }
-        body[data-theme="neon"] #discord-status-indicator.online, body[data-theme="ocean"] #discord-status-indicator.online, body[data-theme="sunset"] #discord-status-indicator.online, body[data-theme="forest"] #discord-status-indicator.online { box-shadow: 0 0 8px #23a55a; }
-        body[data-theme="neon"] #discord-status-indicator.idle, body[data-theme="ocean"] #discord-status-indicator.idle, body[data-theme="sunset"] #discord-status-indicator.idle, body[data-theme="forest"] #discord-status-indicator.idle { box-shadow: 0 0 8px #f0b232; }
-        body[data-theme="neon"] #discord-status-indicator.dnd, body[data-theme="ocean"] #discord-status-indicator.dnd, body[data-theme="sunset"] #discord-status-indicator.dnd, body[data-theme="forest"] #discord-status-indicator.dnd { box-shadow: 0 0 8px #f23f43; }
+        body[data-theme~="neon"] #discord-status-indicator.online, body[data-theme~="ocean"] #discord-status-indicator.online, body[data-theme~="sunset"] #discord-status-indicator.online, body[data-theme~="forest"] #discord-status-indicator.online { box-shadow: 0 0 8px #23a55a; }
+        body[data-theme~="neon"] #discord-status-indicator.idle, body[data-theme~="ocean"] #discord-status-indicator.idle, body[data-theme~="sunset"] #discord-status-indicator.idle, body[data-theme~="forest"] #discord-status-indicator.idle { box-shadow: 0 0 8px #f0b232; }
+        body[data-theme~="neon"] #discord-status-indicator.dnd, body[data-theme~="ocean"] #discord-status-indicator.dnd, body[data-theme~="sunset"] #discord-status-indicator.dnd, body[data-theme~="forest"] #discord-status-indicator.dnd { box-shadow: 0 0 8px #f23f43; }
 
         .links ul { list-style-type: none; display: flex; flex-direction: column; gap: 16px; margin-top: 24px; }
         .links a { display: flex; align-items: center; background-color: rgba(255, 255, 255, 0.05); color: var(--primary-text-color); padding: 16px 20px; border-radius: var(--border-radius); text-decoration: none; font-weight: 600; transition: all 0.2s cubic-bezier(0.215, 0.610, 0.355, 1); }
@@ -97,22 +96,22 @@
         .link-text-complex { flex-grow: 1; text-align: center; display: flex; flex-direction: column; justify-content: center; line-height: 1.2; position: relative;}
         .link-text-complex small { font-size: 0.8em; font-weight: 300; opacity: 0.7; margin-top: 2px; }
         .links li { opacity: 0; animation: entrance-pop-in 0.7s cubic-bezier(0.215, 0.610, 0.355, 1) forwards; animation-delay: calc(var(--delay-order) * 100ms + 0.4s); }
-        body:not([data-theme="neon"]) .links a { color: #ffffff; text-shadow: 1px 1px 2px rgba(0,0,0,0.15); }
-        body:not([data-theme="neon"]) #link-1 { background-color: #1877F2; } body:not([data-theme="neon"]) #link-2 { background-color: #2ecc71; }
-        body:not([data-theme="neon"]) #link-3 { background-color: #7f8c8d; } body:not([data-theme="neon"]) #link-4 { background-color: #bf1313; }
-        body:not([data-theme="neon"]) #link-5 { background-color: #25D366; } body:not([data-theme="neon"]) #link-6 { background-color: #1b2838; }
-        body:not([data-theme="neon"]) #link-7 { background-color: #2e51a2; } body:not([data-theme="neon"]) #link-8 { background-color: #5865F2; }
-        body:not([data-theme="neon"]) .links a:hover { filter: brightness(90%); }
-        body[data-theme="neon"] #link-1 .icon, body[data-theme="ocean"] #link-1 .icon, body[data-theme="sunset"] #link-1 .icon, body[data-theme="forest"] #link-1 .icon { color: #1877F2; }
-        body[data-theme="neon"] #link-2 .icon, body[data-theme="ocean"] #link-2 .icon, body[data-theme="sunset"] #link-2 .icon, body[data-theme="forest"] #link-2 .icon { color: #2ecc71; }
-        body[data-theme="neon"] #link-3 .icon, body[data-theme="ocean"] #link-3 .icon, body[data-theme="sunset"] #link-3 .icon, body[data-theme="forest"] #link-3 .icon { color: #bdc3c7; }
-        body[data-theme="neon"] #link-4 .icon, body[data-theme="ocean"] #link-4 .icon, body[data-theme="sunset"] #link-4 .icon, body[data-theme="forest"] #link-4 .icon { color: #e74c3c; }
-        body[data-theme="neon"] #link-5 .icon, body[data-theme="ocean"] #link-5 .icon, body[data-theme="sunset"] #link-5 .icon, body[data-theme="forest"] #link-5 .icon { color: #25D366; }
-        body[data-theme="neon"] #link-6 .icon, body[data-theme="ocean"] #link-6 .icon, body[data-theme="sunset"] #link-6 .icon, body[data-theme="forest"] #link-6 .icon { color: #66c0f4; }
-        body[data-theme="neon"] #link-7 .icon, body[data-theme="ocean"] #link-7 .icon, body[data-theme="sunset"] #link-7 .icon, body[data-theme="forest"] #link-7 .icon { color: #2e51a2; }
-        body[data-theme="neon"] #link-8 .icon, body[data-theme="ocean"] #link-8 .icon, body[data-theme="sunset"] #link-8 .icon, body[data-theme="forest"] #link-8 .icon { color: #5865F2; }
-        body[data-theme="neon"] .links a:hover, body[data-theme="ocean"] .links a:hover, body[data-theme="sunset"] .links a:hover, body[data-theme="forest"] .links a:hover { background-color: var(--accent-color); color: var(--card-color); }
-        body[data-theme="neon"] .links a:hover .icon, body[data-theme="ocean"] .links a:hover .icon, body[data-theme="sunset"] .links a:hover .icon, body[data-theme="forest"] .links a:hover .icon { color: var(--card-color); }
+        body:not([data-theme~="neon"]):not([data-theme~="ocean"]):not([data-theme~="sunset"]):not([data-theme~="forest"]) .links a { color: #ffffff; text-shadow: 1px 1px 2px rgba(0,0,0,0.15); }
+        body:not([data-theme~="neon"]):not([data-theme~="ocean"]):not([data-theme~="sunset"]):not([data-theme~="forest"]) #link-1 { background-color: #1877F2; } body:not([data-theme~="neon"]):not([data-theme~="ocean"]):not([data-theme~="sunset"]):not([data-theme~="forest"]) #link-2 { background-color: #2ecc71; }
+        body:not([data-theme~="neon"]):not([data-theme~="ocean"]):not([data-theme~="sunset"]):not([data-theme~="forest"]) #link-3 { background-color: #7f8c8d; } body:not([data-theme~="neon"]):not([data-theme~="ocean"]):not([data-theme~="sunset"]):not([data-theme~="forest"]) #link-4 { background-color: #bf1313; }
+        body:not([data-theme~="neon"]):not([data-theme~="ocean"]):not([data-theme~="sunset"]):not([data-theme~="forest"]) #link-5 { background-color: #25D366; } body:not([data-theme~="neon"]):not([data-theme~="ocean"]):not([data-theme~="sunset"]):not([data-theme~="forest"]) #link-6 { background-color: #1b2838; }
+        body:not([data-theme~="neon"]):not([data-theme~="ocean"]):not([data-theme~="sunset"]):not([data-theme~="forest"]) #link-7 { background-color: #2e51a2; } body:not([data-theme~="neon"]):not([data-theme~="ocean"]):not([data-theme~="sunset"]):not([data-theme~="forest"]) #link-8 { background-color: #5865F2; }
+        body:not([data-theme~="neon"]):not([data-theme~="ocean"]):not([data-theme~="sunset"]):not([data-theme~="forest"]) .links a:hover { filter: brightness(90%); }
+        body[data-theme~="neon"] #link-1 .icon, body[data-theme~="ocean"] #link-1 .icon, body[data-theme~="sunset"] #link-1 .icon, body[data-theme~="forest"] #link-1 .icon { color: #1877F2; }
+        body[data-theme~="neon"] #link-2 .icon, body[data-theme~="ocean"] #link-2 .icon, body[data-theme~="sunset"] #link-2 .icon, body[data-theme~="forest"] #link-2 .icon { color: #2ecc71; }
+        body[data-theme~="neon"] #link-3 .icon, body[data-theme~="ocean"] #link-3 .icon, body[data-theme~="sunset"] #link-3 .icon, body[data-theme~="forest"] #link-3 .icon { color: #bdc3c7; }
+        body[data-theme~="neon"] #link-4 .icon, body[data-theme~="ocean"] #link-4 .icon, body[data-theme~="sunset"] #link-4 .icon, body[data-theme~="forest"] #link-4 .icon { color: #e74c3c; }
+        body[data-theme~="neon"] #link-5 .icon, body[data-theme~="ocean"] #link-5 .icon, body[data-theme~="sunset"] #link-5 .icon, body[data-theme~="forest"] #link-5 .icon { color: #25D366; }
+        body[data-theme~="neon"] #link-6 .icon, body[data-theme~="ocean"] #link-6 .icon, body[data-theme~="sunset"] #link-6 .icon, body[data-theme~="forest"] #link-6 .icon { color: #66c0f4; }
+        body[data-theme~="neon"] #link-7 .icon, body[data-theme~="ocean"] #link-7 .icon, body[data-theme~="sunset"] #link-7 .icon, body[data-theme~="forest"] #link-7 .icon { color: #2e51a2; }
+        body[data-theme~="neon"] #link-8 .icon, body[data-theme~="ocean"] #link-8 .icon, body[data-theme~="sunset"] #link-8 .icon, body[data-theme~="forest"] #link-8 .icon { color: #5865F2; }
+        body[data-theme~="neon"] .links a:hover, body[data-theme~="ocean"] .links a:hover, body[data-theme~="sunset"] .links a:hover, body[data-theme~="forest"] .links a:hover { background-color: var(--accent-color); color: var(--card-color); }
+        body[data-theme~="neon"] .links a:hover .icon, body[data-theme~="ocean"] .links a:hover .icon, body[data-theme~="sunset"] .links a:hover .icon, body[data-theme~="forest"] .links a:hover .icon { color: var(--card-color); }
         #ifood-link { background: linear-gradient(175deg, #fa1d2d, #d01825); color: #ffffff; font-weight: 700; border: none; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15); animation: pulse-glow 2.5s infinite; }
         #ifood-link:hover { background: linear-gradient(175deg, #ff3c4a, #e0202f); animation: none; box-shadow: 0 10px 25px rgba(234, 29, 44, 0.5); transform: translateY(-5px) scale(1.03); filter: brightness(100%); }
         #ifood-link:hover .icon { transform: scale(1.2) rotate(-8deg); }
@@ -125,17 +124,22 @@
         .progress-bar { width: 0%; height: 100%; background-color: var(--accent-color); border-radius: 5px; transition: width 0.1s linear; }
         .player-controls-wrapper { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
         .player-controls { display: flex; align-items: center; gap: 18px; }
-        .player-controls button { background: none; border: none; color: var(--secondary-text-color); font-size: 1.4em; cursor: pointer; transition: all 0.2s ease; padding: 0; }
-        #play-pause-btn { font-size: 1.6em; } .player-controls button:hover { color: var(--accent-color); transform: scale(1.15); }
+        .player-controls button { background: none; border: none; color: var(--secondary-text-color); font-size: 1.4em; cursor: pointer; transition: all 0.2s ease; padding: 0; will-change: transform; }
+        .player-controls button:hover { color: var(--accent-color); transform: scale(1.15); }
+        /* ★ ATUALIZADO: Animação de clique nos botões do player */
+        .player-controls button:active { transform: scale(0.9); transition-duration: 0.1s; }
+        #play-pause-btn { font-size: 1.6em; }
         .audio-visualizer { display: flex; align-items: flex-end; justify-content: center; gap: 2px; height: 24px; flex-grow: 1; min-width: 30px; }
         .visualizer-bar { width: 3px; background-color: var(--accent-color); border-radius: 2px; height: 5%; transition: height 0.2s ease-out; }
         .volume-control-container { display: flex; align-items: center; gap: 8px; }
-        #volume-icon-btn { font-size: 1.2em; padding: 0; color: var(--secondary-text-color); background: none; border: none; cursor: pointer; transition: all 0.2s ease; }
+        #volume-icon-btn { font-size: 1.2em; padding: 0; color: var(--secondary-text-color); background: none; border: none; cursor: pointer; transition: color 0.2s ease, transform 0.2s ease; will-change: transform; }
+        #volume-icon-btn i { transition: opacity 0.2s ease; }
         #volume-icon-btn:hover { color: var(--accent-color); transform: scale(1.15); }
+        /* ★ ATUALIZADO: Animação de pulso ao arrastar o volume */
+        #boombox-section.volume-dragging #volume-icon-btn { animation: pulse 1s infinite ease-in-out; }
         .volume-bar { width: 60px; height: 5px; background-color: var(--border-color); border-radius: 5px; cursor: pointer; }
         .volume-level { height: 100%; background-color: var(--accent-color); border-radius: 5px; }
 
-        /* O restante do CSS permanece o mesmo... */
         .footer { margin-top: 20px; font-size: 0.9em; color: var(--secondary-text-color); width: 100%; transition: color 0.3s ease; cursor: pointer; } .footer .fa-heart { color: var(--accent-color); animation: pulse 1.5s infinite; }
         #like-section { margin-top: 25px; padding-top: 25px; border-top: 1px solid var(--border-color); transition: border-color 0.3s ease; }
         #like-button { background-color: rgba(255, 255, 255, 0.05); color: var(--primary-text-color); border: 1px solid var(--border-color); padding: 10px 20px; border-radius: 50px; cursor: pointer; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 1em; transition: all 0.2s ease; }
@@ -166,7 +170,7 @@
         #save-status { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: var(--accent-color); color: white; padding: 10px 20px; border-radius: var(--border-radius); font-weight: 600; box-shadow: 0 4px 15px var(--accent-shadow-color); opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease; z-index: 2000; pointer-events: none; }
         #save-status.show { opacity: 1; transform: translateX(-50%) translateY(-10px); }
         @keyframes entrance-pop-in { from { opacity: 0; transform: translateY(20px) scale(0.95); filter: blur(3px); } to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+        @keyframes pulse { 0%, 100% { transform: scale(1.15); } 50% { transform: scale(1.25); } }
         @keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); } 20%, 40%, 60%, 80% { transform: translateX(10px); } }
         @keyframes pulse-glow { 0% { box-shadow: 0 0 5px rgba(234, 29, 44, 0.5), inset 0 0 2px rgba(255,255,255,0.1); } 50% { box-shadow: 0 0 12px rgba(255, 45, 60, 0.8), inset 0 0 2px rgba(255,255,255,0.1); } 100% { box-shadow: 0 0 5px rgba(234, 29, 44, 0.5), inset 0 0 2px rgba(255,255,255,0.1); } }
     </style>
@@ -177,7 +181,6 @@
     <audio id="audio-player" style="display: none;" crossorigin="anonymous"></audio>
 
     <main class="card-container">
-        <!-- ★ ATUALIZADO: Adicionados botões para os novos temas -->
         <div class="theme-switcher">
             <button class="theme-button" data-theme="light" title="Modo Claro"><i class="fa-solid fa-sun"></i></button>
             <button class="theme-button" data-theme="dark" title="Modo Escuro"><i class="fa-solid fa-moon"></i></button>
@@ -251,12 +254,12 @@
         </div>
     </div>
     <script>
-        // O JavaScript permanece o mesmo da versão anterior, pois já está preparado para as novas paletas.
         document.addEventListener('DOMContentLoaded', async () => {
             const JSONBIN_ID = '684f2cda8a456b7966aeb5d3';
             const JSONBIN_API_KEY = '$2a$10$NICad74I0SXWBZMw15PCleRSa5t8pTeErKGD9xAocMj3fZoWp0TVq';
             const AUTHOR_PIN = '5381';
             
+            const boomboxSection = document.getElementById('boombox-section'); // ★ ATUALIZADO: Referência para a seção da boombox
             const audioPlayer = document.getElementById('audio-player');
             const playPauseBtn = document.getElementById('play-pause-btn');
             const nextBtn = document.getElementById('next-btn');
@@ -278,51 +281,24 @@
 
             function updateVolumeUI() { if (!audioPlayer) return; const icon = volumeIconBtn.querySelector('i'); const volume = audioPlayer.volume; const muted = audioPlayer.muted; volumeLevel.style.width = muted ? '0%' : `${volume * 100}%`; if (muted || volume === 0) { icon.className = 'fa-solid fa-volume-xmark'; } else if (volume < 0.5) { icon.className = 'fa-solid fa-volume-low'; } else { icon.className = 'fa-solid fa-volume-high'; } }
             
-            function setVolume(newVolume) {
-                const clampedVolume = Math.max(0, Math.min(1, newVolume));
-                audioPlayer.volume = clampedVolume;
-                audioPlayer.muted = clampedVolume === 0;
-                localStorage.setItem(VOLUME_STORAGE_KEY, clampedVolume.toString());
-                updateVolumeUI();
-            }
+            function setVolume(newVolume) { const clampedVolume = Math.max(0, Math.min(1, newVolume)); audioPlayer.volume = clampedVolume; audioPlayer.muted = clampedVolume === 0; localStorage.setItem(VOLUME_STORAGE_KEY, clampedVolume.toString()); updateVolumeUI(); }
 
             volumeIconBtn.addEventListener('click', (e) => { e.stopPropagation(); audioPlayer.muted = !audioPlayer.muted; updateVolumeUI(); });
             
-            const handleVolumeChange = (e) => {
-                const rect = volumeBar.getBoundingClientRect();
-                const newVolume = (e.clientX - rect.left) / rect.width;
-                setVolume(newVolume);
-            };
-            volumeBar.addEventListener('mousedown', (e) => {
-                isDraggingVolume = true;
-                handleVolumeChange(e);
-            });
-            document.addEventListener('mousemove', (e) => {
-                if (isDraggingVolume) {
-                    handleVolumeChange(e);
-                }
-            });
-            document.addEventListener('mouseup', () => {
-                isDraggingVolume = false;
-            });
+            const handleVolumeChange = (e) => { const rect = volumeBar.getBoundingClientRect(); const newVolume = (e.clientX - rect.left) / rect.width; setVolume(newVolume); };
+            
+            // ★ ATUALIZADO: Lógica para adicionar/remover a classe de animação ao arrastar
+            volumeBar.addEventListener('mousedown', (e) => { isDraggingVolume = true; boomboxSection.classList.add('volume-dragging'); handleVolumeChange(e); });
+            document.addEventListener('mousemove', (e) => { if (isDraggingVolume) { handleVolumeChange(e); } });
+            document.addEventListener('mouseup', () => { if (isDraggingVolume) { isDraggingVolume = false; boomboxSection.classList.remove('volume-dragging'); } });
             
             function loadTrack(trackIndex) { const track = playlist[trackIndex]; songTitleEl.textContent = track.title; songArtistEl.textContent = track.artist; audioPlayer.src = track.src; audioPlayer.load(); progressBar.style.width = '0%'; }
             
             function playTrack() {
                 if (!isAudioInitialized) initAudioSystem();
-                if (audioContext && audioContext.state === 'suspended') {
-                    audioContext.resume();
-                }
+                if (audioContext && audioContext.state === 'suspended') { audioContext.resume(); }
                 const playPromise = audioPlayer.play();
-                if (playPromise !== undefined) {
-                    playPromise.catch(error => {
-                        if (error.name === 'NotAllowedError') {
-                            console.log('Autoplay foi bloqueado pelo navegador. O usuário precisa interagir com a página primeiro.');
-                        } else {
-                            console.error("Erro ao tocar áudio:", error);
-                        }
-                    });
-                }
+                if (playPromise !== undefined) { playPromise.catch(error => { if (error.name !== 'NotAllowedError') { console.error("Erro ao tocar áudio:", error); } }); }
             }
 
             function pauseTrack() { audioPlayer.pause(); }
@@ -358,55 +334,13 @@
             const showStatus = (message, duration = 2000) => { saveStatus.textContent = message; saveStatus.classList.add('show'); setTimeout(() => saveStatus.classList.remove('show'), duration); };
             const setTheme = (theme) => { pageBody.setAttribute('data-theme', theme); localStorage.setItem(THEME_STORAGE_KEY, theme); themeButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.theme === theme)); };
             const updateDOM = (data) => {
-                document.getElementById('profile-name').textContent = data['profile-name'];
-                document.getElementById('profile-tagline').textContent = data['profile-tagline'];
-                document.getElementById('profile-picture-img').src = data['profile-picture'];
-                document.getElementById('ifood-text').textContent = data['ifood-text'];
-                document.getElementById('ifood-link').href = data['ifood-href'];
-                for (let i = 1; i <= 8; i++) {
-                    const linkEl = document.getElementById(`link-${i}`);
-                    if (!linkEl) continue;
-                    if(i === 3 || i === 8) {
-                        document.getElementById(`link-text-${i}.1`).textContent = data[`link${i}-text1`];
-                        document.getElementById(`link-text-${i}.2`).textContent = data[`link${i}-text2`];
-                        if(i === 3) linkEl.href = data[`link${i}-href`];
-                    } else {
-                        document.getElementById(`link-text-${i}`).textContent = data[`link${i}-text`];
-                        linkEl.href = data[`link${i}-href`];
-                    }
-                }
+                document.getElementById('profile-name').textContent = data['profile-name']; document.getElementById('profile-tagline').textContent = data['profile-tagline']; document.getElementById('profile-picture-img').src = data['profile-picture']; document.getElementById('ifood-text').textContent = data['ifood-text']; document.getElementById('ifood-link').href = data['ifood-href'];
+                for (let i = 1; i <= 8; i++) { const linkEl = document.getElementById(`link-${i}`); if (!linkEl) continue; if(i === 3 || i === 8) { document.getElementById(`link-text-${i}.1`).textContent = data[`link${i}-text1`]; document.getElementById(`link-text-${i}.2`).textContent = data[`link${i}-text2`]; if(i === 3) linkEl.href = data[`link${i}-href`]; } else { document.getElementById(`link-text-${i}`).textContent = data[`link${i}-text`]; linkEl.href = data[`link${i}-href`]; } }
                 likeCountSpan.textContent = data['like-count'] || 0;
             };
             const initializeLikeButton = () => { likeButton.classList.toggle('liked', localStorage.getItem(LIKE_STORAGE_KEY) === 'true'); };
-            const loadData = async () => {
-                try {
-                    const response = await fetch(`${JSONBIN_URL}/latest`, { headers: { 'X-Master-Key': JSONBIN_API_KEY } });
-                    if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
-                    const result = await response.json();
-                    currentData = result.record;
-                    updateDOM(currentData);
-                    initializeLikeButton();
-                } catch (error) {
-                    console.error('Falha ao carregar dados:', error);
-                    document.getElementById('profile-name').textContent = 'Erro ao carregar';
-                    document.getElementById('profile-tagline').textContent = 'Verifique a conexão e o console.';
-                }
-            };
-            const saveData = async (isLikeAction = false) => {
-                if (isSaving) return;
-                isSaving = true;
-                if (!isLikeAction) showStatus('Salvando...', 60000);
-                try {
-                    const response = await fetch(JSONBIN_URL, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_API_KEY }, body: JSON.stringify(currentData) });
-                    if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
-                    if (!isLikeAction) showStatus('Salvo com sucesso!');
-                } catch (error) {
-                    console.error('Falha ao salvar dados:', error);
-                    showStatus('Erro ao salvar!', 3000);
-                } finally {
-                    isSaving = false;
-                }
-            };
+            const loadData = async () => { try { const response = await fetch(`${JSONBIN_URL}/latest`, { headers: { 'X-Master-Key': JSONBIN_API_KEY } }); if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`); const result = await response.json(); currentData = result.record; updateDOM(currentData); initializeLikeButton(); } catch (error) { console.error('Falha ao carregar dados:', error); document.getElementById('profile-name').textContent = 'Erro ao carregar'; document.getElementById('profile-tagline').textContent = 'Verifique a conexão e o console.'; } };
+            const saveData = async (isLikeAction = false) => { if (isSaving) return; isSaving = true; if (!isLikeAction) showStatus('Salvando...', 60000); try { const response = await fetch(JSONBIN_URL, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_API_KEY }, body: JSON.stringify(currentData) }); if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`); if (!isLikeAction) showStatus('Salvo com sucesso!'); } catch (error) { console.error('Falha ao salvar dados:', error); showStatus('Erro ao salvar!', 3000); } finally { isSaving = false; } };
             likeButton.addEventListener('click', (e) => { e.stopPropagation(); const hasLiked = localStorage.getItem(LIKE_STORAGE_KEY) === 'true'; if (hasLiked) { currentData['like-count'] = Math.max(0, (currentData['like-count'] || 0) - 1); localStorage.setItem(LIKE_STORAGE_KEY, 'false'); } else { currentData['like-count'] = (currentData['like-count'] || 0) + 1; localStorage.setItem(LIKE_STORAGE_KEY, 'true'); } updateDOM(currentData); initializeLikeButton(); saveData(true); });
             themeButtons.forEach(button => { button.addEventListener('click', (e) => { e.stopPropagation(); setTheme(button.dataset.theme); }); });
             document.getElementById('link-8').addEventListener('click', (e) => { e.preventDefault(); navigator.clipboard.writeText(currentData['link8-text2']).then(() => showStatus('Username copiado!')); });
@@ -428,25 +362,14 @@
             
             const savedTheme = localStorage.getItem(THEME_STORAGE_KEY) || 'dark';
             setTheme(savedTheme);
-            
             await loadData(); 
-            
             const savedVolume = localStorage.getItem(VOLUME_STORAGE_KEY);
-            if (savedVolume !== null) {
-                setVolume(parseFloat(savedVolume));
-            } else {
-                setVolume(0.10);
-            }
-
+            setVolume(savedVolume !== null ? parseFloat(savedVolume) : 0.10);
             loadTrack(currentTrackIndex);
             playTrack();
-            
             fetchDiscordStatus();
             setInterval(fetchDiscordStatus, 30000);
-            
-            if (localStorage.getItem('isAdmin') === 'true') { 
-                enterAdminMode(); 
-            }
+            if (localStorage.getItem('isAdmin') === 'true') { enterAdminMode(); }
         });
     </script>
 </body>
