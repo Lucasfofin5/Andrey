@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Um lugar central para todos os meus links e projetos. Conecte-se comigo!">
     <title>Andrex | Bio Link</title>
-    <!-- ★ NOVO: Favicon do site (substitua o link pela URL da sua imagem) -->
+    <!-- ★ NOVO: Favicon do site -->
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/dvx/lofi/master/icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -136,7 +136,7 @@
         #ifood-link:hover { background: linear-gradient(175deg, #ff3c4a, #e0202f); animation: none; box-shadow: 0 10px 25px rgba(234, 29, 44, 0.5); transform: translateY(-5px) scale(1.03); filter: brightness(100%); }
         #ifood-link:hover .icon { transform: scale(1.2) rotate(-8deg); }
         
-        #boombox-section { margin-top: 25px; padding: 20px; border-top: 1px solid var(--border-color); background-color: rgba(0,0,0,0.1); border-radius: var(--border-radius); display: flex; align-items: center; gap: 15px; transition: all 0.3s ease; }
+        #boombox-section { margin-top: 25px; padding: 20px; border-top: 1px solid var(--border-color); background-color: rgba(0,0,0,0.1); border-radius: var(--border-radius); display: flex; align-items: center; gap: 15px; transition: all 0.3s ease, box-shadow 1.5s ease-out; }
         .boombox-art { flex-shrink: 0; width: 60px; height: 60px; background-color: var(--border-color); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 2em; color: var(--secondary-text-color); transition: all 0.3s ease; }
         .boombox-info-wrapper { flex-grow: 1; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
         #song-info { text-align: left; cursor: default; } #song-title { font-weight: 600; font-size: 0.95em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--primary-text-color); } #song-artist { font-weight: 400; font-size: 0.8em; color: var(--secondary-text-color); }
@@ -145,7 +145,7 @@
         .player-controls-wrapper { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
         .player-controls { display: flex; align-items: center; gap: 18px; }
         .player-controls button { background: none; border: none; color: var(--secondary-text-color); font-size: 1.4em; cursor: pointer; transition: all 0.2s ease; padding: 0; }
-        #play-pause-btn { font-size: 1.6em; } .player-controls button:hover { color: var(--accent-color); transform: scale(1.15); }
+        #play-pause-btn { font-size: 1.6em; } .player-controls button:hover { color: var(--accent-color); transform: scale(1.15); filter: brightness(1.2); }
         .audio-visualizer { display: flex; align-items: flex-end; justify-content: center; gap: 2px; height: 24px; flex-grow: 1; min-width: 30px; }
         .visualizer-bar { width: 3px; background-color: var(--accent-color); border-radius: 2px; height: 5%; transition: height 0.2s ease-out; }
         .volume-control-container { display: flex; align-items: center; gap: 8px; }
@@ -226,7 +226,6 @@
         .delete-message-btn { position: absolute; top: 5px; right: 5px; background: none; border: none; color: var(--secondary-text-color); cursor: pointer; font-size: 1.1em; padding: 5px; }
         .delete-message-btn:hover { color: #e74c3c; }
 
-        /* ★ NOVA ANIMAÇÃO DE LIKE */
         .liked-animation { animation: like-animation 0.6s ease-out; }
         @keyframes like-animation {
             0% { transform: scale(1); }
@@ -234,6 +233,12 @@
             60% { transform: scale(1.1) rotate(8deg); }
             100% { transform: scale(1); }
         }
+        
+        /* ★ NOVAS ANIMAÇÕES BOOMBOX */
+        .is-playing .boombox-art { animation: spin 10s linear infinite; }
+        .is-playing#boombox-section { animation: boombox-glow 3s infinite alternate; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes boombox-glow { from { box-shadow: 0 0 5px -2px var(--accent-shadow-color), inset 0 0 3px rgba(0,0,0,0.1); } to { box-shadow: 0 0 15px 0px var(--accent-shadow-color), inset 0 0 3px rgba(0,0,0,0.1); } }
 
         @keyframes entrance-pop-in { from { opacity: 0; transform: translateY(20px) scale(0.95); filter: blur(3px); } to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } }
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
@@ -243,7 +248,6 @@
 </head>
 
 <body>
-    <!-- (O restante do body permanece igual, apenas o HTML e JS abaixo serão colados aqui) -->
     <div id="save-status"></div>
     <div id="achievement-toast"></div>
     <audio id="audio-player" style="display: none;" crossorigin="anonymous"></audio>
@@ -370,7 +374,7 @@
             const JSONBIN_API_KEY = '$2a$10$NICad74I0SXWBZMw15PCleRSa5t8pTeErKGD9xAocMj3fZoWp0TVq';
             const AUTHOR_PIN = '5381';
             
-            const audioPlayer = document.getElementById('audio-player'); const playPauseBtn = document.getElementById('play-pause-btn'); const nextBtn = document.getElementById('next-btn'); const prevBtn = document.getElementById('prev-btn'); const songTitleEl = document.getElementById('song-title'); const songArtistEl = document.getElementById('song-artist'); const progressContainer = document.getElementById('progress-container'); const progressBar = document.getElementById('progress-bar'); const visualizerContainer = document.getElementById('audio-visualizer'); const volumeIconBtn = document.getElementById('volume-icon-btn'); const volumeBar = document.getElementById('volume-bar'); const volumeLevel = document.getElementById('volume-level'); const VOLUME_STORAGE_KEY = 'userBoomboxVolume_v1'; let isDraggingVolume = false;
+            const audioPlayer = document.getElementById('audio-player'); const playPauseBtn = document.getElementById('play-pause-btn'); const nextBtn = document.getElementById('next-btn'); const prevBtn = document.getElementById('prev-btn'); const songTitleEl = document.getElementById('song-title'); const songArtistEl = document.getElementById('song-artist'); const progressContainer = document.getElementById('progress-container'); const progressBar = document.getElementById('progress-bar'); const visualizerContainer = document.getElementById('audio-visualizer'); const volumeIconBtn = document.getElementById('volume-icon-btn'); const volumeBar = document.getElementById('volume-bar'); const volumeLevel = document.getElementById('volume-level'); const VOLUME_STORAGE_KEY = 'userBoomboxVolume_v1'; let isDraggingVolume = false; const boomboxSection = document.getElementById('boombox-section'); 
             const basePlaylist = [ { title: "Good Night Lofi", artist: "Chill Beats", src: "good-night-lofi-cozy-chill-music-160166.mp3" }, { title: "Ambient Lofi", artist: "Chill Beats", src: "ambient-lofi-lofi-music-344112.mp3" }, { title: "Rainy Lofi City", artist: "Chill Beats", src: "rainy-lofi-city-lofi-music-332746.mp3" } ]; const bonusTrack = { title: "Warm Breeze", artist: "Lofi Chill", src: "warm-breeze-lofi-music-chill-lofi-344259.mp3" }; let playlist = [];
             let currentTrackIndex = 0; let isAudioInitialized = false; let audioContext, analyser, source, dataArray; const NUM_VISUALIZER_BARS = 12;
             function updateVolumeUI() { if (!audioPlayer) return; const icon = volumeIconBtn.querySelector('i'); const volume = audioPlayer.volume; const muted = audioPlayer.muted; volumeLevel.style.width = muted ? '0%' : `${volume * 100}%`; if (muted || volume === 0) { icon.className = 'fa-solid fa-volume-xmark'; } else if (volume < 0.5) { icon.className = 'fa-solid fa-volume-low'; } else { icon.className = 'fa-solid fa-volume-high'; } }
@@ -390,8 +394,8 @@
             playPauseBtn.addEventListener('click', (e) => { e.stopPropagation(); if (audioPlayer.paused) playTrack(); else pauseTrack(); });
             nextBtn.addEventListener('click', (e) => { e.stopPropagation(); playNextTrack(); });
             prevBtn.addEventListener('click', (e) => { e.stopPropagation(); playPrevTrack(); });
-            audioPlayer.addEventListener('play', () => playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>');
-            audioPlayer.addEventListener('pause', () => playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>');
+            audioPlayer.addEventListener('play', () => { playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'; boomboxSection.classList.add('is-playing'); });
+            audioPlayer.addEventListener('pause', () => { playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>'; boomboxSection.classList.remove('is-playing'); });
             audioPlayer.addEventListener('timeupdate', () => { if (audioPlayer.duration) progressBar.style.width = `${(audioPlayer.currentTime / audioPlayer.duration) * 100}%`; });
             progressContainer.addEventListener('click', (e) => { if (!audioPlayer.duration) return; const rect = progressContainer.getBoundingClientRect(); audioPlayer.currentTime = ((e.clientX - rect.left) / rect.width) * audioPlayer.duration; });
             const DISCORD_USER_ID = 'SEU_ID_AQUI'; const statusContainer = document.getElementById('discord-status-container'); const statusIndicator = document.getElementById('discord-status-indicator'); const statusText = document.getElementById('discord-status-text');
@@ -402,7 +406,7 @@
 
             const allAchievements = [
                 { id: 'ifood_click', title: 'De Bucho Cheio!', description: 'Aperte o Botão do Ifood.', icon: 'fa-solid fa-utensils' }, { id: 'facebook_click', title: 'Eu Não Fiz Nada!', description: 'Aperte o Botão do Facebook.', icon: 'fa-brands fa-facebook' }, { id: 'portfolio_click', title: 'Looping?', description: 'Aperte o Botão do Portfólio.', icon: 'fa-solid fa-repeat' }, { id: 'email_click', title: 'Só Por Negócios!', description: 'Aperte o Botão do E-Mail.', icon: 'fa-solid fa-envelope' }, { id: 'ign_click', title: 'Press Start to Play!', description: 'Aperte o Botão do IGN.', icon: 'fa-solid fa-gamepad' }, { id: 'whatsapp_click', title: 'Boa Noite Bruno.', description: 'Aperte o Botão do Whatsapp.', icon: 'fa-brands fa-whatsapp' }, { id: 'steam_click', title: 'Não Dá Pra Platinaaaa!', description: 'Aperte o Botão da Steam.', icon: 'fa-brands fa-steam' }, { id: 'mal_click', title: 'Animer.', description: 'Aperte o Botão do MyAnimeList.', icon: 'fa-solid fa-tv' }, { id: 'discord_click', title: 'Coisas.', description: 'Aperte o Botão do Discord.', icon: 'fa-brands fa-discord' }, { id: 'liked_profile', title: 'Obrigado!', description: 'Aperte o botão de like.', icon: 'fa-solid fa-heart' }, { id: 'theme_explorer', title: 'Indeciso.', description: 'Veja todos os temas.', icon: 'fa-solid fa-palette' }, { id: 'lofi_master', title: 'Lofi na veia.', description: 'Ouça todas as três músicas inteiras da Boombox.', icon: 'fa-solid fa-headphones', difficulty: 'hard' }, { id: 'found_admin_mode', title: 'Easter Egg ou Não?', description: 'Ache o Modo Autor.', icon: 'fa-solid fa-user-secret', difficulty: 'hard' }, 
-                { id: 'sent_message', title: 'Alô, Alõ?', description: 'Envie uma mensagem para mim!', icon: 'fa-solid fa-paper-plane' }, // ★ NOVA CONQUISTA
+                { id: 'sent_message', title: 'Alô, Alõ?', description: 'Envie uma mensagem para mim!', icon: 'fa-solid fa-paper-plane' },
                 { id: 'platinum', title: 'Platinado!', description: 'Receba todas as conquistas.', icon: 'fa-solid fa-trophy', difficulty: 'platinum' }
             ];
 
@@ -425,30 +429,12 @@
             
             document.getElementById('ifood-link').addEventListener('click', () => unlockAchievement('ifood_click')); document.getElementById('link-1').addEventListener('click', () => unlockAchievement('facebook_click')); document.getElementById('link-2').addEventListener('click', () => unlockAchievement('portfolio_click')); document.getElementById('link-3').addEventListener('click', () => unlockAchievement('email_click')); document.getElementById('link-4').addEventListener('click', () => unlockAchievement('ign_click')); document.getElementById('link-5').addEventListener('click', () => unlockAchievement('whatsapp_click')); document.getElementById('link-6').addEventListener('click', () => unlockAchievement('steam_click')); document.getElementById('link-7').addEventListener('click', () => unlockAchievement('mal_click')); document.getElementById('link-8').addEventListener('click', (e) => { unlockAchievement('discord_click'); e.preventDefault(); navigator.clipboard.writeText(currentData['link8-text2']).then(() => showStatus('Username copiado!')); });
             
-            // ★ LISTENER DE LIKE ATUALIZADO COM ANIMAÇÃO
-            likeButton.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const hasLiked = localStorage.getItem(LIKE_STORAGE_KEY) === 'true';
-                if (hasLiked) {
-                    currentData['like-count'] = Math.max(0, (currentData['like-count'] || 0) - 1);
-                    localStorage.setItem(LIKE_STORAGE_KEY, 'false');
-                } else {
-                    currentData['like-count'] = (currentData['like-count'] || 0) + 1;
-                    localStorage.setItem(LIKE_STORAGE_KEY, 'true');
-                    unlockAchievement('liked_profile');
-                    likeButton.classList.add('liked-animation');
-                    setTimeout(() => {
-                        likeButton.classList.remove('liked-animation');
-                    }, 600);
-                }
-                updateDOM(currentData);
-                initializeLikeButton();
-                saveData(true);
-            });
-
+            likeButton.addEventListener('click', (e) => { e.stopPropagation(); const hasLiked = localStorage.getItem(LIKE_STORAGE_KEY) === 'true'; if (hasLiked) { currentData['like-count'] = Math.max(0, (currentData['like-count'] || 0) - 1); localStorage.setItem(LIKE_STORAGE_KEY, 'false'); } else { currentData['like-count'] = (currentData['like-count'] || 0) + 1; localStorage.setItem(LIKE_STORAGE_KEY, 'true'); unlockAchievement('liked_profile'); likeButton.classList.add('liked-animation'); setTimeout(() => { likeButton.classList.remove('liked-animation'); }, 600); } updateDOM(currentData); initializeLikeButton(); saveData(true); });
             themeButtons.forEach(button => { button.addEventListener('click', (e) => { e.stopPropagation(); setTheme(button.dataset.theme); }); });
-            const onSongEnd = () => { const songsListened = new Set(JSON.parse(localStorage.getItem(SONGS_LISTENED_KEY) || '[]')); songsListened.add(currentTrackIndex); localStorage.setItem(SONGS_LISTENED_KEY, JSON.stringify([...songsListened])); if (songsListened.size === basePlaylist.length) { unlockAchievement('lofi_master'); } playNextTrack(); };
+            
+            const onSongEnd = () => { boomboxSection.classList.remove('is-playing'); const songsListened = new Set(JSON.parse(localStorage.getItem(SONGS_LISTENED_KEY) || '[]')); songsListened.add(currentTrackIndex); localStorage.setItem(SONGS_LISTENED_KEY, JSON.stringify([...songsListened])); if (songsListened.size === basePlaylist.length) { unlockAchievement('lofi_master'); } playNextTrack(); };
             audioPlayer.addEventListener('ended', onSongEnd);
+            
             const pinModalOverlay = document.getElementById('pin-modal-overlay'); const pinModalBox = document.getElementById('pin-modal-box'); const pinInput = document.getElementById('pin-input'); const showPinModal = () => { pinModalOverlay.classList.remove('hidden'); pinInput.focus(); unlockAchievement('found_admin_mode'); }; const hidePinModal = () => { pinModalOverlay.classList.add('hidden'); };
             let clickCount = 0; let clickTimer = null;
             mainFooter.addEventListener('click', (e) => { if (e.target.closest('button') || e.target.closest('#boombox-section')) return; if (document.body.classList.contains('admin-mode')) return; clickCount++; if (clickTimer) clearTimeout(clickTimer); clickTimer = setTimeout(() => { clickCount = 0; }, 2000); if (clickCount === 5) { clickCount = 0; clearTimeout(clickTimer); showPinModal(); } });
@@ -461,24 +447,7 @@
             openMessageModalBtn.addEventListener('click', () => { messageModalOverlay.classList.remove('hidden'); messageNameInput.focus(); });
             messageCloseBtn.addEventListener('click', () => messageModalOverlay.classList.add('hidden'));
             messageModalOverlay.addEventListener('click', (e) => { if(e.target === messageModalOverlay) messageModalOverlay.classList.add('hidden'); });
-
-            // ★ LISTENER DE SUBMIT ATUALIZADO COM CONQUISTA
-            messageForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const name = messageNameInput.value.trim(); const message = messageTextInput.value.trim();
-                if (!name || !message) { messageError.textContent = 'Por favor, preencha nome e mensagem.'; return; }
-                messageError.textContent = '';
-                const newMessage = { name: name, message: message, timestamp: new Date().toISOString() };
-                if (!currentData.messages) { currentData.messages = []; }
-                currentData.messages.unshift(newMessage);
-                saveData().then(() => {
-                    showStatus('Mensagem enviada com sucesso! Obrigado.', 3000);
-                    unlockAchievement('sent_message');
-                    messageModalOverlay.classList.add('hidden');
-                    messageForm.reset();
-                }).catch(() => { showStatus('Erro ao enviar mensagem. Tente novamente.', 3000); });
-            });
-
+            messageForm.addEventListener('submit', (e) => { e.preventDefault(); const name = messageNameInput.value.trim(); const message = messageTextInput.value.trim(); if (!name || !message) { messageError.textContent = 'Por favor, preencha nome e mensagem.'; return; } messageError.textContent = ''; const newMessage = { name: name, message: message, timestamp: new Date().toISOString() }; if (!currentData.messages) { currentData.messages = []; } currentData.messages.unshift(newMessage); saveData().then(() => { showStatus('Mensagem enviada com sucesso! Obrigado.', 3000); unlockAchievement('sent_message'); messageModalOverlay.classList.add('hidden'); messageForm.reset(); }).catch(() => { showStatus('Erro ao enviar mensagem. Tente novamente.', 3000); }); });
             const renderMessages = () => { messagesList.innerHTML = ''; if (!currentData.messages || currentData.messages.length === 0) { messagesList.innerHTML = '<li>Nenhuma mensagem.</li>'; return; } currentData.messages.forEach((msg, index) => { const li = document.createElement('li'); li.className = 'message-entry'; const date = new Date(msg.timestamp); const formattedDate = date.toLocaleString('pt-BR'); li.innerHTML = `<button class="delete-message-btn" data-index="${index}" title="Excluir Mensagem"><i class="fa-solid fa-trash-can"></i></button><p>${msg.message}</p><small>De: <strong>${msg.name}</strong> em ${formattedDate}</small>`; messagesList.appendChild(li); }); };
             openInboxBtn.addEventListener('click', () => { renderMessages(); inboxModalOverlay.classList.remove('hidden'); });
             inboxCloseBtn.addEventListener('click', () => inboxModalOverlay.classList.add('hidden'));
