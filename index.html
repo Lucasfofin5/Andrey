@@ -50,7 +50,6 @@
             --border-color: #35524a; --shadow-color: rgba(0, 0, 0, 0.5); --accent-shadow-color: rgba(82, 222, 151, 0.25);
             --header-text-shadow: none; --achievement-unlocked-color: #f1c40f; --achievement-hard-color: #ff6b6b;
         }
-        /* ★ NOVO: Tema secreto "Matrix" */
         body[data-theme="matrix"] {
             --bg-color: #001a00; --card-color: #023020; --primary-text-color: #00ff00;
             --secondary-text-color: #008000; --accent-color: #00ff00; --accent-color-hover: #39ff14;
@@ -80,7 +79,6 @@
         .theme-button:hover { color: var(--primary-text-color); }
         .theme-button.active { color: var(--accent-color); background-color: rgba(255,255,255,0.1); }
         
-        /* ★ NOVO: Botão do tema secreto é oculto por padrão */
         .theme-button[data-theme="matrix"] { display: none; }
         
         #achievements-button {
@@ -173,7 +171,7 @@
         #exit-admin-button { background: none; border: 1px solid var(--accent-color-hover); color: var(--accent-color-hover); padding: 8px 15px; border-radius: var(--border-radius); cursor: pointer; font-weight: 600; transition: all 0.2s ease; }
         #exit-admin-button:hover { background: var(--accent-color-hover); color: var(--card-color); }
         body.admin-mode .edit-icon { display: inline-block; }
-        body.admin-mode #admin-controls { display: block; }
+        body.admin-mode #admin-controls { display: flex; gap: 10px; justify-content: center; } /* Updated */
         
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
         .modal-overlay:not(.hidden) { opacity: 1; pointer-events: auto; }
@@ -211,6 +209,43 @@
         #achievement-toast { background: linear-gradient(135deg, var(--achievement-unlocked-color), #e67e22); }
         #save-status.show, #achievement-toast.show { opacity: 1; transform: translateX(-50%) translateY(-10px); }
         
+        /* ★ NOVO: CSS PARA SISTEMA DE MENSAGENS */
+        #open-message-modal-btn {
+            background-color: rgba(255, 255, 255, 0.05); color: var(--primary-text-color); border: 1px solid var(--border-color);
+            padding: 10px 20px; border-radius: 50px; cursor: pointer; font-family: 'Poppins', sans-serif;
+            font-weight: 600; font-size: 1em; transition: all 0.2s ease; margin-left: 10px;
+        }
+        #open-message-modal-btn:hover { background-color: var(--border-color); transform: translateY(-2px); }
+        #open-message-modal-btn .fa-envelope-open-text { margin-right: 8px; }
+        #open-inbox-btn {
+            background: none; border: 1px solid var(--accent-color); color: var(--accent-color);
+            padding: 8px 15px; border-radius: var(--border-radius); cursor: pointer; font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        #open-inbox-btn:hover { background: var(--accent-color); color: var(--card-color); }
+
+        #message-form { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
+        #message-form input, #message-form textarea {
+            width: 100%; padding: 12px; border-radius: var(--border-radius); border: 2px solid var(--border-color);
+            background: var(--bg-color); color: var(--primary-text-color); font-family: 'Poppins', sans-serif; font-size: 1em;
+        }
+        #message-form textarea { min-height: 120px; resize: vertical; }
+        #message-form input:focus, #message-form textarea:focus { border-color: var(--accent-color); outline: none; }
+        #send-message-btn {
+            padding: 12px; border: none; border-radius: var(--border-radius); font-weight: 600; cursor: pointer;
+            transition: all 0.2s ease; font-family: var(--font-family); background-color: var(--accent-color); color: white;
+        }
+        #send-message-btn:hover { background-color: var(--accent-color-hover); }
+        #message-error { color: #e74c3c; min-height: 20px; font-weight: 600; text-align: center; }
+
+        #inbox-modal-box { max-width: 500px; }
+        #messages-list { list-style: none; margin-top: 20px; display: flex; flex-direction: column; gap: 15px; max-height: 60vh; overflow-y: auto; padding-right: 10px; text-align: left; }
+        .message-entry { background-color: rgba(0,0,0,0.15); padding: 15px; border-radius: var(--border-radius); border-left: 4px solid var(--accent-color); position: relative; }
+        .message-entry p { margin: 0; color: var(--primary-text-color); word-wrap: break-word; }
+        .message-entry small { display: block; color: var(--secondary-text-color); font-size: 0.8em; margin-top: 8px; border-top: 1px solid var(--border-color); padding-top: 8px; }
+        .delete-message-btn { position: absolute; top: 5px; right: 5px; background: none; border: none; color: var(--secondary-text-color); cursor: pointer; font-size: 1.1em; padding: 5px; }
+        .delete-message-btn:hover { color: #e74c3c; }
+
         @keyframes entrance-pop-in { from { opacity: 0; transform: translateY(20px) scale(0.95); filter: blur(3px); } to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } }
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
         @keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); } 20%, 40%, 60%, 80% { transform: translateX(10px); } }
@@ -233,7 +268,6 @@
                 <button class="theme-button" data-theme="ocean" title="Modo Oceano"><i class="fa-solid fa-droplet"></i></button>
                 <button class="theme-button" data-theme="sunset" title="Modo Pôr do Sol"><i class="fa-solid fa-cloud-sun"></i></button>
                 <button class="theme-button" data-theme="forest" title="Modo Floresta"><i class="fa-solid fa-leaf"></i></button>
-                <!-- ★ NOVO: Botão do tema secreto -->
                 <button class="theme-button" data-theme="matrix" title="Modo Matrix"><i class="fa-solid fa-terminal"></i></button>
             </div>
         </div>
@@ -289,20 +323,32 @@
                     </div>
                 </div>
             </section>
-            <div id="like-section"> <button id="like-button" title="Curta este perfil!"> <i class="fa-solid fa-thumbs-up"></i><span id="like-count">0</span> </button> </div>
+            <div id="like-section">
+                <button id="like-button" title="Curta este perfil!">
+                    <i class="fa-solid fa-thumbs-up"></i><span id="like-count">0</span>
+                </button>
+                <!-- ★ NOVO BOTÃO DE MENSAGEM -->
+                <button id="open-message-modal-btn" title="Deixe uma mensagem!">
+                    <i class="fa-solid fa-envelope-open-text"></i> Enviar Mensagem
+                </button>
+            </div>
             <div class="footer-content"> <p>Feito com <i class="fa-solid fa-code"></i> e <i class="fa-solid fa-heart"></i></p> </div>
-            <div id="admin-controls"><button id="exit-admin-button"><i class="fa-solid fa-lock"></i> Trancar Site</button></div>
+            <div id="admin-controls">
+                <!-- ★ NOVO BOTÃO DA CAIXA DE ENTRADA -->
+                <button id="open-inbox-btn"><i class="fa-solid fa-inbox"></i> Ver Mensagens</button>
+                <button id="exit-admin-button"><i class="fa-solid fa-lock"></i> Trancar Site</button>
+            </div>
         </footer>
     </main>
+
+    <!-- Modais Existentes -->
     <div id="achievements-modal-overlay" class="modal-overlay hidden">
         <div id="achievements-modal-box" class="modal-box">
              <button class="modal-close-btn" id="achievements-close-btn" title="Fechar"><i class="fa-solid fa-times"></i></button>
             <h3><i class="fa-solid fa-trophy"></i> Conquistas</h3>
-            <ul id="achievements-list">
-            </ul>
+            <ul id="achievements-list"></ul>
         </div>
     </div>
-    
     <div id="pin-modal-overlay" class="modal-overlay hidden">
         <div id="pin-modal-box" class="modal-box">
             <h3><i class="fa-solid fa-shield-halved"></i> Modo Autor</h3> <p id="pin-error"> </p>
@@ -310,6 +356,30 @@
             <div class="pin-modal-actions"> <button id="pin-cancel">Cancelar</button> <button id="pin-submit">Entrar</button> </div>
         </div>
     </div>
+
+    <!-- ★ NOVOS MODAIS PARA MENSAGENS -->
+    <div id="message-modal-overlay" class="modal-overlay hidden">
+        <div id="message-modal-box" class="modal-box">
+            <button class="modal-close-btn" id="message-close-btn" title="Fechar"><i class="fa-solid fa-times"></i></button>
+            <h3><i class="fa-solid fa-paper-plane"></i> Deixe sua mensagem</h3>
+            <form id="message-form">
+                <input type="text" id="message-name-input" placeholder="Seu nome" required maxlength="50">
+                <textarea id="message-text-input" placeholder="Sua mensagem..." required maxlength="500"></textarea>
+                <p id="message-error"></p>
+                <button type="submit" id="send-message-btn">Enviar</button>
+            </form>
+        </div>
+    </div>
+    <div id="inbox-modal-overlay" class="modal-overlay hidden">
+        <div id="inbox-modal-box" class="modal-box">
+            <button class="modal-close-btn" id="inbox-close-btn" title="Fechar"><i class="fa-solid fa-times"></i></button>
+            <h3><i class="fa-solid fa-inbox"></i> Caixa de Entrada</h3>
+            <ul id="messages-list">
+                <!-- As mensagens serão inseridas aqui pelo JavaScript -->
+            </ul>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             const JSONBIN_ID = '684f2cda8a456b7966aeb5d3';
@@ -331,10 +401,9 @@
             const VOLUME_STORAGE_KEY = 'userBoomboxVolume_v1';
             let isDraggingVolume = false;
 
-            // ★ ATUALIZADO: Playlist agora é dinâmica
             const basePlaylist = [ { title: "Good Night Lofi", artist: "Chill Beats", src: "good-night-lofi-cozy-chill-music-160166.mp3" }, { title: "Ambient Lofi", artist: "Chill Beats", src: "ambient-lofi-lofi-music-344112.mp3" }, { title: "Rainy Lofi City", artist: "Chill Beats", src: "rainy-lofi-city-lofi-music-332746.mp3" } ];
             const bonusTrack = { title: "Warm Breeze", artist: "Lofi Chill", src: "warm-breeze-lofi-music-chill-lofi-344259.mp3" };
-            let playlist = []; // Será preenchida na inicialização
+            let playlist = [];
 
             let currentTrackIndex = 0; let isAudioInitialized = false; let audioContext, analyser, source, dataArray; const NUM_VISUALIZER_BARS = 12;
             function updateVolumeUI() { if (!audioPlayer) return; const icon = volumeIconBtn.querySelector('i'); const volume = audioPlayer.volume; const muted = audioPlayer.muted; volumeLevel.style.width = muted ? '0%' : `${volume * 100}%`; if (muted || volume === 0) { icon.className = 'fa-solid fa-volume-xmark'; } else if (volume < 0.5) { icon.className = 'fa-solid fa-volume-low'; } else { icon.className = 'fa-solid fa-volume-high'; } }
@@ -384,172 +453,40 @@
             const ACHIEVEMENTS_STORAGE_KEY = 'userUnlockedAchievements_v1';
             const SONGS_LISTENED_KEY = 'userSongsListened_v1';
             const THEMES_SEEN_KEY = 'userThemesSeen_v1';
+            
+            // ★ NOVAS CONSTANTES PARA MENSAGENS
+            const openMessageModalBtn = document.getElementById('open-message-modal-btn');
+            const messageModalOverlay = document.getElementById('message-modal-overlay');
+            const messageCloseBtn = document.getElementById('message-close-btn');
+            const messageForm = document.getElementById('message-form');
+            const messageNameInput = document.getElementById('message-name-input');
+            const messageTextInput = document.getElementById('message-text-input');
+            const messageError = document.getElementById('message-error');
+            const openInboxBtn = document.getElementById('open-inbox-btn');
+            const inboxModalOverlay = document.getElementById('inbox-modal-overlay');
+            const inboxCloseBtn = document.getElementById('inbox-close-btn');
+            const messagesList = document.getElementById('messages-list');
 
             const allAchievements = [
-                { id: 'ifood_click', title: 'De Bucho Cheio!', description: 'Aperte o Botão do Ifood.', icon: 'fa-solid fa-utensils' },
-                { id: 'facebook_click', title: 'Eu Não Fiz Nada!', description: 'Aperte o Botão do Facebook.', icon: 'fa-brands fa-facebook' },
-                { id: 'portfolio_click', title: 'Looping?', description: 'Aperte o Botão do Portfólio.', icon: 'fa-solid fa-repeat' },
-                { id: 'email_click', title: 'Só Por Negócios!', description: 'Aperte o Botão do E-Mail.', icon: 'fa-solid fa-envelope' },
-                { id: 'ign_click', title: 'Press Start to Play!', description: 'Aperte o Botão do IGN.', icon: 'fa-solid fa-gamepad' },
-                { id: 'whatsapp_click', title: 'Boa Noite Bruno.', description: 'Aperte o Botão do Whatsapp.', icon: 'fa-brands fa-whatsapp' },
-                { id: 'steam_click', title: 'Não Dá Pra Platinaaaa!', description: 'Aperte o Botão da Steam.', icon: 'fa-brands fa-steam' },
-                { id: 'mal_click', title: 'Animer.', description: 'Aperte o Botão do MyAnimeList.', icon: 'fa-solid fa-tv' },
-                { id: 'discord_click', title: 'Coisas.', description: 'Aperte o Botão do Discord.', icon: 'fa-brands fa-discord' },
-                { id: 'liked_profile', title: 'Obrigado!', description: 'Aperte o botão de like.', icon: 'fa-solid fa-heart' },
-                { id: 'theme_explorer', title: 'Indeciso.', description: 'Veja todos os temas.', icon: 'fa-solid fa-palette' },
-                { id: 'lofi_master', title: 'Lofi na veia.', description: 'Ouça todas as três músicas inteiras da Boombox.', icon: 'fa-solid fa-headphones', difficulty: 'hard' },
-                { id: 'found_admin_mode', title: 'Easter Egg ou Não?', description: 'Ache o Modo Autor.', icon: 'fa-solid fa-user-secret', difficulty: 'hard' },
-                { id: 'platinum', title: 'Platinado!', description: 'Receba todas as conquistas.', icon: 'fa-solid fa-trophy', difficulty: 'platinum' }
+                { id: 'ifood_click', title: 'De Bucho Cheio!', description: 'Aperte o Botão do Ifood.', icon: 'fa-solid fa-utensils' }, { id: 'facebook_click', title: 'Eu Não Fiz Nada!', description: 'Aperte o Botão do Facebook.', icon: 'fa-brands fa-facebook' }, { id: 'portfolio_click', title: 'Looping?', description: 'Aperte o Botão do Portfólio.', icon: 'fa-solid fa-repeat' }, { id: 'email_click', title: 'Só Por Negócios!', description: 'Aperte o Botão do E-Mail.', icon: 'fa-solid fa-envelope' }, { id: 'ign_click', title: 'Press Start to Play!', description: 'Aperte o Botão do IGN.', icon: 'fa-solid fa-gamepad' }, { id: 'whatsapp_click', title: 'Boa Noite Bruno.', description: 'Aperte o Botão do Whatsapp.', icon: 'fa-brands fa-whatsapp' }, { id: 'steam_click', title: 'Não Dá Pra Platinaaaa!', description: 'Aperte o Botão da Steam.', icon: 'fa-brands fa-steam' }, { id: 'mal_click', title: 'Animer.', description: 'Aperte o Botão do MyAnimeList.', icon: 'fa-solid fa-tv' }, { id: 'discord_click', title: 'Coisas.', description: 'Aperte o Botão do Discord.', icon: 'fa-brands fa-discord' }, { id: 'liked_profile', title: 'Obrigado!', description: 'Aperte o botão de like.', icon: 'fa-solid fa-heart' }, { id: 'theme_explorer', title: 'Indeciso.', description: 'Veja todos os temas.', icon: 'fa-solid fa-palette' }, { id: 'lofi_master', title: 'Lofi na veia.', description: 'Ouça todas as três músicas inteiras da Boombox.', icon: 'fa-solid fa-headphones', difficulty: 'hard' }, { id: 'found_admin_mode', title: 'Easter Egg ou Não?', description: 'Ache o Modo Autor.', icon: 'fa-solid fa-user-secret', difficulty: 'hard' }, { id: 'platinum', title: 'Platinado!', description: 'Receba todas as conquistas.', icon: 'fa-solid fa-trophy', difficulty: 'platinum' }
             ];
 
-            const getUnlockedAchievements = () => {
-                try {
-                    const stored = localStorage.getItem(ACHIEVEMENTS_STORAGE_KEY);
-                    return new Set(stored ? JSON.parse(stored) : []);
-                } catch (e) {
-                    console.error("Erro ao ler conquistas salvas:", e);
-                    return new Set();
-                }
-            };
-
-            const showAchievementToast = (title) => {
-                achievementToast.innerHTML = `<i class="fa-solid fa-trophy"></i> Conquista: ${title}`;
-                achievementToast.classList.add('show');
-                setTimeout(() => achievementToast.classList.remove('show'), 4000);
-            };
-
-            const unlockAchievement = (id) => {
-                const unlocked = getUnlockedAchievements();
-                if (unlocked.has(id)) return;
-                const achievement = allAchievements.find(a => a.id === id);
-                if (!achievement) return;
-                unlocked.add(id);
-                localStorage.setItem(ACHIEVEMENTS_STORAGE_KEY, JSON.stringify([...unlocked]));
-                showAchievementToast(achievement.title);
-                
-                if (id === 'lofi_master') initializePlaylist(); // Re-inicializa a playlist para adicionar a nova música
-                if (id === 'found_admin_mode') updateSecretThemeButtonVisibility(); // Mostra o botão do tema secreto
-
-                const platinumAchievement = allAchievements.find(a => a.id === 'platinum');
-                if (platinumAchievement && !unlocked.has('platinum') && unlocked.size === allAchievements.length - 1) {
-                    unlocked.add('platinum');
-                    localStorage.setItem(ACHIEVEMENTS_STORAGE_KEY, JSON.stringify([...unlocked]));
-                    setTimeout(() => showAchievementToast(platinumAchievement.title), 1000);
-                }
-                renderAchievements();
-            };
-            
-            const lockAchievement = (id) => {
-                const unlocked = getUnlockedAchievements();
-                const achievement = allAchievements.find(a => a.id === id);
-                if (!unlocked.has(id) || !achievement) return;
-                unlocked.delete(id);
-                if (unlocked.has('platinum')) {
-                    unlocked.delete('platinum');
-                }
-                localStorage.setItem(ACHIEVEMENTS_STORAGE_KEY, JSON.stringify([...unlocked]));
-                
-                if (id === 'lofi_master') initializePlaylist(); // Re-inicializa para remover a música bônus
-                if (id === 'found_admin_mode') updateSecretThemeButtonVisibility(); // Esconde o botão do tema
-                
-                showStatus(`Conquista trancada: ${achievement.title}`);
-                renderAchievements();
-            };
-
-            const renderAchievements = () => {
-                const unlocked = getUnlockedAchievements();
-                achievementsList.innerHTML = '';
-                const sortedAchievements = [...allAchievements].sort((a, b) => (a.id === 'platinum') - (b.id === 'platinum'));
-                sortedAchievements.forEach(ach => {
-                    const isUnlocked = unlocked.has(ach.id);
-                    const li = document.createElement('li');
-                    li.className = 'achievement-item';
-                    li.dataset.id = ach.id;
-                    if (isUnlocked) li.classList.add('unlocked');
-                    let tagHtml = '';
-                    if (ach.difficulty === 'hard') {
-                        tagHtml = '<span class="achievement-tag hard">Difícil</span>';
-                    } else if (ach.difficulty === 'platinum') {
-                        tagHtml = '<span class="achievement-tag platinum">Platina</span>';
-                    }
-                    li.innerHTML = `
-                        <div class="achievement-icon">
-                            <i class="${isUnlocked ? ach.icon : 'fa-solid fa-lock'}"></i>
-                        </div>
-                        <div class="achievement-details">
-                            <h4>${ach.title} ${tagHtml}</h4>
-                            <p>${ach.description}</p>
-                        </div>
-                    `;
-                    achievementsList.appendChild(li);
-                });
-            };
-
-            achievementsButton.addEventListener('click', () => {
-                renderAchievements();
-                achievementsModalOverlay.classList.remove('hidden');
-            });
+            const getUnlockedAchievements = () => { try { const stored = localStorage.getItem(ACHIEVEMENTS_STORAGE_KEY); return new Set(stored ? JSON.parse(stored) : []); } catch (e) { console.error("Erro ao ler conquistas salvas:", e); return new Set(); } };
+            const showAchievementToast = (title) => { achievementToast.innerHTML = `<i class="fa-solid fa-trophy"></i> Conquista: ${title}`; achievementToast.classList.add('show'); setTimeout(() => achievementToast.classList.remove('show'), 4000); };
+            const unlockAchievement = (id) => { const unlocked = getUnlockedAchievements(); if (unlocked.has(id)) return; const achievement = allAchievements.find(a => a.id === id); if (!achievement) return; unlocked.add(id); localStorage.setItem(ACHIEVEMENTS_STORAGE_KEY, JSON.stringify([...unlocked])); showAchievementToast(achievement.title); if (id === 'lofi_master') initializePlaylist(); if (id === 'found_admin_mode') updateSecretThemeButtonVisibility(); const platinumAchievement = allAchievements.find(a => a.id === 'platinum'); if (platinumAchievement && !unlocked.has('platinum') && unlocked.size === allAchievements.length - 1) { unlocked.add('platinum'); localStorage.setItem(ACHIEVEMENTS_STORAGE_KEY, JSON.stringify([...unlocked])); setTimeout(() => showAchievementToast(platinumAchievement.title), 1000); } renderAchievements(); };
+            const lockAchievement = (id) => { const unlocked = getUnlockedAchievements(); const achievement = allAchievements.find(a => a.id === id); if (!unlocked.has(id) || !achievement) return; unlocked.delete(id); if (unlocked.has('platinum')) { unlocked.delete('platinum'); } localStorage.setItem(ACHIEVEMENTS_STORAGE_KEY, JSON.stringify([...unlocked])); if (id === 'lofi_master') initializePlaylist(); if (id === 'found_admin_mode') updateSecretThemeButtonVisibility(); showStatus(`Conquista trancada: ${achievement.title}`); renderAchievements(); };
+            const renderAchievements = () => { const unlocked = getUnlockedAchievements(); achievementsList.innerHTML = ''; const sortedAchievements = [...allAchievements].sort((a, b) => (a.id === 'platinum') - (b.id === 'platinum')); sortedAchievements.forEach(ach => { const isUnlocked = unlocked.has(ach.id); const li = document.createElement('li'); li.className = 'achievement-item'; li.dataset.id = ach.id; if (isUnlocked) li.classList.add('unlocked'); let tagHtml = ''; if (ach.difficulty === 'hard') { tagHtml = '<span class="achievement-tag hard">Difícil</span>'; } else if (ach.difficulty === 'platinum') { tagHtml = '<span class="achievement-tag platinum">Platina</span>'; } li.innerHTML = ` <div class="achievement-icon"> <i class="${isUnlocked ? ach.icon : 'fa-solid fa-lock'}"></i> </div> <div class="achievement-details"> <h4>${ach.title} ${tagHtml}</h4> <p>${ach.description}</p> </div> `; achievementsList.appendChild(li); }); };
+            achievementsButton.addEventListener('click', () => { renderAchievements(); achievementsModalOverlay.classList.remove('hidden'); });
             achievementsCloseBtn.addEventListener('click', () => achievementsModalOverlay.classList.add('hidden'));
-            achievementsModalOverlay.addEventListener('click', (e) => {
-                if(e.target === achievementsModalOverlay) achievementsModalOverlay.classList.add('hidden');
-            });
-            
-            achievementsList.addEventListener('click', (e) => {
-                if (!document.body.classList.contains('admin-mode')) return;
-                const li = e.target.closest('.achievement-item');
-                if (!li) return;
-                const achievementId = li.dataset.id;
-                if (!achievementId) return;
-                const unlocked = getUnlockedAchievements();
-                if(unlocked.has(achievementId)) {
-                    lockAchievement(achievementId);
-                } else {
-                    unlockAchievement(achievementId);
-                }
-            });
+            achievementsModalOverlay.addEventListener('click', (e) => { if(e.target === achievementsModalOverlay) achievementsModalOverlay.classList.add('hidden'); });
+            achievementsList.addEventListener('click', (e) => { if (!document.body.classList.contains('admin-mode')) return; const li = e.target.closest('.achievement-item'); if (!li) return; const achievementId = li.dataset.id; if (!achievementId) return; const unlocked = getUnlockedAchievements(); if(unlocked.has(achievementId)) { lockAchievement(achievementId); } else { unlockAchievement(achievementId); } });
             
             const showStatus = (message, duration = 2000) => { saveStatus.textContent = message; saveStatus.classList.add('show'); setTimeout(() => saveStatus.classList.remove('show'), duration); };
-            
-            // ★ NOVO: Função para mostrar/esconder o botão do tema secreto
-            const updateSecretThemeButtonVisibility = () => {
-                const secretThemeButton = document.querySelector('.theme-button[data-theme="matrix"]');
-                if (!secretThemeButton) return;
-                const unlocked = getUnlockedAchievements();
-                secretThemeButton.style.display = unlocked.has('found_admin_mode') ? 'flex' : 'none';
-            };
-            
-            const setTheme = (theme) => {
-                pageBody.setAttribute('data-theme', theme);
-                localStorage.setItem(THEME_STORAGE_KEY, theme);
-                themeButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.theme === theme));
-                const themesSeen = new Set(JSON.parse(localStorage.getItem(THEMES_SEEN_KEY) || '[]'));
-                themesSeen.add(theme);
-                localStorage.setItem(THEMES_SEEN_KEY, JSON.stringify([...themesSeen]));
-                // A checagem inclui o botão secreto, que agora conta para a conquista.
-                if (themesSeen.size >= document.querySelectorAll('.theme-switcher .theme-button').length - 1) { // -1 para o botão secreto se ainda não visível
-                    unlockAchievement('theme_explorer');
-                }
-            };
+            const updateSecretThemeButtonVisibility = () => { const secretThemeButton = document.querySelector('.theme-button[data-theme="matrix"]'); if (!secretThemeButton) return; const unlocked = getUnlockedAchievements(); secretThemeButton.style.display = unlocked.has('found_admin_mode') ? 'flex' : 'none'; };
+            const setTheme = (theme) => { pageBody.setAttribute('data-theme', theme); localStorage.setItem(THEME_STORAGE_KEY, theme); themeButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.theme === theme)); const themesSeen = new Set(JSON.parse(localStorage.getItem(THEMES_SEEN_KEY) || '[]')); themesSeen.add(theme); localStorage.setItem(THEMES_SEEN_KEY, JSON.stringify([...themesSeen])); if (themesSeen.size >= document.querySelectorAll('.theme-switcher .theme-button').length - 1) { unlockAchievement('theme_explorer'); } };
             
             const updateDOM = (data) => {
-                document.getElementById('profile-name').textContent = data['profile-name'];
-                document.getElementById('profile-tagline').textContent = data['profile-tagline'];
-                document.getElementById('profile-picture-img').src = data['profile-picture'];
-                document.getElementById('ifood-text').textContent = data['ifood-text'];
-                document.getElementById('ifood-link').href = data['ifood-href'];
-                for (let i = 1; i <= 8; i++) {
-                    const linkEl = document.getElementById(`link-${i}`);
-                    if (!linkEl) continue;
-                    if(i === 3 || i === 8) {
-                        document.getElementById(`link-text-${i}.1`).textContent = data[`link${i}-text1`];
-                        document.getElementById(`link-text-${i}.2`).textContent = data[`link${i}-text2`];
-                        if(i === 3) linkEl.href = data[`link${i}-href`];
-                    } else {
-                        document.getElementById(`link-text-${i}`).textContent = data[`link${i}-text`];
-                        linkEl.href = data[`link${i}-href`];
-                    }
-                }
-                likeCountSpan.textContent = data['like-count'] || 0;
+                document.getElementById('profile-name').textContent = data['profile-name']; document.getElementById('profile-tagline').textContent = data['profile-tagline']; document.getElementById('profile-picture-img').src = data['profile-picture']; document.getElementById('ifood-text').textContent = data['ifood-text']; document.getElementById('ifood-link').href = data['ifood-href']; for (let i = 1; i <= 8; i++) { const linkEl = document.getElementById(`link-${i}`); if (!linkEl) continue; if(i === 3 || i === 8) { document.getElementById(`link-text-${i}.1`).textContent = data[`link${i}-text1`]; document.getElementById(`link-text-${i}.2`).textContent = data[`link${i}-text2`]; if(i === 3) linkEl.href = data[`link${i}-href`]; } else { document.getElementById(`link-text-${i}`).textContent = data[`link${i}-text`]; linkEl.href = data[`link${i}-href`]; } } likeCountSpan.textContent = data['like-count'] || 0;
             };
             const initializeLikeButton = () => { likeButton.classList.toggle('liked', localStorage.getItem(LIKE_STORAGE_KEY) === 'true'); };
             const loadData = async () => {
@@ -558,12 +495,11 @@
                     if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
                     const result = await response.json();
                     currentData = result.record;
+                    if (!currentData.messages) { currentData.messages = []; } // ★ GARANTE QUE O ARRAY DE MENSAGENS EXISTA
                     updateDOM(currentData);
                     initializeLikeButton();
                 } catch (error) {
-                    console.error('Falha ao carregar dados:', error);
-                    document.getElementById('profile-name').textContent = 'Erro ao carregar';
-                    document.getElementById('profile-tagline').textContent = 'Verifique a conexão e o console.';
+                    console.error('Falha ao carregar dados:', error); document.getElementById('profile-name').textContent = 'Erro ao carregar'; document.getElementById('profile-tagline').textContent = 'Verifique a conexão e o console.';
                 }
             };
             const saveData = async (isLikeAction = false) => {
@@ -575,14 +511,12 @@
                     if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
                     if (!isLikeAction) showStatus('Salvo com sucesso!');
                 } catch (error) {
-                    console.error('Falha ao salvar dados:', error);
-                    showStatus('Erro ao salvar!', 3000);
+                    console.error('Falha ao salvar dados:', error); showStatus('Erro ao salvar!', 3000);
                 } finally {
                     isSaving = false;
                 }
             };
             
-            // Gatilhos de conquistas
             document.getElementById('ifood-link').addEventListener('click', () => unlockAchievement('ifood_click'));
             document.getElementById('link-1').addEventListener('click', () => unlockAchievement('facebook_click'));
             document.getElementById('link-2').addEventListener('click', () => unlockAchievement('portfolio_click'));
@@ -591,108 +525,96 @@
             document.getElementById('link-5').addEventListener('click', () => unlockAchievement('whatsapp_click'));
             document.getElementById('link-6').addEventListener('click', () => unlockAchievement('steam_click'));
             document.getElementById('link-7').addEventListener('click', () => unlockAchievement('mal_click'));
-            document.getElementById('link-8').addEventListener('click', (e) => { 
-                unlockAchievement('discord_click');
-                e.preventDefault(); 
-                navigator.clipboard.writeText(currentData['link8-text2']).then(() => showStatus('Username copiado!'));
-            });
-
-            likeButton.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const hasLiked = localStorage.getItem(LIKE_STORAGE_KEY) === 'true';
-                if (hasLiked) {
-                    currentData['like-count'] = Math.max(0, (currentData['like-count'] || 0) - 1);
-                    localStorage.setItem(LIKE_STORAGE_KEY, 'false');
-                } else {
-                    currentData['like-count'] = (currentData['like-count'] || 0) + 1;
-                    localStorage.setItem(LIKE_STORAGE_KEY, 'true');
-                    unlockAchievement('liked_profile');
-                }
-                updateDOM(currentData);
-                initializeLikeButton();
-                saveData(true);
-            });
-
+            document.getElementById('link-8').addEventListener('click', (e) => { unlockAchievement('discord_click'); e.preventDefault(); navigator.clipboard.writeText(currentData['link8-text2']).then(() => showStatus('Username copiado!')); });
+            likeButton.addEventListener('click', (e) => { e.stopPropagation(); const hasLiked = localStorage.getItem(LIKE_STORAGE_KEY) === 'true'; if (hasLiked) { currentData['like-count'] = Math.max(0, (currentData['like-count'] || 0) - 1); localStorage.setItem(LIKE_STORAGE_KEY, 'false'); } else { currentData['like-count'] = (currentData['like-count'] || 0) + 1; localStorage.setItem(LIKE_STORAGE_KEY, 'true'); unlockAchievement('liked_profile'); } updateDOM(currentData); initializeLikeButton(); saveData(true); });
             themeButtons.forEach(button => { button.addEventListener('click', (e) => { e.stopPropagation(); setTheme(button.dataset.theme); }); });
 
-            const onSongEnd = () => {
-                const songsListened = new Set(JSON.parse(localStorage.getItem(SONGS_LISTENED_KEY) || '[]'));
-                songsListened.add(currentTrackIndex);
-                localStorage.setItem(SONGS_LISTENED_KEY, JSON.stringify([...songsListened]));
-                // ★ ATUALIZADO: Checagem usa o tamanho da playlist base
-                if (songsListened.size === basePlaylist.length) {
-                    unlockAchievement('lofi_master');
-                }
-                playNextTrack();
-            };
+            const onSongEnd = () => { const songsListened = new Set(JSON.parse(localStorage.getItem(SONGS_LISTENED_KEY) || '[]')); songsListened.add(currentTrackIndex); localStorage.setItem(SONGS_LISTENED_KEY, JSON.stringify([...songsListened])); if (songsListened.size === basePlaylist.length) { unlockAchievement('lofi_master'); } playNextTrack(); };
             audioPlayer.addEventListener('ended', onSongEnd);
-
+            
             const pinModalOverlay = document.getElementById('pin-modal-overlay');
             const pinModalBox = document.getElementById('pin-modal-box');
             const pinInput = document.getElementById('pin-input');
-            
-            const showPinModal = () => {
-                pinModalOverlay.classList.remove('hidden');
-                pinInput.focus();
-                unlockAchievement('found_admin_mode');
-            };
-
+            const showPinModal = () => { pinModalOverlay.classList.remove('hidden'); pinInput.focus(); unlockAchievement('found_admin_mode'); };
             const hidePinModal = () => { pinModalOverlay.classList.add('hidden'); };
             let clickCount = 0; let clickTimer = null;
             mainFooter.addEventListener('click', (e) => { if (e.target.closest('button') || e.target.closest('#boombox-section')) return; if (document.body.classList.contains('admin-mode')) return; clickCount++; if (clickTimer) clearTimeout(clickTimer); clickTimer = setTimeout(() => { clickCount = 0; }, 2000); if (clickCount === 5) { clickCount = 0; clearTimeout(clickTimer); showPinModal(); } });
             
             document.querySelectorAll('.edit-icon').forEach(icon => {
                 icon.addEventListener('click', (e) => {
-                    e.preventDefault(); e.stopPropagation();
-                    const linkId = icon.dataset.editLink; const specialKey = icon.dataset.editSpecial; const textKey = icon.dataset.edit;
-                    const editValue = (key, promptMessage) => { const currentValue = currentData[key]; const newValue = prompt(promptMessage, currentValue); if (newValue !== null && newValue !== currentValue) { currentData[key] = newValue; updateDOM(currentData); saveData(); } };
-                    if (textKey) { editValue(textKey, `Editar ${textKey}:`); } else if (specialKey === 'ifood') { editValue('ifood-text', 'Editar Texto do Botão iFood:'); editValue('ifood-href', 'Editar URL do iFood:'); } else if (linkId) { if (linkId === '3' || linkId === '8') { editValue(`link${linkId}-text1`, `Editar Título:`); editValue(`link${linkId}-text2`, `Editar Subtexto:`); if (linkId === '3') editValue('link3-href', 'Editar Link (mailto:):'); } else { editValue(`link${linkId}-text`, `Editar Texto:`); editValue(`link${linkId}-href`, `Editar URL:`); } }
+                    e.preventDefault(); e.stopPropagation(); const linkId = icon.dataset.editLink; const specialKey = icon.dataset.editSpecial; const textKey = icon.dataset.edit; const editValue = (key, promptMessage) => { const currentValue = currentData[key]; const newValue = prompt(promptMessage, currentValue); if (newValue !== null && newValue !== currentValue) { currentData[key] = newValue; updateDOM(currentData); saveData(); } }; if (textKey) { editValue(textKey, `Editar ${textKey}:`); } else if (specialKey === 'ifood') { editValue('ifood-text', 'Editar Texto do Botão iFood:'); editValue('ifood-href', 'Editar URL do iFood:'); } else if (linkId) { if (linkId === '3' || linkId === '8') { editValue(`link${linkId}-text1`, `Editar Título:`); editValue(`link${linkId}-text2`, `Editar Subtexto:`); if (linkId === '3') editValue('link3-href', 'Editar Link (mailto:):'); } else { editValue(`link${linkId}-text`, `Editar Texto:`); editValue(`link${linkId}-href`, `Editar URL:`); } }
                 });
             });
 
             const enterAdminMode = () => { document.body.classList.add('admin-mode'); localStorage.setItem('isAdmin', 'true'); };
             const exitAdminMode = () => { document.body.classList.remove('admin-mode'); localStorage.removeItem('isAdmin'); };
             
-            const checkPin = () => {
-                if (pinInput.value === AUTHOR_PIN) {
-                    enterAdminMode();
-                    hidePinModal();
-                } else {
-                    document.getElementById('pin-error').textContent = 'PIN Incorreto'; pinModalBox.classList.add('shake'); pinInput.value = '';
-                    setTimeout(() => pinModalBox.classList.remove('shake'), 500);
-                }
-            };
+            const checkPin = () => { if (pinInput.value === AUTHOR_PIN) { enterAdminMode(); hidePinModal(); } else { document.getElementById('pin-error').textContent = 'PIN Incorreto'; pinModalBox.classList.add('shake'); pinInput.value = ''; setTimeout(() => pinModalBox.classList.remove('shake'), 500); } };
             document.getElementById('pin-submit').addEventListener('click', checkPin);
             document.getElementById('pin-cancel').addEventListener('click', hidePinModal); 
             document.getElementById('exit-admin-button').addEventListener('click', exitAdminMode);
             pinInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') checkPin(); });
             
-            // ★ NOVO: Função para inicializar a playlist com base nas conquistas
-            const initializePlaylist = () => {
-                const unlocked = getUnlockedAchievements();
-                playlist = unlocked.has('lofi_master') ? [...basePlaylist, bonusTrack] : [...basePlaylist];
+            const initializePlaylist = () => { const unlocked = getUnlockedAchievements(); playlist = unlocked.has('lofi_master') ? [...basePlaylist, bonusTrack] : [...basePlaylist]; };
+
+            // ★ NOVO: LÓGICA DO SISTEMA DE MENSAGENS
+            openMessageModalBtn.addEventListener('click', () => { messageModalOverlay.classList.remove('hidden'); messageNameInput.focus(); });
+            messageCloseBtn.addEventListener('click', () => messageModalOverlay.classList.add('hidden'));
+            messageModalOverlay.addEventListener('click', (e) => { if(e.target === messageModalOverlay) messageModalOverlay.classList.add('hidden'); });
+
+            messageForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = messageNameInput.value.trim();
+                const message = messageTextInput.value.trim();
+                if (!name || !message) { messageError.textContent = 'Por favor, preencha nome e mensagem.'; return; }
+                messageError.textContent = '';
+                const newMessage = { name: name, message: message, timestamp: new Date().toISOString() };
+                if (!currentData.messages) { currentData.messages = []; }
+                currentData.messages.unshift(newMessage);
+                saveData().then(() => { showStatus('Mensagem enviada com sucesso! Obrigado.', 3000); messageModalOverlay.classList.add('hidden'); messageForm.reset(); }).catch(() => { showStatus('Erro ao enviar mensagem. Tente novamente.', 3000); });
+            });
+
+            const renderMessages = () => {
+                messagesList.innerHTML = '';
+                if (!currentData.messages || currentData.messages.length === 0) { messagesList.innerHTML = '<li>Nenhuma mensagem.</li>'; return; }
+                currentData.messages.forEach((msg, index) => {
+                    const li = document.createElement('li');
+                    li.className = 'message-entry';
+                    const date = new Date(msg.timestamp);
+                    const formattedDate = date.toLocaleString('pt-BR');
+                    li.innerHTML = `<button class="delete-message-btn" data-index="${index}" title="Excluir Mensagem"><i class="fa-solid fa-trash-can"></i></button><p>${msg.message}</p><small>De: <strong>${msg.name}</strong> em ${formattedDate}</small>`;
+                    messagesList.appendChild(li);
+                });
             };
 
+            openInboxBtn.addEventListener('click', () => { renderMessages(); inboxModalOverlay.classList.remove('hidden'); });
+            inboxCloseBtn.addEventListener('click', () => inboxModalOverlay.classList.add('hidden'));
+            inboxModalOverlay.addEventListener('click', (e) => { if(e.target === inboxModalOverlay) inboxModalOverlay.classList.add('hidden'); });
+
+            messagesList.addEventListener('click', (e) => {
+                const deleteBtn = e.target.closest('.delete-message-btn');
+                if (deleteBtn) {
+                    const index = parseInt(deleteBtn.dataset.index, 10);
+                    if (confirm('Tem certeza que deseja excluir esta mensagem?')) {
+                        currentData.messages.splice(index, 1);
+                        saveData().then(() => { showStatus('Mensagem excluída.', 2000); renderMessages(); });
+                    }
+                }
+            });
+
             // === INÍCIO DA EXECUÇÃO PRINCIPAL ===
-            
             const savedTheme = localStorage.getItem(THEME_STORAGE_KEY) || 'dark';
             setTheme(savedTheme);
-            
             await loadData(); 
-            
             const savedVolume = localStorage.getItem(VOLUME_STORAGE_KEY);
             if (savedVolume !== null) { setVolume(parseFloat(savedVolume)); } else { setVolume(0.10); }
-
-            initializePlaylist(); // Prepara a playlist
-            loadTrack(currentTrackIndex); // Carrega a primeira música
-            playTrack(); // Tenta tocar (depende da interação do usuário)
-            
+            initializePlaylist();
+            loadTrack(currentTrackIndex);
+            playTrack();
             fetchDiscordStatus();
             setInterval(fetchDiscordStatus, 30000);
-            
             if (localStorage.getItem('isAdmin') === 'true') { enterAdminMode(); }
-            
-            updateSecretThemeButtonVisibility(); // Checa se o botão secreto deve aparecer
+            updateSecretThemeButtonVisibility();
         });
     </script>
 </body>
